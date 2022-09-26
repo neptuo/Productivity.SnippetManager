@@ -1,0 +1,27 @@
+﻿<ui:UiWindow x:Class="TestWpf.WpfUiWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+  Style="{StaticResource UiWindow}" ResizeMode="CanMinimize" WindowStyle="None" WindowCornerPreference="Round" Width="600" Height="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0"/>
+
+        <Grid Grid.Row="1" Margin="12,6,12,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ui:NavigationFluent Grid.Column="0" Margin="0,0,12,0" />
+
+            <StackPanel Grid.Column="1">
+                <ui:Button Content="Click me!" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:UiWindow>
