@@ -109,7 +109,7 @@ public class Navigator : IClipboardService, ISendTextService
 
     #region Services
 
-    void ISendTextService.Send(string text)
+    async void ISendTextService.Send(string text)
     {
         var scope = new ClipboardScope();
         try
@@ -118,6 +118,8 @@ public class Navigator : IClipboardService, ISendTextService
 
             Clipboard.SetText(text);
             SendKeys.SendWait("^{v}");
+
+            await Task.Delay(100);
         }
         finally
         {
