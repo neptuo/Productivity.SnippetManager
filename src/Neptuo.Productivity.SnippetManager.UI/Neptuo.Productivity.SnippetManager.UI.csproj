@@ -9,8 +9,9 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<LangVersion>preview</LangVersion>
+		<ApplicationIcon>Resources\icon.ico</ApplicationIcon>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="Neptuo.Windows.Converters" Version="1.0.0" />
 		<PackageReference Include="Neptuo.Windows.HotKeys" Version="2.0.0" />
@@ -31,6 +32,11 @@
 			<Isolated>false</Isolated>
 			<EmbedInteropTypes>true</EmbedInteropTypes>
 		</COMReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resouce Include="Resources\icon.ico" />
+		<Resouce Include="Resources\icon.png" />
 	</ItemGroup>
 
 </Project>
