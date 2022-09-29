@@ -14,12 +14,8 @@ public class DemoSnippetProvider : ISnippetProvider
     {
         List<SnippetModel> result = new();
 
-        void Add(string title, string text, string? description = null) => result.Add(new SnippetModel()
-        {
-            Title = title,
-            Text = text,
-            Description = description ?? text.Split(Environment.NewLine)[0] + "..."
-        });
+        void Add(string title, string text, string? description = null) 
+            => result.Add(new SnippetModel(title, text, description));
 
         Add(
             "C# class",

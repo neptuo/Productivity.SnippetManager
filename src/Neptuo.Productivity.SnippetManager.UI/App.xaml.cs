@@ -16,7 +16,7 @@ namespace Neptuo.Productivity.SnippetManager
 {
     public partial class App : Application
     {
-        private readonly Navigator navigator = new Navigator(new CompositeSnippetProvider(new DemoSnippetProvider(), new GuidSnippetProvider()));
+        private readonly Navigator navigator = new Navigator(new CompositeSnippetProvider(new ClipboardSnippetProvider(), new DemoSnippetProvider(), new GuidSnippetProvider()));
         private NotifyIcon? trayIcon;
 
         protected override void OnStartup(StartupEventArgs e)
@@ -35,14 +35,14 @@ namespace Neptuo.Productivity.SnippetManager
             trayIcon = new NotifyIcon
             {
                 Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule!.FileName!),
-                Text = "Snippet Manager"
+                Text = "Snippet Manager",
+                Visible = true
             };
             trayIcon.MouseClick += (sender, e) =>
             {
                 if (e.Button != MouseButtons.Right) 
                     navigator.OpenMain();
             };
-            trayIcon.Visible = true;
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
             trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(); };

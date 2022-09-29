@@ -10,18 +10,6 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class GuidSnippetProvider : ISnippetProvider
 {
-    public Task<IReadOnlyCollection<SnippetModel>> GetAsync()
-    {
-        string guid = Guid.NewGuid().ToString();
-        return Task.FromResult<IReadOnlyCollection<SnippetModel>>(
-            new[] { 
-                new SnippetModel()
-                {
-                    Title = "GUID",
-                    Text =guid,
-                    Description = guid
-                }
-            }
-        );
-    }
+    public Task<IReadOnlyCollection<SnippetModel>> GetAsync() 
+        => Task.FromResult(SnippetModel.SingleCollection("GUID", Guid.NewGuid().ToString()));
 }
