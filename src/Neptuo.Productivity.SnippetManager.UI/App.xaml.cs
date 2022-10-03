@@ -40,13 +40,21 @@ namespace Neptuo.Productivity.SnippetManager
             };
             trayIcon.MouseClick += (sender, e) =>
             {
-                if (e.Button != MouseButtons.Right) 
+                if (e.Button != MouseButtons.Right)
                     navigator.OpenMain();
             };
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
             trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(); };
-            trayIcon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => Shutdown();
+            trayIcon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); Shutdown(); };
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            if (trayIcon != null)
+                trayIcon.Visible = false;
         }
     }
 }

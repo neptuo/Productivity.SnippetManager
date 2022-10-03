@@ -63,6 +63,9 @@ public class Navigator : IClipboardService, ISendTextService
         main.Show();
     }
 
+    public void CloseMain() 
+        => main?.Close();
+
     private void PositionWindowToCaret(Window wnd)
     {
         var caret = CaretPosition.Find();
