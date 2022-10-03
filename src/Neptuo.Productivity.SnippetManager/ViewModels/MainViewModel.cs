@@ -33,6 +33,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             ICollectionView view = CollectionViewSource.GetDefaultView(Snippets);
             if (view.Filter == null)
             {
+                view.SortDescriptions.Add(new SortDescription(nameof(SnippetModel.Priority), ListSortDirection.Ascending));
                 view.SortDescriptions.Add(new SortDescription(nameof(SnippetModel.Title), ListSortDirection.Ascending));
                 view.Filter = OnFilter;
             }

@@ -13,7 +13,7 @@ public class ClipboardSnippetProvider : ISnippetProvider
 {
     public Task<IReadOnlyCollection<SnippetModel>> GetAsync() => Task.FromResult(
         Clipboard.ContainsText() 
-            ? SnippetModel.SingleCollection("Text from Clipboard", Clipboard.GetText()) 
+            ? SnippetModel.SingleCollection("Text from Clipboard", Clipboard.GetText(), priority: SnippetPriority.Most)
             : SnippetModel.EmptyCollection
     );
 }
