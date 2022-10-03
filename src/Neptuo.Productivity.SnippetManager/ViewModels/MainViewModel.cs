@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using static System.Net.WebRequestMethods;
 
 namespace Neptuo.Productivity.SnippetManager.ViewModels
 {
@@ -22,13 +23,13 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public ApplySnippetCommand Apply { get; init; }
         public CopySnippetCommand Copy { get; init; }
 
-        private string? normalizedSearchText;
+        private string[]? normalizedSearchText;
 
         private int searchResultCount = 0;
 
         public void Search(string searchText)
         {
-            normalizedSearchText = searchText?.ToLowerInvariant();
+            normalizedSearchText = searchText?.ToLowerInvariant().Split(' ');
 
             ICollectionView view = CollectionViewSource.GetDefaultView(Snippets);
             if (view.Filter == null)
@@ -57,13 +58,24 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private bool IsFilterPassed(SnippetModel snippet)
         {
-            if (String.IsNullOrEmpty(normalizedSearchText))
+            if (String.IsNullOrEmpty(searchText) || normalizedSearchText == null)
                 return true;
 
-            if (snippet.Title.ToLowerInvariant().Contains(normalizedSearchText))
-                return true;
+            bool result = true;
+            string pathMatch = snippet.Title.ToLowerInvariant();
+            for (int i = 0; i < normalizedSearchText.Length; i++)
+            {
+                int currentIndex = pathMatch.IndexOf(normalizedSearchText[i]);
+                if (currentIndex == -1)
+                {
+                    result = false;
+                    break;
+                }
 
-            return false;
+                pathMatch = pathMatch.Substring(currentIndex + normalizedSearchText[i].Length);
+            }
+
+            return result;
         }
     }
 }
