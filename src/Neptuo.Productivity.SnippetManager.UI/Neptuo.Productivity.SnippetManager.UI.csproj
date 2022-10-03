@@ -2,10 +2,8 @@
 
 	<PropertyGroup>
 		<VersionPrefix>0.0.0</VersionPrefix>
-		<RootNamespace>Neptuo.Productivity.SnippetManager</RootNamespace>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<LangVersion>preview</LangVersion>
@@ -20,6 +18,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
+		<ProjectReference Include="..\Neptuo.Productivity.SnippetManager.Xml\Neptuo.Productivity.SnippetManager.Xml.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

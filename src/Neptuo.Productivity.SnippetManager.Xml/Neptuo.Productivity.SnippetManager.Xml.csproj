@@ -2,11 +2,11 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<UseWPF>true</UseWPF>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Neptuo.Observables" Version="2.1.0" />
+	  <ProjectReference Include="..\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
 	</ItemGroup>
 
 </Project>

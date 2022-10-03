@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neptuo.Productivity.Snippet
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Neptuo.Productivity.SnippetManager.Package", "src\Neptuo.Productivity.SnippetManager.Package\Neptuo.Productivity.SnippetManager.Package.wapproj", "{EC551464-D8F0-4DA7-93B1-BCD2EBD3761D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neptuo.Productivity.SnippetManager.Xml", "src\Neptuo.Productivity.SnippetManager.Xml\Neptuo.Productivity.SnippetManager.Xml.csproj", "{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +171,26 @@ Global
 		{EC551464-D8F0-4DA7-93B1-BCD2EBD3761D}.Release|x86.ActiveCfg = Release|x86
 		{EC551464-D8F0-4DA7-93B1-BCD2EBD3761D}.Release|x86.Build.0 = Release|x86
 		{EC551464-D8F0-4DA7-93B1-BCD2EBD3761D}.Release|x86.Deploy.0 = Release|x86
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|arm64.Build.0 = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|x64.Build.0 = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|ARM.Build.0 = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|arm64.ActiveCfg = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|arm64.Build.0 = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|x64.ActiveCfg = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|x64.Build.0 = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{9D7FBDE1-3266-405F-AC0E-2C9D006F37F7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
