@@ -58,7 +58,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private bool IsFilterPassed(SnippetModel snippet)
         {
-            if (String.IsNullOrEmpty(searchText) || normalizedSearchText == null)
+            if (normalizedSearchText == null)
                 return true;
 
             bool result = true;
