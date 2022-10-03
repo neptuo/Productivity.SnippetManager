@@ -11,29 +11,34 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class XmlSnippetProvider : ISnippetProvider
 {
-    public Task<IReadOnlyCollection<SnippetModel>> GetAsync() => Task.Run(() =>
+    public Task<IReadOnlyCollection<SnippetModel>> GetAsync()
     {
         string sourcePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.xml");
+        if (!File.Exists(sourcePath))
+            return Task.FromResult(SnippetModel.EmptyCollection);
 
-        XmlSnippetRoot? root;
-        XmlSerializer serializer = new XmlSerializer(typeof(XmlSnippetRoot));
-        using (FileStream sourceContent = new FileStream(sourcePath, FileMode.Open))
-            root = (XmlSnippetRoot?)serializer.Deserialize(sourceContent);
-
-        if (root == null || root.Snippets == null)
-            return SnippetModel.EmptyCollection;
-
-        List<SnippetModel> result = new();
-        foreach (var snippet in root.Snippets)
+        return Task.Run(() =>
         {
-            string? text = snippet.TextAttribute ?? snippet.Text;
-            if (text == null)
-                continue;
+            XmlSnippetRoot? root;
+            XmlSerializer serializer = new XmlSerializer(typeof(XmlSnippetRoot));
+            using (FileStream sourceContent = new FileStream(sourcePath, FileMode.Open))
+                root = (XmlSnippetRoot?)serializer.Deserialize(sourceContent);
 
-            string title = snippet.Title ?? text;
-            result.Add(new SnippetModel(title, text));
-        }
+            if (root == null || root.Snippets == null)
+                return SnippetModel.EmptyCollection;
 
-        return result;
-    });
+            List<SnippetModel> result = new();
+            foreach (var snippet in root.Snippets)
+            {
+                string? text = snippet.TextAttribute ?? snippet.Text;
+                if (text == null)
+                    continue;
+
+                string title = snippet.Title ?? text;
+                result.Add(new SnippetModel(title, text));
+            }
+
+            return result;
+        });
+    }
 }
