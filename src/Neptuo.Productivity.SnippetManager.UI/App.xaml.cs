@@ -16,7 +16,7 @@ namespace Neptuo.Productivity.SnippetManager
 {
     public partial class App : Application
     {
-        private readonly Navigator navigator = new Navigator(new CompositeSnippetProvider(new ClipboardSnippetProvider(), new XmlSnippetProvider(), new GuidSnippetProvider()));
+        private readonly Navigator navigator = new Navigator(new CompositeSnippetProvider(new ClipboardSnippetProvider(), new XmlSnippetProvider(), new GuidSnippetProvider(), new GitHubSnippetProvider()));
         private NotifyIcon? trayIcon;
 
         protected override void OnStartup(StartupEventArgs e)
