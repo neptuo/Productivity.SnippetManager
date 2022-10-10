@@ -10,12 +10,13 @@ namespace Neptuo.Productivity.SnippetManager.Views.DesignData;
 
 internal class DemoSnippetProvider : ISnippetProvider
 {
-    public Task<IReadOnlyCollection<SnippetModel>> GetAsync()
-    {
-        List<SnippetModel> result = new();
+    public Task InitializeAsync(SnippetProviderContext context) 
+        => Task.CompletedTask;
 
+    public Task UpdateAsync(SnippetProviderContext context)
+    {
         void Add(string title, string text, string? description = null)
-            => result.Add(new SnippetModel(title, text, description));
+            => context.Snippets.Add(new SnippetModel(title, text, description));
 
         Add(
             "C# class",
@@ -45,6 +46,6 @@ internal class DemoSnippetProvider : ISnippetProvider
         Add("Recollections", "https://recollections.app");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
 
-        return Task.FromResult<IReadOnlyCollection<SnippetModel>>(result);
+        return Task.CompletedTask;
     }
 }

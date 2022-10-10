@@ -11,11 +11,11 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class XmlSnippetProvider : ISnippetProvider
 {
-    public Task<IReadOnlyCollection<SnippetModel>> GetAsync()
+    public Task InitializeAsync(SnippetProviderContext context)
     {
         string sourcePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.xml");
         if (!File.Exists(sourcePath))
-            return Task.FromResult(SnippetModel.EmptyCollection);
+            return Task.CompletedTask;
 
         return Task.Run(() =>
         {
@@ -41,4 +41,7 @@ public class XmlSnippetProvider : ISnippetProvider
             return result;
         });
     }
+
+    public Task UpdateAsync(SnippetProviderContext context)
+        => Task.CompletedTask;
 }

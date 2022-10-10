@@ -11,9 +11,14 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class ClipboardSnippetProvider : ISnippetProvider
 {
-    public Task<IReadOnlyCollection<SnippetModel>> GetAsync() => Task.FromResult(
-        Clipboard.ContainsText() 
-            ? SnippetModel.SingleCollection("Text from Clipboard", Clipboard.GetText(), priority: SnippetPriority.Most)
-            : SnippetModel.EmptyCollection
-    );
+    public Task InitializeAsync(SnippetProviderContext context) 
+        => Task.CompletedTask;
+
+    public Task UpdateAsync(SnippetProviderContext context)
+    {
+        if (Clipboard.ContainsText())
+            SnippetModel.SingleCollection("Text from Clipboard", Clipboard.GetText(), priority: SnippetPriority.Most);
+
+        return Task.CompletedTask;
+    }
 }

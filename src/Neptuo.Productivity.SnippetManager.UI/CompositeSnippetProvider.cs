@@ -16,11 +16,9 @@ public class CompositeSnippetProvider : ISnippetProvider
     public CompositeSnippetProvider(params ISnippetProvider[] snippetProviders) 
         => this.snippetProviders = snippetProviders;
 
-    public async Task<IReadOnlyCollection<SnippetModel>> GetAsync()
-    {
-        var snippets = await Task.WhenAll(snippetProviders.Select(p => p.GetAsync()));
-        var result = new List<SnippetModel>();
-        snippets.ForEach(result.AddRange);
-        return result;
-    }
+    public Task InitializeAsync(SnippetProviderContext context) 
+        => Task.WhenAll(snippetProviders.Select(p => p.InitializeAsync(context)));
+
+    public Task UpdateAsync(SnippetProviderContext context)
+        => Task.WhenAll(snippetProviders.Select(p => p.UpdateAsync(context)));
 }
