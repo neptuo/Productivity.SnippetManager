@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager
 {
-    public interface SnippetProviderContext
+    public class SnippetProviderContext
     {
-        public ICollection<SnippetModel> Models { get; }
+        public ICollection<SnippetModel> Models { get; } = new List<SnippetModel>();
     }
 }
