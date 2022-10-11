@@ -24,7 +24,7 @@ public class Navigator : IClipboardService, ISendTextService
 {
     private readonly SnippetProviderContext snippetProviderContext = new();
     private readonly ISnippetProvider snippetProvider;
-    private readonly bool isSnipperProviderInitialized = false;
+    private bool isSnipperProviderInitialized = false;
 
     public Navigator(ISnippetProvider snippetProvider)
     {
@@ -65,7 +65,7 @@ public class Navigator : IClipboardService, ISendTextService
         main.Show();
     }
 
-    public void CloseMain() 
+    public void CloseMain()
         => main?.Close();
 
     private void PositionWindowToCaret(Window wnd)
