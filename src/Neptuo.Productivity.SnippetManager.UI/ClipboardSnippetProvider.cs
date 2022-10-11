@@ -13,7 +13,7 @@ public class ClipboardSnippetProvider : ISnippetProvider
 {
     private const string Title = "Text from Clipboard";
 
-    public Task InitializeAsync(SnippetProviderContext context) 
+    public Task InitializeAsync(SnippetProviderContext context)
         => Task.CompletedTask;
 
     public Task UpdateAsync(SnippetProviderContext context)
@@ -23,7 +23,11 @@ public class ClipboardSnippetProvider : ISnippetProvider
             context.Models.Remove(existing);
 
         if (Clipboard.ContainsText())
-            context.Models.Add(new SnippetModel(Title, Clipboard.GetText(), priority: SnippetPriority.Most));
+        {
+            string text = Clipboard.GetText();
+            if (!string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text))
+                context.Models.Add(new SnippetModel(Title, text, priority: SnippetPriority.Most));
+        }
 
         return Task.CompletedTask;
     }
