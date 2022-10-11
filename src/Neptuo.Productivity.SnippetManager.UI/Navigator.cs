@@ -22,7 +22,9 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class Navigator : IClipboardService, ISendTextService
 {
+    private readonly SnippetProviderContext snippetProviderContext = new();
     private readonly ISnippetProvider snippetProvider;
+    private bool isSnipperProviderInitialized = false;
 
     public Navigator(ISnippetProvider snippetProvider)
     {
@@ -51,7 +53,7 @@ public class Navigator : IClipboardService, ISendTextService
 
             main.DataContext = viewModel;
 
-            _ = LoadSnippetsAsync(viewModel);
+            _ = UpdateSnippetsAsync(viewModel);
         }
         else
         {
@@ -63,7 +65,7 @@ public class Navigator : IClipboardService, ISendTextService
         main.Show();
     }
 
-    public void CloseMain() 
+    public void CloseMain()
         => main?.Close();
 
     private void PositionWindowToCaret(Window wnd)
@@ -105,9 +107,16 @@ public class Navigator : IClipboardService, ISendTextService
             wnd.Top = screenBottom - wnd.Height;
     }
 
-    private async Task LoadSnippetsAsync(MainViewModel viewModel)
+    private async Task UpdateSnippetsAsync(MainViewModel viewModel)
     {
-        viewModel.Snippets.AddRange(await snippetProvider.GetAsync());
+        if (!isSnipperProviderInitialized)
+        {
+            await snippetProvider.InitializeAsync(snippetProviderContext);
+            isSnipperProviderInitialized = true;
+        }
+
+        await snippetProvider.UpdateAsync(snippetProviderContext);
+        viewModel.Snippets.AddRange(snippetProviderContext.Models);
         main?.Search();
     }
 
