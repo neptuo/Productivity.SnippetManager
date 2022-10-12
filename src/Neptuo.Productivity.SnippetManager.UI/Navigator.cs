@@ -25,6 +25,7 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly SnippetProviderContext snippetProviderContext = new();
     private readonly ISnippetProvider snippetProvider;
     private bool isSnipperProviderInitialized = false;
+    private Task? snipperProviderInitializeTask;
 
     public Navigator(ISnippetProvider snippetProvider)
     {
@@ -111,7 +112,11 @@ public class Navigator : IClipboardService, ISendTextService
     {
         if (!isSnipperProviderInitialized)
         {
-            await snippetProvider.InitializeAsync(snippetProviderContext);
+            if (snipperProviderInitializeTask == null)
+                snipperProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
+
+            await snipperProviderInitializeTask;
+            snipperProviderInitializeTask = null;
             isSnipperProviderInitialized = true;
         }
 
