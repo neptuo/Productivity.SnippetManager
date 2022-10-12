@@ -118,10 +118,14 @@ public class Navigator : IClipboardService, ISendTextService
             await snipperProviderInitializeTask;
             snipperProviderInitializeTask = null;
             isSnipperProviderInitialized = true;
+
+            // Main lost focus and is closed.
+            if (main == null)
+                return;
         }
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
-        viewModel.Snippets.AddRange(snippetProviderContext.Models);
+        viewModel.AddSnippets(snippetProviderContext.Models);
         main?.Search();
     }
 

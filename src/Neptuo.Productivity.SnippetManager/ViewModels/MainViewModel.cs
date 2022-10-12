@@ -23,31 +23,30 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public CopySnippetCommand Copy { get; init; }
 
         private string[]? normalizedSearchText;
-
+        private ICollection<SnippetModel>? allSnippets;
         private int searchResultCount = 0;
 
         public void Search(string searchText)
         {
             normalizedSearchText = searchText?.ToLowerInvariant().Split(' ');
 
-            ICollectionView view = CollectionViewSource.GetDefaultView(Snippets);
-            if (view.Filter == null)
+            Snippets.Clear();
+            if (allSnippets != null)
             {
-                view.SortDescriptions.Add(new SortDescription(nameof(SnippetModel.Priority), ListSortDirection.Ascending));
-                view.SortDescriptions.Add(new SortDescription(nameof(SnippetModel.Title), ListSortDirection.Ascending));
-                view.Filter = OnFilter;
+                searchResultCount = 0;
+                foreach (var snippet in allSnippets)
+                {
+                    if (OnFilter(snippet))
+                        Snippets.Add(snippet);
+                }
             }
-
-            searchResultCount = 0;
-            view.Refresh();
         }
 
-        private bool OnFilter(object item)
+        private bool OnFilter(SnippetModel snippet)
         {
             if (searchResultCount >= PageSize)
                 return false;
 
-            SnippetModel snippet = (SnippetModel)item;
             var isPassed = IsFilterPassed(snippet);
             if (isPassed)
                 searchResultCount++;
@@ -75,6 +74,14 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             }
 
             return result;
+        }
+
+        public void AddSnippets(ICollection<SnippetModel> models)
+        {
+            allSnippets = models
+                .OrderBy(m => m.Priority)
+                .ThenBy(m => m.Title)
+                .ToList();
         }
     }
 }
