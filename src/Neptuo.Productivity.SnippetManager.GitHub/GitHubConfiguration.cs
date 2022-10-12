@@ -10,5 +10,7 @@ namespace Neptuo.Productivity.SnippetManager
     public class GitHubConfiguration
     {
         public string? UserName { get; set; }
+        public string? AccessToken { get; set; }
+        public List<string>? ExtraRepositories { get; set; }
     }
 }
