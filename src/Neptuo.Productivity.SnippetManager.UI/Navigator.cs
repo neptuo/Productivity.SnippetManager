@@ -39,11 +39,6 @@ public class Navigator : IClipboardService, ISendTextService
         if (main == null)
         {
             main = new MainWindow();
-            main.SourceInitialized += (sender, e) =>
-            {
-                PositionWindowToCaret(main);
-                main.FocusSearchText();
-            };
             main.Closed += (sender, e) => { main = null; };
 
             var viewModel = new MainViewModel()
@@ -62,8 +57,10 @@ public class Navigator : IClipboardService, ISendTextService
             main.FocusSearchText();
         }
 
-        main.Activate();
+        PositionWindowToCaret(main);
         main.Show();
+        main.Activate();
+        main.FocusSearchText();
     }
 
     public void CloseMain()
