@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dd="clr-namespace:Neptuo.Productivity.SnippetManager.Views.DesignData" d:DataContext="{x:Static dd:ViewModelLocator.MainViewModel}"
         mc:Ignorable="d" Title="Snippets" Height="450" Width="600" SizeToContent="Height"
-        ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Topmost="True" Background="Transparent"
         PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
     <Window.Resources>
         <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="Visible" FalseValue="Collapsed" />
