@@ -14,19 +14,20 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
 {
     private readonly List<SnippetModel> lastSnippets = new();
     private readonly List<SnippetModel> nextSnippets = new();
+    private readonly XmlConfiguration configuration;
     private Task? loadSnippetsTask = null;
     private FileSystemWatcher? watcher;
 
+    public XmlSnippetProvider(XmlConfiguration configuration) 
+        => this.configuration = configuration;
+
     public Task InitializeAsync(SnippetProviderContext context)
     {
-        string sourcePath = GetFilePath();
+        string sourcePath = configuration.GetFilePathOrDefault();
         if (!File.Exists(sourcePath))
             return Task.CompletedTask;
 
-        watcher = new FileSystemWatcher(Path.GetDirectoryName(sourcePath)!, "*.xml")
-        {
-            //NotifyFilter = NotifyFilters.LastWrite
-        };
+        watcher = new FileSystemWatcher(Path.GetDirectoryName(sourcePath)!, "*.xml");
         watcher.Changed += OnFileChanged;
         watcher.EnableRaisingEvents = true;
 
@@ -37,12 +38,9 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
         });
     }
 
-    private static string GetFilePath()
-        => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.xml");
-
-    private static void LoadSnippets(ICollection<SnippetModel> result)
+    private void LoadSnippets(ICollection<SnippetModel> result)
     {
-        string sourcePath = GetFilePath();
+        string sourcePath = configuration.GetFilePathOrDefault();
 
         XmlSnippetRoot? root;
         XmlSerializer serializer = new XmlSerializer(typeof(XmlSnippetRoot));

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager
 {
-    public class GitHubConfiguration
+    public class GitHubConfiguration : ProviderConfiguration
     {
         public string? UserName { get; set; }
         public string? AccessToken { get; set; }

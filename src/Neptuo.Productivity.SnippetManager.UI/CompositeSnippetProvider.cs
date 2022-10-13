@@ -13,7 +13,7 @@ public class CompositeSnippetProvider : ISnippetProvider
 {
     private readonly IEnumerable<ISnippetProvider> snippetProviders;
 
-    public CompositeSnippetProvider(params ISnippetProvider[] snippetProviders) 
+    public CompositeSnippetProvider(IEnumerable<ISnippetProvider> snippetProviders) 
         => this.snippetProviders = snippetProviders;
 
     public Task InitializeAsync(SnippetProviderContext context) 

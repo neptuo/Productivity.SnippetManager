@@ -25,14 +25,22 @@ namespace Neptuo.Productivity.SnippetManager
         public App()
         {
             configuration = CreateConfiguration();
-            navigator = new Navigator(
-                new CompositeSnippetProvider(
-                    new ClipboardSnippetProvider(), 
-                    new XmlSnippetProvider(), 
-                    new GuidSnippetProvider(), 
-                    new GitHubSnippetProvider(configuration.GitHub)
-                )
-            );
+
+            List<ISnippetProvider> providers = new List<ISnippetProvider>();
+
+            if (configuration.Clipboard == null || configuration.Clipboard.IsEnabled)
+                providers.Add(new ClipboardSnippetProvider());
+
+            if (configuration.Guid == null || configuration.Guid.IsEnabled)
+                providers.Add(new GuidSnippetProvider());
+
+            if (configuration.Xml == null || configuration.Xml.IsEnabled)
+                providers.Add(new XmlSnippetProvider(configuration.Xml ?? new XmlConfiguration()));
+
+            if (configuration.GitHub == null || configuration.GitHub.IsEnabled)
+                providers.Add(new GitHubSnippetProvider(configuration.GitHub ?? new GitHubConfiguration()));
+
+            navigator = new Navigator(new CompositeSnippetProvider(providers));
         }
 
         protected override void OnStartup(StartupEventArgs e)
