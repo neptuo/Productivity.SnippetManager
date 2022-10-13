@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Octokit" Version="3.0.1" />
+	</ItemGroup>
+
+</Project>

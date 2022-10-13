@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Neptuo.Productivity.SnippetManager.GitHub\Neptuo.Productivity.SnippetManager.GitHub.csproj" />
 		<ProjectReference Include="..\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
 		<ProjectReference Include="..\Neptuo.Productivity.SnippetManager.Xml\Neptuo.Productivity.SnippetManager.Xml.csproj" />
 	</ItemGroup>
