@@ -13,5 +13,13 @@ namespace Neptuo.Productivity.SnippetManager
         public ProviderConfiguration? Guid { get; set; }
         public GitHubConfiguration? GitHub { get; set; }
         public XmlConfiguration? Xml { get; set; }
+
+        public static Configuration Example => new()
+        {
+            Clipboard = ProviderConfiguration.Example,
+            Guid = ProviderConfiguration.Example,
+            GitHub = GitHubConfiguration.Example,
+            Xml = XmlConfiguration.Example
+        };
     }
 }

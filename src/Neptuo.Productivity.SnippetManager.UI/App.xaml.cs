@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Neptuo.Productivity.SnippetManager
 {
@@ -71,6 +72,28 @@ namespace Neptuo.Productivity.SnippetManager
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
             trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(); };
+            trayIcon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) =>
+            {
+                string filePath = GetConfigurationPath();
+                if (!File.Exists(filePath))
+                {
+                    var result = MessageBox.Show("Configuration file does't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var options = new JsonSerializerOptions
+                        {
+                            WriteIndented = true
+                        };
+                        File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                Process.Start("explorer", filePath);
+            };
             trayIcon.ContextMenuStrip.Items.Add("GitHub repository").Click += (sender, e) =>
             {
                 Process.Start(new ProcessStartInfo()
@@ -84,7 +107,7 @@ namespace Neptuo.Productivity.SnippetManager
 
         private Configuration CreateConfiguration()
         {
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.json");
+            var filePath = GetConfigurationPath();
             if (!File.Exists(filePath))
                 return new Configuration();
 
@@ -95,6 +118,9 @@ namespace Neptuo.Productivity.SnippetManager
 
             return configuration;
         }
+
+        private static string GetConfigurationPath()
+            => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.json");
 
         protected override void OnExit(ExitEventArgs e)
         {
