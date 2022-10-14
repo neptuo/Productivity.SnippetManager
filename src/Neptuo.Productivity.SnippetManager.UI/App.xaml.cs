@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,6 +71,14 @@ namespace Neptuo.Productivity.SnippetManager
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
             trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(); };
+            trayIcon.ContextMenuStrip.Items.Add("GitHub repository").Click += (sender, e) =>
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = "https://github.com/neptuo/Productivity.SnippetManager",
+                    UseShellExecute = true
+                });
+            };
             trayIcon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); Shutdown(); };
         }
 
