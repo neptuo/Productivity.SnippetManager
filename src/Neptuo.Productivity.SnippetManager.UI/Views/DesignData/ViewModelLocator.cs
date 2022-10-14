@@ -56,13 +56,9 @@ internal class ViewModelLocator
             """,
             "public class Class..."
         );
-        Add("Google", "https://google.com");
         Add("Maps", "https://maps.google.com");
         Add("GitHub - dotnet - runtime", "https://github.com/dotnet/runtime");
-        Add("GitHub - Maraf - Money", "https://github.com/maraf/money");
-        Add("GitHub - Neptuo - Recollections", "https://github.com/neptuo/Recollections");
         Add("Money", "https://app.money.neptuo.com");
-        Add("Recollections", "https://recollections.app");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
     }
 }
