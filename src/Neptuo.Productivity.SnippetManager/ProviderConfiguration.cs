@@ -14,5 +14,7 @@ namespace Neptuo.Productivity.SnippetManager
         [DefaultValue(true)]
         [JsonPropertyName("Enabled")]
         public bool IsEnabled { get; set; } = true;
+
+        public static ProviderConfiguration Example => new();
     }
 }

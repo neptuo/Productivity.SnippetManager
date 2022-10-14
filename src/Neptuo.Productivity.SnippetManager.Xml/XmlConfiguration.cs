@@ -17,5 +17,15 @@ namespace Neptuo.Productivity.SnippetManager
             string filePath = FilePath ?? Path.Combine(userProfilePath, "SnippetManager.xml");
             return Path.GetFullPath(filePath, userProfilePath);
         }
+
+        public static new XmlConfiguration Example
+        {
+            get
+            {
+                var configuration = new XmlConfiguration();
+                configuration.FilePath = configuration.GetFilePathOrDefault();
+                return configuration;
+            }
+        }
     }
 }

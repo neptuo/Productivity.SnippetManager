@@ -6,7 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dd="clr-namespace:Neptuo.Productivity.SnippetManager.Views.DesignData" d:DataContext="{x:Static dd:ViewModelLocator.MainViewModel}"
-        mc:Ignorable="d" Title="Snippets" Width="600" SizeToContent="Height"
+        mc:Ignorable="d" Title="Snippets" Width="400" SizeToContent="Height"
         ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Topmost="True" Background="Transparent"
         PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
     <Window.Resources>
