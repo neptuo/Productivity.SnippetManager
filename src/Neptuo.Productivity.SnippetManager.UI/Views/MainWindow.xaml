@@ -6,39 +6,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dd="clr-namespace:Neptuo.Productivity.SnippetManager.Views.DesignData" d:DataContext="{x:Static dd:ViewModelLocator.MainViewModel}"
-        mc:Ignorable="d" Title="Snippets" Height="450" Width="600" SizeToContent="Height"
+        mc:Ignorable="d" Title="Snippets" Width="600" SizeToContent="Height"
         ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Topmost="True" Background="Transparent"
         PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
     <Window.Resources>
         <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="Visible" FalseValue="Collapsed" />
 
-        <Style x:Key="FontIconStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-        <Style TargetType="Button">
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="Margin" Value="4,0,0,0" />
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="Padding" Value="8" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-        <Style x:Key="PlainButtonStyle" TargetType="Button">
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="VerticalContentAlignment" Value="Bottom" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Padding="{TemplateBinding Padding}" Margin="{TemplateBinding Margin}">
-                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
-    <Border Padding="4" BorderThickness="1" BorderBrush="#EEE" Background="#FFF" CornerRadius="4">
+    <Border Style="{StaticResource WindowBorderStyle}" Background="{StaticResource BackgroundBrush}" Padding="4" BorderThickness="1" CornerRadius="4">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -48,47 +23,19 @@
             <StackPanel>
                 <Grid>
                     <TextBlock Text="&#xE721;" Style="{StaticResource FontIconStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" />
-                    <TextBlock Text="Search..." VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}" FontSize="16" />
-                    <TextBox x:Name="SearchText" TextChanged="SearchText_TextChanged" Background="Transparent" FontSize="16" />
+                    <TextBlock Text="Search..." VerticalAlignment="Center" Margin="4,0,0,0" Visibility="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}" FontSize="14" Opacity=".5" />
+                    <TextBox x:Name="SearchText" TextChanged="SearchText_TextChanged" FontSize="14" />
                 </Grid>
             </StackPanel>
             <ListView x:Name="ListView" ItemsSource="{Binding Snippets}" SelectedIndex="0" BorderThickness="0" MouseLeftButtonUp="ListView_Click" PreviewKeyDown="ListView_PreviewKeyDown"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                        
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <Border x:Name="Border" Padding="4,6" SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#679BD1" />
-                                <Setter Property="Foreground" Value="#FFFFFF" />
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#3683D3" />
-                                <Setter Property="Foreground" Value="#FFFFFF" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListView.ItemContainerStyle>
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" ItemContainerStyle="{StaticResource ListViewItemStyle}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="4">
                             <Grid>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14" />
-                                    <TextBlock Text="{Binding Description}" Opacity=".5" />
+                                    <TextBlock Text="{Binding Title}" />
+                                    <TextBlock Text="{Binding Description}" FontSize="11" Opacity=".3" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
