@@ -9,6 +9,7 @@ namespace Neptuo.Productivity.SnippetManager
 {
     public class Configuration
     {
+        public GeneralConfiguration? General { get; set; }
         public ProviderConfiguration? Clipboard { get; set; }
         public ProviderConfiguration? Guid { get; set; }
         public GitHubConfiguration? GitHub { get; set; }
@@ -16,6 +17,7 @@ namespace Neptuo.Productivity.SnippetManager
 
         public static Configuration Example => new()
         {
+            General = GeneralConfiguration.Example,
             Clipboard = ProviderConfiguration.Example,
             Guid = ProviderConfiguration.Example,
             GitHub = GitHubConfiguration.Example,

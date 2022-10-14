@@ -48,12 +48,58 @@ namespace Neptuo.Productivity.SnippetManager
         protected override void OnStartup(StartupEventArgs e)
         {
             var hotkeys = new ComponentDispatcherHotkeyCollection();
-            hotkeys.Add(Key.V, ModifierKeys.Control | ModifierKeys.Shift, (_, _) =>
+
+            var key = Key.V;
+            var modifiers = ModifierKeys.Control | ModifierKeys.Shift;
+            if (!String.IsNullOrEmpty(configuration.General?.HotKey) && !TryParseHotKey(configuration.General.HotKey, out key, out modifiers))
+            {
+                MessageBox.Show("Error in hotkey configuration", "Snippet Manager", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown();
+            }
+
+            hotkeys.Add(key, modifiers, (_, _) =>
             {
                 navigator.OpenMain();
             });
 
             CreateTrayIcon();
+        }
+
+        private bool TryParseHotKey(string hotKey, out Key key, out ModifierKeys modifiers)
+        {
+            modifiers = ModifierKeys.None;
+            key = Key.None;
+
+            string[] parts = hotKey.Split('+', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 1)
+            {
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    if (i < parts.Length - 1)
+                    {
+                        if (Enum.TryParse<ModifierKeys>(parts[i], out var mod))
+                        {
+                            if (i == 0)
+                                modifiers = mod;
+                            else
+                                modifiers |= mod;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (Enum.TryParse<Key>(parts[i], out var k))
+                            key = k;
+                        else
+                            return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private void CreateTrayIcon()
@@ -82,7 +128,8 @@ namespace Neptuo.Productivity.SnippetManager
                     {
                         var options = new JsonSerializerOptions
                         {
-                            WriteIndented = true
+                            WriteIndented = true,
+                            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                         };
                         File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
                     }
