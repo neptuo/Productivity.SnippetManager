@@ -12,29 +12,17 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class InlineSnippetProvider : ISnippetProvider
 {
-    private readonly InlineSnippetConfiguration configuration;
+    private readonly Dictionary<string, string> snippets;
 
-    public InlineSnippetProvider(InlineSnippetConfiguration configuration) 
-    => this.configuration = configuration;
+    public InlineSnippetProvider(Dictionary<string, string> snippets) 
+        => this.snippets = snippets;
 
     public Task InitializeAsync(SnippetProviderContext context)
     {
-        if (configuration.Snippets != null)
-            context.Snippets.AddRange(configuration.Snippets.Select(s => new SnippetModel(s.Key, s.Value)));
-        
+        context.Models.AddRange(snippets.Select(s => new SnippetModel(s.Key, s.Value)));
         return Task.CompletedTask;
     }
 
     public Task UpdateAsync(SnippetProviderContext context) 
         => Task.CompletedTask;
-}
-
-public class InlineSnippetConfiguration : ProviderConfiguration
-{
-    public Dictionary<string, string>? Snippets { get; set; }
-
-    public static InlineSnippetConfiguration Example => new InlineSnippetConfiguration() 
-    {
-        Snippets = new()
-    };
 }
