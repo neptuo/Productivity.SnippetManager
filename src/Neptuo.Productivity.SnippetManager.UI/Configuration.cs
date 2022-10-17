@@ -14,6 +14,8 @@ namespace Neptuo.Productivity.SnippetManager
         public ProviderConfiguration? Guid { get; set; }
         public GitHubConfiguration? GitHub { get; set; }
         public XmlConfiguration? Xml { get; set; }
+        
+        public Dictionary<string, string>? Snippets { get; set; }
 
         public static Configuration Example => new()
         {
@@ -21,7 +23,11 @@ namespace Neptuo.Productivity.SnippetManager
             Clipboard = ProviderConfiguration.Example,
             Guid = ProviderConfiguration.Example,
             GitHub = GitHubConfiguration.Example,
-            Xml = XmlConfiguration.Example
+            Xml = XmlConfiguration.Example,
+            Snippets = new()
+            {
+                ["Hello"] = "Hello, World!"
+            }
         };
     }
 }

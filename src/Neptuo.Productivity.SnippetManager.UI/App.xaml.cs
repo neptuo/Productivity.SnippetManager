@@ -42,6 +42,10 @@ namespace Neptuo.Productivity.SnippetManager
             if (configuration.GitHub == null || configuration.GitHub.IsEnabled)
                 providers.Add(new GitHubSnippetProvider(configuration.GitHub ?? new GitHubConfiguration()));
 
+            // Useful only is we have configured snippets
+            if (configuration.Snippets != null)
+                providers.Add(new InlineSnippetProvider(configuration.Snippets));
+
             navigator = new Navigator(new CompositeSnippetProvider(providers));
         }
 
