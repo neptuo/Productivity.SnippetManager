@@ -1,6 +1,7 @@
 ﻿using Neptuo.Windows.HotKeys;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
@@ -61,10 +62,19 @@ namespace Neptuo.Productivity.SnippetManager
                 Shutdown();
             }
 
-            hotkeys.Add(key, modifiers, (_, _) =>
+            try
             {
-                navigator.OpenMain();
-            });
+                hotkeys.Add(key, modifiers, (_, _) =>
+                {
+                    navigator.OpenMain();
+                });
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show("The configured hotkey is probably taken by other application. Edit your configuration.", "Snippet Manager", MessageBoxButton.OK, MessageBoxImage.Error);
+                navigator.OpenConfiguration();
+                Shutdown();
+            }
 
             CreateTrayIcon();
         }
@@ -124,26 +134,7 @@ namespace Neptuo.Productivity.SnippetManager
             trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(); };
             trayIcon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) =>
             {
-                string filePath = GetConfigurationPath();
-                if (!File.Exists(filePath))
-                {
-                    var result = MessageBox.Show("Configuration file does't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        var options = new JsonSerializerOptions
-                        {
-                            WriteIndented = true,
-                            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                        };
-                        File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-
-                Process.Start("explorer", filePath);
+                navigator.OpenConfiguration();
             };
             trayIcon.ContextMenuStrip.Items.Add("About").Click += (sender, e) =>
             {
@@ -170,7 +161,7 @@ namespace Neptuo.Productivity.SnippetManager
             return configuration;
         }
 
-        private static string GetConfigurationPath()
+        public static string GetConfigurationPath()
             => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.json");
 
         protected override void OnExit(ExitEventArgs e)
