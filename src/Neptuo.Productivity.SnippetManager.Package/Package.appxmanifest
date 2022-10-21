@@ -10,7 +10,7 @@
 	<Identity
 	  Name="e7581308-b151-4161-a89c-adc73206c06b"
 	  Publisher="CN=marekfisera"
-	  Version="0.0.1.0" />
+	  Version="0.0.3.0" />
 
 	<Properties>
 		<DisplayName>Snippet Manager by Neptuo</DisplayName>
