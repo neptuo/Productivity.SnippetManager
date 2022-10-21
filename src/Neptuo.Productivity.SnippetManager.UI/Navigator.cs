@@ -124,7 +124,6 @@ public class Navigator : IClipboardService, ISendTextService
         }
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
-        //viewModel.SetSnippets(snippetProviderContext.Models);
         main?.Search();
     }
 
