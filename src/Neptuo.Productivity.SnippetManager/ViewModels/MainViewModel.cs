@@ -4,6 +4,7 @@ using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -13,32 +14,47 @@ using System.Windows.Data;
 
 namespace Neptuo.Productivity.SnippetManager.ViewModels
 {
-    public class MainViewModel : ObservableModel
+    public class MainViewModel : ObservableModel, IDisposable
     {
         private const int PageSize = 5;
 
         public ObservableCollection<SnippetModel> Snippets { get; } = new ObservableCollection<SnippetModel>();
 
-        public ApplySnippetCommand Apply { get; init; }
-        public CopySnippetCommand Copy { get; init; }
+        public ApplySnippetCommand Apply { get; }
+        public CopySnippetCommand Copy { get; }
 
         private string[]? normalizedSearchText;
-        private ICollection<SnippetModel>? allSnippets;
+        private ObservableCollection<SnippetModel> allSnippets;
         private int searchResultCount = 0;
+
+        public MainViewModel(ObservableCollection<SnippetModel> allSnippets, ApplySnippetCommand apply, CopySnippetCommand copy)
+        {
+            this.allSnippets = allSnippets;
+            this.allSnippets.CollectionChanged += OnAllSnippetsChanged;
+            Apply = apply;
+            Copy = copy;
+        }
+
+        private void OnAllSnippetsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            SearchNormalizedText();
+        }
 
         public void Search(string searchText)
         {
             normalizedSearchText = searchText?.ToLowerInvariant().Split(' ');
+            SearchNormalizedText();
+        }
 
+        private void SearchNormalizedText()
+        {
             Snippets.Clear();
-            if (allSnippets != null)
+
+            searchResultCount = 0;
+            foreach (var snippet in allSnippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
             {
-                searchResultCount = 0;
-                foreach (var snippet in allSnippets)
-                {
-                    if (OnFilter(snippet))
-                        Snippets.Add(snippet);
-                }
+                if (OnFilter(snippet))
+                    Snippets.Add(snippet);
             }
         }
 
@@ -76,12 +92,9 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             return result;
         }
 
-        public void AddSnippets(ICollection<SnippetModel> models)
+        public void Dispose()
         {
-            allSnippets = models
-                .OrderBy(m => m.Priority)
-                .ThenBy(m => m.Title)
-                .ToList();
+            allSnippets.CollectionChanged -= OnAllSnippetsChanged;
         }
     }
 }

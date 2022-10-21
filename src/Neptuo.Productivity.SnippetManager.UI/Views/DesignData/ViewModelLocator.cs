@@ -1,4 +1,5 @@
-﻿using Neptuo.Productivity.SnippetManager.Models;
+﻿using Neptuo.Observables.Collections;
+using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using System;
@@ -19,11 +20,11 @@ internal class ViewModelLocator
         {
             if (mainViewModel == null)
             {
-                mainViewModel = new MainViewModel()
-                {
-                    Apply = new ApplySnippetCommand(InteropService.Instance),
-                    Copy = new CopySnippetCommand(InteropService.Instance)
-                };
+                mainViewModel = new MainViewModel(
+                    new ObservableCollection<SnippetModel>(), 
+                    new ApplySnippetCommand(InteropService.Instance), 
+                    new CopySnippetCommand(InteropService.Instance)
+                );
 
                 LoadSnippets();
             }

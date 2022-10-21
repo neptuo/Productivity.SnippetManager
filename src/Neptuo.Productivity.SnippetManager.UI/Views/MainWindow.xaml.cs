@@ -24,7 +24,11 @@ namespace Neptuo.Productivity.SnippetManager.Views
 {
     public partial class MainWindow : Window
     {
-        public MainViewModel ViewModel => (MainViewModel)DataContext;
+        public MainViewModel ViewModel
+        {
+            get => (MainViewModel)DataContext;
+            set => DataContext = value;
+        }
 
         public MainWindow()
         {

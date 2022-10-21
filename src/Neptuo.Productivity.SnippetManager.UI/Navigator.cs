@@ -1,4 +1,6 @@
-﻿using Neptuo.Productivity.SnippetManager.Services;
+﻿using Neptuo.Observables.Collections;
+using Neptuo.Productivity.SnippetManager.Models;
+using Neptuo.Productivity.SnippetManager.Services;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
@@ -25,7 +27,8 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class Navigator : IClipboardService, ISendTextService
 {
-    private readonly SnippetProviderContext snippetProviderContext = new();
+    private readonly ObservableCollection<SnippetModel> allSnippets;
+    private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
     private bool isSnipperProviderInitialized = false;
     private Task? snipperProviderInitializeTask;
@@ -33,6 +36,8 @@ public class Navigator : IClipboardService, ISendTextService
     public Navigator(ISnippetProvider snippetProvider)
     {
         this.snippetProvider = snippetProvider;
+        this.allSnippets = new();
+        this.snippetProviderContext = new(allSnippets);
     }
 
     private MainWindow? main;
@@ -42,17 +47,11 @@ public class Navigator : IClipboardService, ISendTextService
         if (main == null)
         {
             main = new MainWindow();
-            main.Closed += (sender, e) => { main = null; };
+            main.Closed += (sender, e) => { main.ViewModel.Dispose(); main = null; };
 
-            var viewModel = new MainViewModel()
-            {
-                Apply = new ApplySnippetCommand(this),
-                Copy = new CopySnippetCommand(this)
-            };
-
-            main.DataContext = viewModel;
-
-            _ = UpdateSnippetsAsync(viewModel);
+            main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
+            
+            _ = UpdateSnippetsAsync(main.ViewModel);
         }
         else
         {
@@ -125,7 +124,7 @@ public class Navigator : IClipboardService, ISendTextService
         }
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
-        viewModel.AddSnippets(snippetProviderContext.Models);
+        //viewModel.SetSnippets(snippetProviderContext.Models);
         main?.Search();
     }
 

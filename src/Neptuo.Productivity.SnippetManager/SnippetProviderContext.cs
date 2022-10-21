@@ -10,6 +10,13 @@ namespace Neptuo.Productivity.SnippetManager
 {
     public class SnippetProviderContext
     {
-        public ICollection<SnippetModel> Models { get; } = new List<SnippetModel>();
+        public ICollection<SnippetModel> Models { get; }
+
+        public SnippetProviderContext() 
+            : this(new List<SnippetModel>())
+        { }
+
+        public SnippetProviderContext(ICollection<SnippetModel> models) 
+            => Models = models;
     }
 }
