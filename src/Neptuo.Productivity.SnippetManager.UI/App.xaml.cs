@@ -111,7 +111,7 @@ namespace Neptuo.Productivity.SnippetManager
             trayIcon = new NotifyIcon
             {
                 Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule!.FileName!),
-                Text = "Snippet Manager",
+                Text = "Snippet Manager " + ApplicationVersion.GetDisplayString(),
                 Visible = true
             };
             trayIcon.MouseClick += (sender, e) =>
