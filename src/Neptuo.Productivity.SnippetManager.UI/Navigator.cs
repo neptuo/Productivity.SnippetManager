@@ -6,16 +6,19 @@ using Neptuo.Productivity.SnippetManager.Views.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using Clipboard = System.Windows.Forms.Clipboard;
+using MessageBox = System.Windows.MessageBox;
 using Point = System.Drawing.Point;
 
 namespace Neptuo.Productivity.SnippetManager;
@@ -150,6 +153,30 @@ public class Navigator : IClipboardService, ISendTextService
     {
         main?.Close();
         Clipboard.SetText(text);
+    }
+
+    public void OpenConfiguration()
+    {
+        string filePath = App.GetConfigurationPath();
+        if (!File.Exists(filePath))
+        {
+            var result = MessageBox.Show("Configuration file does't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
+                File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        Process.Start("explorer", filePath);
     }
 
     #endregion
