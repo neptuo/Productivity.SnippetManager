@@ -145,7 +145,7 @@ namespace Neptuo.Productivity.SnippetManager
 
                 Process.Start("explorer", filePath);
             };
-            trayIcon.ContextMenuStrip.Items.Add("GitHub repository").Click += (sender, e) =>
+            trayIcon.ContextMenuStrip.Items.Add("About").Click += (sender, e) =>
             {
                 Process.Start(new ProcessStartInfo()
                 {
