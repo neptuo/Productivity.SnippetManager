@@ -1,8 +1,11 @@
-﻿using Neptuo.Productivity.SnippetManager.Services;
+﻿using Neptuo.Observables.Collections;
+using Neptuo.Productivity.SnippetManager.Models;
+using Neptuo.Productivity.SnippetManager.Services;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
+using Neptuo.Windows.Threading;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -17,6 +20,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Drawing.Point;
@@ -25,14 +29,20 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class Navigator : IClipboardService, ISendTextService
 {
-    private readonly SnippetProviderContext snippetProviderContext = new();
+    private readonly ObservableCollection<SnippetModel> allSnippets;
+    private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
+    private readonly Dispatcher dispatcher;
     private bool isSnipperProviderInitialized = false;
     private Task? snipperProviderInitializeTask;
 
-    public Navigator(ISnippetProvider snippetProvider)
+    public Navigator(ISnippetProvider snippetProvider, Dispatcher dispatcher)
     {
         this.snippetProvider = snippetProvider;
+        this.dispatcher = dispatcher;
+        this.allSnippets = new();
+        this.snippetProviderContext = new(allSnippets);
+        this.snippetProviderContext.Changed += OnModelsChanged;
     }
 
     private MainWindow? main;
@@ -44,15 +54,9 @@ public class Navigator : IClipboardService, ISendTextService
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
 
-            var viewModel = new MainViewModel()
-            {
-                Apply = new ApplySnippetCommand(this),
-                Copy = new CopySnippetCommand(this)
-            };
+            main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
 
-            main.DataContext = viewModel;
-
-            _ = UpdateSnippetsAsync(viewModel);
+            _ = UpdateSnippetsAsync(main.ViewModel);
         }
         else
         {
@@ -114,6 +118,8 @@ public class Navigator : IClipboardService, ISendTextService
         {
             if (snipperProviderInitializeTask == null)
                 snipperProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
+            else
+                main?.Search();
 
             await snipperProviderInitializeTask;
             snipperProviderInitializeTask = null;
@@ -122,11 +128,22 @@ public class Navigator : IClipboardService, ISendTextService
             // Main lost focus and is closed.
             if (main == null)
                 return;
+
         }
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
-        viewModel.AddSnippets(snippetProviderContext.Models);
-        main?.Search();
+
+        if (main != null)
+        {
+            main.Search();
+            main.ViewModel.IsInitializing = false;
+        }
+    }
+
+    private void OnModelsChanged()
+    {
+        if (main != null)
+            DispatcherHelper.Run(main.Dispatcher, () => main.Search());
     }
 
     #region Services

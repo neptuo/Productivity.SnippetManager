@@ -34,7 +34,7 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
         return Task.Run(() =>
         {
             LoadSnippets(lastSnippets);
-            context.Models.AddRange(lastSnippets);
+            context.AddRange(lastSnippets);
         });
     }
 
@@ -78,12 +78,12 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
         if (loadSnippetsTask != null)
         {
             foreach (var snippet in lastSnippets)
-                context.Models.Remove(snippet);
+                context.Remove(snippet);
 
             await loadSnippetsTask;
             loadSnippetsTask = null;
 
-            context.Models.AddRange(nextSnippets);
+            context.AddRange(nextSnippets);
             lastSnippets.Clear();
             lastSnippets.AddRange(nextSnippets);
             nextSnippets.Clear();

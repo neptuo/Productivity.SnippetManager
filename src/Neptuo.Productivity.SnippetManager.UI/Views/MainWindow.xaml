@@ -11,7 +11,6 @@
         PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
     <Window.Resources>
         <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="Visible" FalseValue="Collapsed" />
-
     </Window.Resources>
     <Border Style="{StaticResource WindowBorderStyle}" Background="{StaticResource BackgroundBrush}" Padding="4" BorderThickness="1" CornerRadius="4">
         <Grid>
@@ -24,6 +23,7 @@
                 <Grid>
                     <TextBlock Text="&#xE721;" Style="{StaticResource FontIconStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" />
                     <TextBlock Text="Search..." VerticalAlignment="Center" Margin="4,0,0,0" Visibility="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}" FontSize="14" Opacity=".5" />
+                    <ProgressBar Height="3" Background="Transparent" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsIndeterminate="True" Visibility="{Binding IsInitializing, Converter={StaticResource TrueToVisibleConverter}}" />
                     <TextBox x:Name="SearchText" TextChanged="SearchText_TextChanged" FontSize="14" />
                 </Grid>
             </StackPanel>
@@ -39,7 +39,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <Button ToolTip="Copy folder path to the clipboard (Ctrl+C)." Style="{StaticResource PlainButtonStyle}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListViewItem}}"
+                                    <Button ToolTip="Copy snippet to the clipboard (Ctrl+C)" Style="{StaticResource PlainButtonStyle}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListViewItem}}"
                                      Command="{Binding DataContext.Copy, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                                         <TextBlock Text="&#xE8C8;" Style="{StaticResource FontIconStyle}" />
                                     </Button>

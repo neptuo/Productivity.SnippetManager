@@ -4,12 +4,15 @@ using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Threading;
 
 namespace Neptuo.Productivity.SnippetManager.ViewModels
 {
@@ -19,34 +22,58 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         public ObservableCollection<SnippetModel> Snippets { get; } = new ObservableCollection<SnippetModel>();
 
-        public ApplySnippetCommand Apply { get; init; }
-        public CopySnippetCommand Copy { get; init; }
+        public ApplySnippetCommand Apply { get; }
+        public CopySnippetCommand Copy { get; }
 
         private string[]? normalizedSearchText;
-        private ICollection<SnippetModel>? allSnippets;
+        private ICollection<SnippetModel> allSnippets;
         private int searchResultCount = 0;
+
+        private bool isInitializing;
+        public bool IsInitializing
+        {
+            get { return isInitializing; }
+            set
+            {
+                if (isInitializing != value)
+                {
+                    isInitializing = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public MainViewModel(ICollection<SnippetModel> allSnippets, ApplySnippetCommand apply, CopySnippetCommand copy)
+        {
+            this.allSnippets = allSnippets;
+            Apply = apply;
+            Copy = copy;
+            IsInitializing = true;
+        }
 
         public void Search(string searchText)
         {
             normalizedSearchText = searchText?.ToLowerInvariant().Split(' ');
+            SearchNormalizedText();
+        }
 
+        private void SearchNormalizedText()
+        {
             Snippets.Clear();
-            if (allSnippets != null)
+
+            searchResultCount = 0;
+            foreach (var snippet in allSnippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
             {
-                searchResultCount = 0;
-                foreach (var snippet in allSnippets)
-                {
-                    if (OnFilter(snippet))
-                        Snippets.Add(snippet);
-                }
+                if (searchResultCount >= PageSize)
+                    break;
+
+                if (OnFilter(snippet))
+                    Snippets.Add(snippet);
             }
         }
 
         private bool OnFilter(SnippetModel snippet)
         {
-            if (searchResultCount >= PageSize)
-                return false;
-
             var isPassed = IsFilterPassed(snippet);
             if (isPassed)
                 searchResultCount++;
@@ -74,14 +101,6 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             }
 
             return result;
-        }
-
-        public void AddSnippets(ICollection<SnippetModel> models)
-        {
-            allSnippets = models
-                .OrderBy(m => m.Priority)
-                .ThenBy(m => m.Title)
-                .ToList();
         }
     }
 }

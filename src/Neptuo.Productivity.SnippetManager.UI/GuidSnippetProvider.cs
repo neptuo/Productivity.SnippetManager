@@ -13,15 +13,15 @@ public class GuidSnippetProvider : ISnippetProvider
     private const string Title = "GUID";
 
     public Task InitializeAsync(SnippetProviderContext context) 
-        => Task.CompletedTask;
+        => UpdateAsync(context);
 
     public Task UpdateAsync(SnippetProviderContext context)
     {
         var existing = context.Models.FirstOrDefault(m => m.Title == Title);
         if (existing != null)
-            context.Models.Remove(existing);
+            context.Remove(existing);
 
-        context.Models.Add(new SnippetModel(Title, Guid.NewGuid().ToString()));
+        context.Add(new SnippetModel(Title, Guid.NewGuid().ToString()));
         return Task.CompletedTask;
     }
 }

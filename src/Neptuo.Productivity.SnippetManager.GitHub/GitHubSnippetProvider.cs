@@ -1,7 +1,10 @@
-﻿using Neptuo.Productivity.SnippetManager.Models;
+﻿using Neptuo.Collections.Generic;
+using Neptuo.Observables.Collections;
+using Neptuo.Productivity.SnippetManager.Models;
 using Octokit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,9 +40,11 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     try
                     {
-
+                        Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
                         var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
+                        Debug.WriteLine($"GitHub snippets downloaded");
                         AddSnippetsForRepositories(context, orgRepositories);
+                        Debug.WriteLine($"GitHub snippets added");
                     }
                     catch (ForbiddenException)
                     { }
@@ -47,53 +52,62 @@ namespace Neptuo.Productivity.SnippetManager
 
                 if (configuration.ExtraRepositories != null)
                 {
+                    List<SnippetModel> snippets = new List<SnippetModel>();
                     foreach (var extraRepository in configuration.ExtraRepositories)
                     {
                         var names = extraRepository.Split("/");
                         if (names.Length == 1)
                             names = new[] { configuration.UserName, names[0] };
 
-                        AddSnippetsForRepository(context, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], null);
+                        AddSnippetsForRepository(snippets, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], null);
                     }
+
+                    context.AddRange(snippets);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+
+            Debug.WriteLine($"GitHub done");
         }
 
         private static void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories)
         {
+            List<SnippetModel> snippets = new List<SnippetModel>();
+
             foreach (var repository in repositories)
             {
                 AddSnippetsForRepository(
-                    context, 
+                    snippets, 
                     repository.Name,
                     repository.HtmlUrl,
                     repository.Owner.Login,
                     repository.DefaultBranch
                 );
             }
+
+            context.AddRange(snippets);
         }
 
-        private static void AddSnippetsForRepository(SnippetProviderContext context, string repository, string htmlUrl, string owner, string? defaultBranch)
+        private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, string? defaultBranch)
         {
-            context.Models.Add(new SnippetModel(
+            snippets.Add(new SnippetModel(
                 title: $"GitHub - {owner} - {repository}",
                 text: htmlUrl
             ));
-            context.Models.Add(new SnippetModel(
+            snippets.Add(new SnippetModel(
                 title: $"GitHub - {owner} - {repository} - Issues",
                 text: $"{htmlUrl}/issues",
                 priority: SnippetPriority.Low
             ));
-            context.Models.Add(new SnippetModel(
+            snippets.Add(new SnippetModel(
                 title: $"GitHub - {owner} - {repository} - Issues - New",
                 text: $"{htmlUrl}/issues/new",
                 priority: SnippetPriority.Low
             ));
-            context.Models.Add(new SnippetModel(
+            snippets.Add(new SnippetModel(
                 title: $"GitHub - {owner} - {repository} - Pull requests",
                 text: $"{htmlUrl}/pulls",
                 priority: SnippetPriority.Low
@@ -101,7 +115,7 @@ namespace Neptuo.Productivity.SnippetManager
 
             if (defaultBranch != null)
             {
-                context.Models.Add(new SnippetModel(
+                snippets.Add(new SnippetModel(
                     title: $"GitHub - {owner} - {repository} - Find file",
                     text: $"{htmlUrl}/find/{defaultBranch}",
                     priority: SnippetPriority.Low

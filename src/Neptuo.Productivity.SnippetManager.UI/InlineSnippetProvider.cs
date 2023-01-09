@@ -19,7 +19,7 @@ public class InlineSnippetProvider : ISnippetProvider
 
     public Task InitializeAsync(SnippetProviderContext context)
     {
-        context.Models.AddRange(snippets.Select(s => new SnippetModel(s.Key, s.Value)));
+        context.AddRange(snippets.Select(s => new SnippetModel(s.Key, s.Value)));
         return Task.CompletedTask;
     }
 
