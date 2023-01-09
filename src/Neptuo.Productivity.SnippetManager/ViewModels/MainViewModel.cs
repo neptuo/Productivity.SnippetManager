@@ -9,12 +9,14 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Threading;
 
 namespace Neptuo.Productivity.SnippetManager.ViewModels
 {
-    public class MainViewModel : ObservableModel, IDisposable
+    public class MainViewModel : ObservableModel
     {
         private const int PageSize = 5;
 
@@ -24,20 +26,14 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public CopySnippetCommand Copy { get; }
 
         private string[]? normalizedSearchText;
-        private ObservableCollection<SnippetModel> allSnippets;
+        private ICollection<SnippetModel> allSnippets;
         private int searchResultCount = 0;
 
-        public MainViewModel(ObservableCollection<SnippetModel> allSnippets, ApplySnippetCommand apply, CopySnippetCommand copy)
+        public MainViewModel(ICollection<SnippetModel> allSnippets, ApplySnippetCommand apply, CopySnippetCommand copy)
         {
             this.allSnippets = allSnippets;
-            this.allSnippets.CollectionChanged += OnAllSnippetsChanged;
             Apply = apply;
             Copy = copy;
-        }
-
-        private void OnAllSnippetsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            SearchNormalizedText();
         }
 
         public void Search(string searchText)
@@ -46,6 +42,9 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             SearchNormalizedText();
         }
 
+        public void RefreshSearch() 
+            => SearchNormalizedText();
+
         private void SearchNormalizedText()
         {
             Snippets.Clear();
@@ -53,6 +52,9 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             searchResultCount = 0;
             foreach (var snippet in allSnippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
             {
+                if (searchResultCount >= PageSize)
+                    break;
+
                 if (OnFilter(snippet))
                     Snippets.Add(snippet);
             }
@@ -60,9 +62,6 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private bool OnFilter(SnippetModel snippet)
         {
-            if (searchResultCount >= PageSize)
-                return false;
-
             var isPassed = IsFilterPassed(snippet);
             if (isPassed)
                 searchResultCount++;
@@ -90,11 +89,6 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             }
 
             return result;
-        }
-
-        public void Dispose()
-        {
-            allSnippets.CollectionChanged -= OnAllSnippetsChanged;
         }
     }
 }

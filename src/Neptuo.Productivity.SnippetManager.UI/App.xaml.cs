@@ -47,7 +47,7 @@ namespace Neptuo.Productivity.SnippetManager
             if (configuration.Snippets != null)
                 providers.Add(new InlineSnippetProvider(configuration.Snippets));
 
-            navigator = new Navigator(new CompositeSnippetProvider(providers));
+            navigator = new Navigator(new CompositeSnippetProvider(providers), Dispatcher);
         }
 
         protected override void OnStartup(StartupEventArgs e)

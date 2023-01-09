@@ -5,6 +5,7 @@ using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
+using Neptuo.Windows.Threading;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -19,6 +20,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Drawing.Point;
@@ -30,14 +32,17 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly ObservableCollection<SnippetModel> allSnippets;
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
+    private readonly Dispatcher dispatcher;
     private bool isSnipperProviderInitialized = false;
     private Task? snipperProviderInitializeTask;
 
-    public Navigator(ISnippetProvider snippetProvider)
+    public Navigator(ISnippetProvider snippetProvider, Dispatcher dispatcher)
     {
         this.snippetProvider = snippetProvider;
+        this.dispatcher = dispatcher;
         this.allSnippets = new();
         this.snippetProviderContext = new(allSnippets);
+        this.snippetProviderContext.Changed += OnModelsChanged;
     }
 
     private MainWindow? main;
@@ -47,7 +52,7 @@ public class Navigator : IClipboardService, ISendTextService
         if (main == null)
         {
             main = new MainWindow();
-            main.Closed += (sender, e) => { main.ViewModel.Dispose(); main = null; };
+            main.Closed += (sender, e) => { main = null; };
 
             main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
             
@@ -113,6 +118,8 @@ public class Navigator : IClipboardService, ISendTextService
         {
             if (snipperProviderInitializeTask == null)
                 snipperProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
+            else
+                main?.ViewModel.RefreshSearch();
 
             await snipperProviderInitializeTask;
             snipperProviderInitializeTask = null;
@@ -125,6 +132,12 @@ public class Navigator : IClipboardService, ISendTextService
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
         main?.Search();
+    }
+
+    private void OnModelsChanged()
+    {
+        if (main != null)
+            DispatcherHelper.Run(main.Dispatcher, () => main.ViewModel.RefreshSearch());
     }
 
     #region Services
