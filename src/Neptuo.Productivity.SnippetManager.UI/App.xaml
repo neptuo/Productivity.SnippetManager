@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="/Views/Themes/Dark.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
+            <nc:BoolConverter x:Key="TrueToVisibleConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <nc:BoolConverter x:Key="ActiveBorderConverter" TrueValue="{StaticResource ActiveBrush}" FalseValue="{StaticResource InactiveBrush}" />
 
             <Style x:Key="FontIconStyle" TargetType="TextBlock">

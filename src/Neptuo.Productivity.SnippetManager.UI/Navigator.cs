@@ -128,10 +128,16 @@ public class Navigator : IClipboardService, ISendTextService
             // Main lost focus and is closed.
             if (main == null)
                 return;
+
         }
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
-        main?.Search();
+
+        if (main != null)
+        {
+            main.Search();
+            main.ViewModel.IsInitializing = false;
+        }
     }
 
     private void OnModelsChanged()

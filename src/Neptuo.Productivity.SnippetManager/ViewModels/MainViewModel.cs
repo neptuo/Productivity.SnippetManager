@@ -29,11 +29,26 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         private ICollection<SnippetModel> allSnippets;
         private int searchResultCount = 0;
 
+        private bool isInitializing;
+        public bool IsInitializing
+        {
+            get { return isInitializing; }
+            set
+            {
+                if (isInitializing != value)
+                {
+                    isInitializing = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public MainViewModel(ICollection<SnippetModel> allSnippets, ApplySnippetCommand apply, CopySnippetCommand copy)
         {
             this.allSnippets = allSnippets;
             Apply = apply;
             Copy = copy;
+            IsInitializing = true;
         }
 
         public void Search(string searchText)
