@@ -13,7 +13,7 @@ public class GuidSnippetProvider : ISnippetProvider
     private const string Title = "GUID";
 
     public Task InitializeAsync(SnippetProviderContext context) 
-        => Task.CompletedTask;
+        => UpdateAsync(context);
 
     public Task UpdateAsync(SnippetProviderContext context)
     {
