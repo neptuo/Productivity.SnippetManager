@@ -42,9 +42,6 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             SearchNormalizedText();
         }
 
-        public void RefreshSearch() 
-            => SearchNormalizedText();
-
         private void SearchNormalizedText()
         {
             Snippets.Clear();

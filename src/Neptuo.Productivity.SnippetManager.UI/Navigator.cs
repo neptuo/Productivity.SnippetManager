@@ -55,7 +55,7 @@ public class Navigator : IClipboardService, ISendTextService
             main.Closed += (sender, e) => { main = null; };
 
             main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
-            
+
             _ = UpdateSnippetsAsync(main.ViewModel);
         }
         else
@@ -119,7 +119,7 @@ public class Navigator : IClipboardService, ISendTextService
             if (snipperProviderInitializeTask == null)
                 snipperProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
             else
-                main?.ViewModel.RefreshSearch();
+                main?.Search();
 
             await snipperProviderInitializeTask;
             snipperProviderInitializeTask = null;
@@ -137,7 +137,7 @@ public class Navigator : IClipboardService, ISendTextService
     private void OnModelsChanged()
     {
         if (main != null)
-            DispatcherHelper.Run(main.Dispatcher, () => main.ViewModel.RefreshSearch());
+            DispatcherHelper.Run(main.Dispatcher, () => main.Search());
     }
 
     #region Services
