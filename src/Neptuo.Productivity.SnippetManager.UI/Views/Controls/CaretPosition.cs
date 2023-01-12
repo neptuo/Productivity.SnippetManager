@@ -97,6 +97,11 @@ public static class CaretPosition
 
             Win32.AttachThreadInput(idAttach, curThreadId, true);
             Win32.GetCaretPos(out caretPoint);
+
+            // Because when there isn't a way to find caret, it return 7,11
+            if (caretPoint.X < 20 || caretPoint.Y < 20)
+                return null;
+
             Win32.ClientToScreen(hwnd, ref caretPoint);
         }
         finally
@@ -110,7 +115,7 @@ public static class CaretPosition
         return new Rectangle(
             caretPoint.X,
             caretPoint.Y,
-            caretPoint.X + 1,
+            1,
             20
         );
     }
