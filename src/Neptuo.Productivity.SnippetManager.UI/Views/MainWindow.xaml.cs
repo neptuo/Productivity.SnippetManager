@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -30,9 +31,17 @@ namespace Neptuo.Productivity.SnippetManager.Views
             set => DataContext = value;
         }
 
+        public Point? StickPoint { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            UpdatePosition();
         }
 
         private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -127,7 +136,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
                 command.Execute(snippet);
         }
 
-        private void SearchText_TextChanged(object sender, TextChangedEventArgs e) 
+        private void SearchText_TextChanged(object sender, TextChangedEventArgs e)
             => Search();
 
         public void Search()
@@ -146,7 +155,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
             }
         }
 
-        public void FocusSearchText() 
+        public void FocusSearchText()
             => SearchText.Focus();
 
         public void SelectFirstSnippet()
@@ -159,6 +168,38 @@ namespace Neptuo.Productivity.SnippetManager.Views
                 if (!IsActive)
                     Close();
             }, 500);
+        }
+
+        public void UpdatePosition()
+        {
+            var activeHandle = Win32.GetForegroundWindow();
+            var screen = Screen.FromHandle(activeHandle);
+
+            if (StickPoint == null)
+            {
+                Left = screen.WorkingArea.Left + (screen.WorkingArea.Width - ActualWidth) / 2;
+                Top = screen.WorkingArea.Top + (screen.WorkingArea.Height - ActualHeight) / 2;
+            }
+            else
+            {
+                var x = StickPoint.Value.X;
+                var y = StickPoint.Value.Y;
+                if (x + ActualWidth <= screen.WorkingArea.X + screen.WorkingArea.Width)
+                    Left = x;
+                else
+                    Left = x - ActualWidth;
+
+                if (y + ActualHeight <= screen.WorkingArea.Y + screen.WorkingArea.Height)
+                    Top = y;
+                else
+                    Top = y - ActualHeight;
+            }
+        }
+
+        class Win32
+        {
+            [DllImport("user32.dll")]
+            public static extern IntPtr GetForegroundWindow();
         }
     }
 }

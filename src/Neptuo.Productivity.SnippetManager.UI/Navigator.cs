@@ -53,18 +53,18 @@ public class Navigator : IClipboardService, ISendTextService
         {
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
-
             main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
+            UpdateWindowStickPointToCaret(main);
 
             _ = UpdateSnippetsAsync(main.ViewModel);
         }
         else
         {
-            PositionWindowToCaret(main);
+            UpdateWindowStickPointToCaret(main);
             main.FocusSearchText();
+            main.UpdatePosition();
         }
 
-        PositionWindowToCaret(main);
         main.Show();
         main.Activate();
         main.FocusSearchText();
@@ -73,43 +73,13 @@ public class Navigator : IClipboardService, ISendTextService
     public void CloseMain()
         => main?.Close();
 
-    private void PositionWindowToCaret(Window wnd)
+    private void UpdateWindowStickPointToCaret(MainWindow wnd)
     {
         var caret = CaretPosition.Find();
         if (caret == null)
-        {
-            MoveToActiveScreen(wnd);
-            return;
-        }
-
-        wnd.Left = caret.Value.Right;
-        wnd.Top = caret.Value.Bottom;
-        EnsureWindowIsVisible(wnd);
-    }
-
-    private void MoveToActiveScreen(Window wnd)
-    {
-        var activeHandle = Win32.GetForegroundWindow();
-        var screen = Screen.FromHandle(activeHandle);
-
-        wnd.Left = screen.Bounds.Left + (screen.Bounds.Width - wnd.ActualWidth) / 2;
-        wnd.Top = screen.Bounds.Top + (screen.Bounds.Height - wnd.ActualHeight) / 2;
-    }
-
-    private static void EnsureWindowIsVisible(Window wnd)
-    {
-        var wndPoint = new Point((int)wnd.Left, (int)wnd.Top);
-        Screen activeScreen = Screen.FromPoint(wndPoint);
-
-        var wndRight = wnd.Left + wnd.Width;
-        var screenRight = activeScreen.WorkingArea.X + activeScreen.WorkingArea.Width;
-        if (wndRight > screenRight)
-            wnd.Left = screenRight - wnd.Width;
-
-        var wndBottom = wnd.Top + wnd.Height;
-        var screenBottom = activeScreen.WorkingArea.Y + activeScreen.WorkingArea.Height;
-        if (wndBottom > screenBottom)
-            wnd.Top = screenBottom - wnd.Height;
+            wnd.StickPoint = null;
+        else
+            wnd.StickPoint = new System.Windows.Point(caret.Value.Right, caret.Value.Bottom);
     }
 
     private async Task UpdateSnippetsAsync(MainViewModel viewModel)
