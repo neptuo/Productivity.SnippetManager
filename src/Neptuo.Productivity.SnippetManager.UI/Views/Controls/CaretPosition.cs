@@ -22,7 +22,8 @@ public static class CaretPosition
         {
             var hwndFocus = info.hwndFocus;
 
-            var caretRect = FindAccessibleCaretPosition(hwndFocus);
+            Rectangle? caretRect = null;
+            caretRect = FindUiAutomationCaretPosition(hwndFocus);
             if (caretRect == null)
                 caretRect = FindWinApiCaretPosition(hwndFocus);
 
@@ -32,7 +33,7 @@ public static class CaretPosition
         return null;
     }
 
-    private static Rectangle? FindAccessibleCaretPosition(IntPtr hwnd)
+    private static Rectangle? FindUiAutomationCaretPosition(IntPtr hwnd)
     {
         var accessibleGuid = typeof(IAccessible).GUID;
         object? accessibleObject = null;
@@ -43,6 +44,43 @@ public static class CaretPosition
             if (left != 0 && top != 0 && width != 0 && height != 0)
                 return new Rectangle(left, top, width, height);
         }
+
+        CUIAutomation automation = new CUIAutomation();
+        IUIAutomationElement element = automation.GetFocusedElement();
+
+        //UIA_PatternIds.UIA_TextPattern2Id
+        var pattern2 = (IUIAutomationTextPattern2)element.GetCurrentPattern(10024);
+        if (pattern2 != null)
+        {
+            var documentRange = pattern2.DocumentRange;
+            var caretRange = pattern2.GetCaretRange(out _);
+            if (caretRange != null)
+            {
+                var bounds = caretRange.GetBoundingRectangles();
+
+                if (bounds.Length == 4 && bounds is double[] coords)
+                    return new Rectangle((int)coords[0], (int)coords[1], (int)coords[2], (int)coords[3]);
+            }
+        }
+
+
+        var pattern1 = (IUIAutomationTextPattern)element.GetCurrentPattern(10014);
+        if (pattern1 != null)
+        {
+            var selectons = pattern1.GetSelection();
+            if (selectons.Length > 0)
+            {
+                var selection = selectons.GetElement(0);
+                var bounds = selection.GetBoundingRectangles();
+
+                if (bounds.Length == 4 && bounds is double[] coords)
+                    return new Rectangle((int)coords[0], (int)coords[1], (int)coords[2], (int)coords[3]);
+            }
+        }
+
+        _ = element.GetClickablePoint(out var point);
+        if (point.x != 0 && point.y != 0)
+            return new Rectangle(point.x, point.y, 1, 20);
 
         return null;
     }
@@ -72,8 +110,8 @@ public static class CaretPosition
         return new Rectangle(
             caretPoint.X,
             caretPoint.Y,
-            caretPoint.Y + 20,
-            caretPoint.X + 1
+            caretPoint.X + 1,
+            20
         );
     }
 
@@ -110,6 +148,7 @@ public static class CaretPosition
 
         public const int CHILDID_SELF = 0;
         public const uint OBJID_CARET = 0xFFFFFFF8;
+        public const uint OBJID_CURSOR = 0xFFFFFFF7;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct GUITHREADINFO
