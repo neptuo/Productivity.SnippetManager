@@ -76,10 +76,7 @@ public class Navigator : IClipboardService, ISendTextService
     private void UpdateWindowStickPointToCaret(MainWindow wnd)
     {
         var caret = CaretPosition.Find();
-        if (caret == null)
-            wnd.StickPoint = null;
-        else
-            wnd.StickPoint = new System.Windows.Point(caret.Value.Right, caret.Value.Bottom);
+        wnd.SetStickPoint(caret);
     }
 
     private async Task UpdateSnippetsAsync(MainViewModel viewModel)

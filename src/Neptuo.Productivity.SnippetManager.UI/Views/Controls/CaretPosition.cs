@@ -12,22 +12,21 @@ using UIAutomationClient;
 
 namespace Neptuo.Productivity.SnippetManager.Views.Controls;
 
-public static class CaretPosition
+public record CaretPosition(Rectangle Position, IntPtr WindowHandle)
 {
-    public static Rectangle? Find()
+    public static CaretPosition? Find()
     {
         var info = new Win32.GUITHREADINFO();
         info.cbSize = Marshal.SizeOf(info);
         if (Win32.GetGUIThreadInfo(0, ref info))
         {
-            var hwndFocus = info.hwndFocus;
-
-            Rectangle? caretRect = null;
-            caretRect = FindUiAutomationCaretPosition(hwndFocus);
+            var hwnd = info.hwndFocus;
+            var caretRect = FindUiAutomationCaretPosition(hwnd);
             if (caretRect == null)
-                caretRect = FindWinApiCaretPosition(hwndFocus);
+                caretRect = FindWinApiCaretPosition(hwnd);
 
-            return caretRect;
+            if (caretRect != null)
+                return new(caretRect.Value, hwnd);
         }
 
         return null;
@@ -71,6 +70,8 @@ public static class CaretPosition
             if (selectons.Length > 0)
             {
                 var selection = selectons.GetElement(0);
+                selection.ExpandToEnclosingUnit(TextUnit.TextUnit_Character);
+
                 var bounds = selection.GetBoundingRectangles();
 
                 if (bounds.Length == 4 && bounds is double[] coords)

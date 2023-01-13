@@ -25,13 +25,13 @@ namespace Neptuo.Productivity.SnippetManager.Views
 {
     public partial class MainWindow : Window
     {
+        private CaretPosition? stickPoint;
+
         public MainViewModel ViewModel
         {
             get => (MainViewModel)DataContext;
             set => DataContext = value;
         }
-
-        public Point? StickPoint { get; set; }
 
         public MainWindow()
         {
@@ -42,6 +42,12 @@ namespace Neptuo.Productivity.SnippetManager.Views
         {
             base.OnSourceInitialized(e);
             UpdatePosition();
+        }
+
+        public void SetStickPoint(CaretPosition? caret)
+        {
+            stickPoint = caret;
+            isStickToBottom = false;
         }
 
         private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -170,30 +176,54 @@ namespace Neptuo.Productivity.SnippetManager.Views
             }, 500);
         }
 
+        private bool isStickToBottom;
+
         public void UpdatePosition()
         {
-            var activeHandle = Win32.GetForegroundWindow();
-            var screen = Screen.FromHandle(activeHandle);
-
-            if (StickPoint == null)
+            isStickToBottom = false;
+            if (stickPoint == null)
             {
+                Screen screen = GetTargetScreen();
                 Left = screen.WorkingArea.Left + (screen.WorkingArea.Width - ActualWidth) / 2;
                 Top = screen.WorkingArea.Top + (screen.WorkingArea.Height - ActualHeight) / 2;
             }
             else
             {
-                var x = StickPoint.Value.X;
-                var y = StickPoint.Value.Y;
-                if (x + ActualWidth <= screen.WorkingArea.X + screen.WorkingArea.Width)
-                    Left = x;
-                else
-                    Left = x - ActualWidth;
-
-                if (y + ActualHeight <= screen.WorkingArea.Y + screen.WorkingArea.Height)
-                    Top = y;
-                else
-                    Top = y - ActualHeight;
+                StickToCaret();
             }
+        }
+
+        private Screen GetTargetScreen() 
+            => Screen.FromHandle(stickPoint?.WindowHandle ?? Win32.GetForegroundWindow());
+
+        private void StickToCaret()
+        {
+            if (stickPoint == null)
+                return;
+
+            Screen screen = GetTargetScreen();
+
+            var x = stickPoint.Position.Right;
+            if (x + ActualWidth <= screen.WorkingArea.X + screen.WorkingArea.Width)
+                Left = x;
+            else
+                Left = x - ActualWidth;
+
+            if (!isStickToBottom && stickPoint.Position.Bottom + ActualHeight <= screen.WorkingArea.Y + screen.WorkingArea.Height)
+            {
+                Top = stickPoint.Position.Bottom;
+            }
+            else
+            {
+                Top = stickPoint.Position.Top - ActualHeight;
+                isStickToBottom = true;
+            }
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            StickToCaret();
         }
 
         class Win32
