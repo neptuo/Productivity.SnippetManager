@@ -35,6 +35,8 @@ The configuration is expected to be at `~/SnippetManager.json` (user home). If y
 
 All of the sections has one in common, they all can contain `Enabled` field. The rule is that if the section is missing, the provider is enabled/disable by their default setting. Once you declare the section (for example to set the path to XML file), the automatic value for `Enabled` is `true`, so you don't need to specify it. If on the other hand, you want to disable some provider, that is by default enabled, just add the section with `Enabled` set to `false`.
 
+Once you have the configuration file, the application will monitor changes and prompt you to reload app state.
+
 ### General
 
 Enables you to define your own global hotkey for opening snippet list. Default is `Ctrl+Shift+V`.
