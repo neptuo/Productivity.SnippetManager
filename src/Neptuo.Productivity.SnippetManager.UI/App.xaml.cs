@@ -213,13 +213,13 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     navigator.CloseMain();
 
-                    string oldHotKey = configuration.General?.HotKey;
+                    string? oldHotKey = configuration.General?.HotKey;
 
                     configuration = CreateConfiguration();
                     provider = CreateProvider();
                     navigator = new Navigator(provider, Dispatcher);
 
-                    if (configuration.General?.HotKey != oldHotKey)
+                    if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {
                         hotkeys.Remove(hotkey.Value.key, hotkey.Value.modifiers);
                         BindHotkey();

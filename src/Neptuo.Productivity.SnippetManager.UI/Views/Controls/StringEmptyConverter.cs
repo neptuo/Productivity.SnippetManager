@@ -11,10 +11,10 @@ namespace Neptuo.Productivity.SnippetManager.Views.Controls;
 
 public class StringEmptyConverter : IValueConverter
 {
-    public object TrueValue { get; set; }
-    public object FalseValue { get; set; }
+    public object? TrueValue { get; set; }
+    public object? FalseValue { get; set; }
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         string? stringValue = value as string;
         return string.IsNullOrEmpty(stringValue) ? TrueValue : FalseValue;

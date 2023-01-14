@@ -23,7 +23,6 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
-using Point = System.Drawing.Point;
 
 namespace Neptuo.Productivity.SnippetManager;
 
@@ -164,10 +163,4 @@ public class Navigator : IClipboardService, ISendTextService
     }
 
     #endregion
-
-    class Win32
-    {
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
-    }
 }
