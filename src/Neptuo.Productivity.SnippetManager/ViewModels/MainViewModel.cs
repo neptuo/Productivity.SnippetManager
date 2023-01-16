@@ -54,6 +54,9 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public void Search(string searchText)
         {
             normalizedSearchText = searchText?.ToLowerInvariant().Split(' ');
+            if (normalizedSearchText != null && normalizedSearchText.Length == 1 && normalizedSearchText[0] == string.Empty)
+                normalizedSearchText = null;
+
             SearchNormalizedText();
         }
 
@@ -84,7 +87,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         private bool IsFilterPassed(SnippetModel snippet)
         {
             if (normalizedSearchText == null)
-                return true;
+                return snippet.Priority <= SnippetPriority.High;
 
             bool result = true;
             string pathMatch = snippet.Title.ToLowerInvariant();
