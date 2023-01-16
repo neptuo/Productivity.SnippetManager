@@ -60,7 +60,7 @@ Enables snippets you declare in XML syntax. The `FilePath` is a path to the root
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-	<Snippet Title="Google" Text="https://google.com" />
+	<Snippet Title="Google" Text="https://google.com" Priority="High" />
 	<Snippet Title="Long snippet">
 <![CDATA[1
 2
