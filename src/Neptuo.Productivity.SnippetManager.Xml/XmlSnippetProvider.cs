@@ -65,11 +65,14 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
 
     private void OnFileChanged(object sender, FileSystemEventArgs e) => loadSnippetsTask = Task.Run(() =>
     {
-        lock (nextSnippets)
+        if (e.FullPath == configuration.GetFilePathOrDefault())
         {
-            Thread.Sleep(100);
-            nextSnippets.Clear();
-            LoadSnippets(nextSnippets);
+            lock (nextSnippets)
+            {
+                Thread.Sleep(100);
+                nextSnippets.Clear();
+                LoadSnippets(nextSnippets);
+            }
         }
     });
 
