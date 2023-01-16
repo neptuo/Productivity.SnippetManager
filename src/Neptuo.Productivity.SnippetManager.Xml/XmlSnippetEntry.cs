@@ -20,4 +20,7 @@ public class XmlSnippetEntry
 
     [XmlText]
     public string? Text { get; set; }
+
+    [XmlAttribute]
+    public XmlSnippetPriority Priority { get; set; } = XmlSnippetPriority.Normal;
 }

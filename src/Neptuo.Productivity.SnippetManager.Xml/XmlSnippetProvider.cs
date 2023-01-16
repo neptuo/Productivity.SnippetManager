@@ -18,7 +18,7 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
     private Task? loadSnippetsTask = null;
     private FileSystemWatcher? watcher;
 
-    public XmlSnippetProvider(XmlConfiguration configuration) 
+    public XmlSnippetProvider(XmlConfiguration configuration)
         => this.configuration = configuration;
 
     public Task InitializeAsync(SnippetProviderContext context)
@@ -57,11 +57,20 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
                 continue;
 
             string title = snippet.Title ?? text;
-            var model = new SnippetModel(title, text);
+            var model = new SnippetModel(title, text, priority: MapPriority(snippet.Priority));
 
             result.Add(model);
         }
     }
+
+    private int MapPriority(XmlSnippetPriority priority) => priority switch
+    {
+        XmlSnippetPriority.Most => SnippetPriority.Most,
+        XmlSnippetPriority.High => SnippetPriority.High,
+        XmlSnippetPriority.Normal => SnippetPriority.Normal,
+        XmlSnippetPriority.Low => SnippetPriority.Low,
+        _ => throw Ensure.Exception.NotSupported(priority)
+    };
 
     private void OnFileChanged(object sender, FileSystemEventArgs e) => loadSnippetsTask = Task.Run(() =>
     {
