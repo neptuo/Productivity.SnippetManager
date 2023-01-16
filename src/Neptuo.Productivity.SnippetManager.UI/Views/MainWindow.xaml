@@ -38,7 +38,7 @@
                                     <TextBlock Text="{Binding Description}" FontSize="11" Opacity=".3" />
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListViewItem}, Converter={StaticResource TrueToVisibleConverter}}">
                                     <Button ToolTip="Copy snippet to the clipboard (Ctrl+C)" Style="{StaticResource PlainButtonStyle}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListViewItem}}"
                                      Command="{Binding DataContext.Copy, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                                         <TextBlock Text="&#xE8C8;" Style="{StaticResource FontIconStyle}" />
