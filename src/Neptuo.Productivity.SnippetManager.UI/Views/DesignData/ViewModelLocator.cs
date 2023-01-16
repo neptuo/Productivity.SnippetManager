@@ -27,6 +27,8 @@ internal class ViewModelLocator
                 );
 
                 LoadSnippets();
+
+                MainViewModel.IsInitializing = false;
             }
 
             return mainViewModel;
@@ -36,7 +38,7 @@ internal class ViewModelLocator
     private static void LoadSnippets()
     {
         void Add(string title, string text, string? description = null)
-            => MainViewModel.Snippets.Add(new SnippetModel(title, text, description));
+            => MainViewModel.Snippets.Add(new SnippetModel(title, text, description, SnippetPriority.High));
 
         Add(
             "C# class",
