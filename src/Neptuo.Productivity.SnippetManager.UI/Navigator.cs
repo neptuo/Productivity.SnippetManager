@@ -122,8 +122,9 @@ public class Navigator : IClipboardService, ISendTextService
             main?.Close();
 
             Clipboard.SetText(text);
-            SendKeys.SendWait("^{v}");
 
+            await Task.Delay(100);
+            SendKeys.SendWait("^{v}");
             await Task.Delay(100);
         }
         finally
