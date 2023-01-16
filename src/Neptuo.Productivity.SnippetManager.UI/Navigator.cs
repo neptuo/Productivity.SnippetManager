@@ -46,20 +46,20 @@ public class Navigator : IClipboardService, ISendTextService
 
     private MainWindow? main;
 
-    public void OpenMain()
+    public void OpenMain(bool stickToActiveCaret = true)
     {
         if (main == null)
         {
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
             main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
-            UpdateWindowStickPointToCaret(main);
+            UpdateWindowStickPointToCaret(main, stickToActiveCaret);
 
             _ = UpdateSnippetsAsync(main.ViewModel);
         }
         else
         {
-            UpdateWindowStickPointToCaret(main);
+            UpdateWindowStickPointToCaret(main, stickToActiveCaret);
             main.FocusSearchText();
             main.UpdatePosition();
         }
@@ -72,9 +72,9 @@ public class Navigator : IClipboardService, ISendTextService
     public void CloseMain()
         => main?.Close();
 
-    private void UpdateWindowStickPointToCaret(MainWindow wnd)
+    private void UpdateWindowStickPointToCaret(MainWindow wnd, bool stickToActiveCaret)
     {
-        var caret = CaretPosition.Find();
+        var caret = stickToActiveCaret ? CaretPosition.Find() : null;
         wnd.SetStickPoint(caret);
     }
 

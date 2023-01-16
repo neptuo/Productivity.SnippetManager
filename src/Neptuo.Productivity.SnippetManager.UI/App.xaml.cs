@@ -148,11 +148,11 @@ namespace Neptuo.Productivity.SnippetManager
             trayIcon.MouseClick += (sender, e) =>
             {
                 if (e.Button != MouseButtons.Right)
-                    navigator.OpenMain();
+                    navigator.OpenMain(stickToActiveCaret: false);
             };
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
-            trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(); };
+            trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(stickToActiveCaret: false); };
             trayIcon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) =>
             {
                 navigator.OpenConfiguration();
