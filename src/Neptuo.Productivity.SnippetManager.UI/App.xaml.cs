@@ -148,11 +148,11 @@ namespace Neptuo.Productivity.SnippetManager
             trayIcon.MouseClick += (sender, e) =>
             {
                 if (e.Button != MouseButtons.Right)
-                    navigator.OpenMain();
+                    navigator.OpenMain(stickToActiveCaret: false);
             };
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
-            trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(); };
+            trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(stickToActiveCaret: false); };
             trayIcon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) =>
             {
                 navigator.OpenConfiguration();
@@ -213,13 +213,13 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     navigator.CloseMain();
 
-                    string oldHotKey = configuration.General?.HotKey;
+                    string? oldHotKey = configuration.General?.HotKey;
 
                     configuration = CreateConfiguration();
                     provider = CreateProvider();
                     navigator = new Navigator(provider, Dispatcher);
 
-                    if (configuration.General?.HotKey != oldHotKey)
+                    if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {
                         hotkeys.Remove(hotkey.Value.key, hotkey.Value.modifiers);
                         BindHotkey();

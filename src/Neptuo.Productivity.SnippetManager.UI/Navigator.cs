@@ -23,7 +23,6 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
-using Point = System.Drawing.Point;
 
 namespace Neptuo.Productivity.SnippetManager;
 
@@ -47,24 +46,24 @@ public class Navigator : IClipboardService, ISendTextService
 
     private MainWindow? main;
 
-    public void OpenMain()
+    public void OpenMain(bool stickToActiveCaret = true)
     {
         if (main == null)
         {
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
-
             main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
+            UpdateWindowStickPointToCaret(main, stickToActiveCaret);
 
             _ = UpdateSnippetsAsync(main.ViewModel);
         }
         else
         {
-            PositionWindowToCaret(main);
+            UpdateWindowStickPointToCaret(main, stickToActiveCaret);
             main.FocusSearchText();
+            main.UpdatePosition();
         }
 
-        PositionWindowToCaret(main);
         main.Show();
         main.Activate();
         main.FocusSearchText();
@@ -73,43 +72,10 @@ public class Navigator : IClipboardService, ISendTextService
     public void CloseMain()
         => main?.Close();
 
-    private void PositionWindowToCaret(Window wnd)
+    private void UpdateWindowStickPointToCaret(MainWindow wnd, bool stickToActiveCaret)
     {
-        var caret = CaretPosition.Find();
-        if (caret == null)
-        {
-            MoveToActiveScreen(wnd);
-            return;
-        }
-
-        wnd.Left = caret.Value.Right;
-        wnd.Top = caret.Value.Bottom;
-        EnsureWindowIsVisible(wnd);
-    }
-
-    private void MoveToActiveScreen(Window wnd)
-    {
-        var activeHandle = Win32.GetForegroundWindow();
-        var screen = Screen.FromHandle(activeHandle);
-
-        wnd.Left = screen.Bounds.Left + (screen.Bounds.Width - wnd.ActualWidth) / 2;
-        wnd.Top = screen.Bounds.Top + (screen.Bounds.Height - wnd.ActualHeight) / 2;
-    }
-
-    private static void EnsureWindowIsVisible(Window wnd)
-    {
-        var wndPoint = new Point((int)wnd.Left, (int)wnd.Top);
-        Screen activeScreen = Screen.FromPoint(wndPoint);
-
-        var wndRight = wnd.Left + wnd.Width;
-        var screenRight = activeScreen.WorkingArea.X + activeScreen.WorkingArea.Width;
-        if (wndRight > screenRight)
-            wnd.Left = screenRight - wnd.Width;
-
-        var wndBottom = wnd.Top + wnd.Height;
-        var screenBottom = activeScreen.WorkingArea.Y + activeScreen.WorkingArea.Height;
-        if (wndBottom > screenBottom)
-            wnd.Top = screenBottom - wnd.Height;
+        var caret = stickToActiveCaret ? CaretPosition.Find() : null;
+        wnd.SetStickPoint(caret);
     }
 
     private async Task UpdateSnippetsAsync(MainViewModel viewModel)
@@ -156,8 +122,9 @@ public class Navigator : IClipboardService, ISendTextService
             main?.Close();
 
             Clipboard.SetText(text);
-            SendKeys.SendWait("^{v}");
 
+            await Task.Delay(100);
+            SendKeys.SendWait("^{v}");
             await Task.Delay(100);
         }
         finally
@@ -197,10 +164,4 @@ public class Navigator : IClipboardService, ISendTextService
     }
 
     #endregion
-
-    class Win32
-    {
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
-    }
 }
