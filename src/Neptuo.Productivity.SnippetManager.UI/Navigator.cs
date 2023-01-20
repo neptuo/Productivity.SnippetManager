@@ -34,11 +34,13 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly Dispatcher dispatcher;
     private bool isSnipperProviderInitialized = false;
     private Task? snipperProviderInitializeTask;
+    private Action<bool> setConfigChangeEnabled;
 
-    public Navigator(ISnippetProvider snippetProvider, Dispatcher dispatcher)
+    public Navigator(ISnippetProvider snippetProvider, Dispatcher dispatcher, Action<bool> setConfigChangeEnabled)
     {
         this.snippetProvider = snippetProvider;
         this.dispatcher = dispatcher;
+        this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.allSnippets = new();
         this.snippetProviderContext = new(allSnippets);
         this.snippetProviderContext.Changed += OnModelsChanged;
@@ -147,12 +149,20 @@ public class Navigator : IClipboardService, ISendTextService
             var result = MessageBox.Show("Configuration file does't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                var options = new JsonSerializerOptions
+                try
                 {
-                    WriteIndented = true,
-                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                };
-                File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
+                    setConfigChangeEnabled(false);
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                    };
+                    File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
+                }
+                finally
+                {
+                    setConfigChangeEnabled(true);
+                }
             }
             else
             {

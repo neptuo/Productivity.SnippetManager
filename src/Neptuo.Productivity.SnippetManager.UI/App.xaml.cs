@@ -41,7 +41,11 @@ namespace Neptuo.Productivity.SnippetManager
         {
             configuration = CreateConfiguration();
             provider = CreateProvider();
-            navigator = new Navigator(provider, Dispatcher);
+            navigator = new Navigator(
+                provider, 
+                Dispatcher, 
+                enabled => configurationWatcher?.EnableRaisingEvents = enabled
+            );
             hotkeys = new ComponentDispatcherHotkeyCollection();
         }
 
