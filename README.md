@@ -1,5 +1,10 @@
 # Productivity.SnippetManager
-Text Snippets everywhere
+
+SnippetManager is the ultimate tool for streamlining your workflow and increasing productivity. With SnippetManager, you can easily create code-like snippets, and access them from any program on your PC. Whether you're a developer or just someone who frequently uses repetitive text or code, SnippetManager is the perfect solution.
+
+SnippetManager is user-friendly and intuitive, making it easy to create and organize your snippets. You can easily search and filter through them to find the snippet you need. Once you've created your snippets, you can easily access them from any program on your PC, using a single hotkey. Snippets can either created manually or we provide some dynamic snippets. like links to GitHub repositories etc.
+
+No more switching back and forth between applications or manually typing out the same code or text over and over again. SnippetManager will save you hours of time and increase your productivity. Try SnippetManager today and revolutionize the way you work!
 
 ## Configuration
 
