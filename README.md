@@ -6,6 +6,8 @@ SnippetManager is user-friendly and intuitive, making it easy to create and orga
 
 No more switching back and forth between applications or manually typing out the same code or text over and over again. SnippetManager will save you hours of time and increase your productivity. Try SnippetManager today and revolutionize the way you work!
 
+![Snippet Manager showcase - what is possible?](https://user-images.githubusercontent.com/10020471/214050737-f68f695c-6c07-43ec-9627-8bc5d7d6c7d8.gif)
+
 ## Configuration
 
 Everything in configuration is optional. You open configuration from the context menu of tray icon.
