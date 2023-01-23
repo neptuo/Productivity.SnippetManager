@@ -1,4 +1,4 @@
-# Productivity.SnippetManager
+# Snippet Manager by Neptuo
 
 SnippetManager is the ultimate tool for streamlining your workflow and increasing productivity. With SnippetManager, you can easily create code-like snippets, and access them from any program on your PC. Whether you're a developer or just someone who frequently uses repetitive text or code, SnippetManager is the perfect solution.
 
