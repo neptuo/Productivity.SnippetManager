@@ -8,7 +8,7 @@
         xmlns:dd="clr-namespace:Neptuo.Productivity.SnippetManager.Views.DesignData" d:DataContext="{x:Static dd:ViewModelLocator.MainViewModel}"
         mc:Ignorable="d" Title="Snippets" Width="400" SizeToContent="Height"
         ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Topmost="True" Background="Transparent"
-        PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
+        PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated" ShowActivated="false">
     <Window.Resources>
         <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="Visible" FalseValue="Collapsed" />
     </Window.Resources>

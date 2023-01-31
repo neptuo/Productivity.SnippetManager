@@ -3,9 +3,12 @@ using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
 using Neptuo.Windows.Threading;
+using Snippets;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +28,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
 {
     public partial class MainWindow : Window
     {
+        private readonly UserActivityHook hook;
         private CaretPosition? stickPoint;
 
         public MainViewModel ViewModel
@@ -36,6 +40,91 @@ namespace Neptuo.Productivity.SnippetManager.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            hook = new UserActivityHook();
+            hook.KeyDown += OnHookKeyDown;
+            hook.KeyPress += OnHookKeyPress;
+            hook.KeyUp += OnHookKeyUp;
+            hook.Start(false, true);
+        }
+
+        private bool hookHandled = false;
+
+        private void OnHookKeyDown(object? sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                UseSelectedSnippet(ViewModel.Apply);
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Back)
+            {
+                if (SearchText.CaretIndex > 0)
+                {
+                    string text = SearchText.Text;
+                    SearchText.Text = text.Substring(0, SearchText.CaretIndex) + text.Substring(SearchText.CaretIndex + 1, text.Length - SearchText.CaretIndex - 1);
+                }
+
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                if (SearchText.CaretIndex < SearchText.Text.Length - 1)
+                {
+                    string text = SearchText.Text;
+                    SearchText.Text = text.Substring(0, SearchText.CaretIndex - 1) + text.Substring(SearchText.CaretIndex, text.Length - SearchText.CaretIndex - 1);
+                }
+
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                if (SearchText.CaretIndex > 0)
+                    SearchText.CaretIndex--;
+
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                if (SearchText.CaretIndex < SearchText.Text.Length - 1)
+                    SearchText.CaretIndex++;
+
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                if (SearchText.Text.Length > 0)
+                    SearchText.Text = string.Empty;
+                else
+                    Close();
+                e.Handled = true;
+            }
+
+            hookHandled = e.Handled;
+        }
+
+        private void OnHookKeyUp(object? sender, System.Windows.Forms.KeyEventArgs e)
+        {
+
+        }
+
+        private void OnHookKeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (hookHandled)
+            {
+                hookHandled = false;
+                return;
+            }
+
+            SearchText.Text += e.KeyChar;
+            SearchText.CaretIndex++;
+            e.Handled = true;
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            hook.Stop();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -193,7 +282,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
             }
         }
 
-        private Screen GetTargetScreen() 
+        private Screen GetTargetScreen()
             => Screen.FromHandle(stickPoint?.WindowHandle ?? Win32.GetForegroundWindow());
 
         private void StickToCaret()

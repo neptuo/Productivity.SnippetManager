@@ -65,8 +65,8 @@ public class Navigator : IClipboardService, ISendTextService
         }
 
         main.Show();
-        main.Activate();
-        main.FocusSearchText();
+        //main.Activate();
+        //main.FocusSearchText();
     }
 
     public void CloseMain()
