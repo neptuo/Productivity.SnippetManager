@@ -54,6 +54,7 @@ namespace Neptuo.Productivity.SnippetManager
             if (configurationWatcher != null)
                 configurationWatcher.EnableRaisingEvents = enabled;
         }
+
         private CompositeSnippetProvider CreateProvider()
         {
             List<ISnippetProvider> providers = new List<ISnippetProvider>();
@@ -105,7 +106,7 @@ namespace Neptuo.Productivity.SnippetManager
             {
                 MessageBox.Show("The configured hotkey is probably taken by other application. Edit your configuration.", "Snippet Manager", MessageBoxButton.OK, MessageBoxImage.Error);
                 navigator.OpenConfiguration();
-                Shutdown();
+                Dispatcher.Invoke(() => Shutdown());
             }
         }
 
@@ -198,27 +199,44 @@ namespace Neptuo.Productivity.SnippetManager
         {
             configurationWatcher = new FileSystemWatcher(Path.GetDirectoryName(GetConfigurationPath())!, "*.json");
             configurationWatcher.Changed += OnConfigurationFileChanged;
+            configurationWatcher.Deleted += OnConfigurationFileChanged;
+            configurationWatcher.Created += OnConfigurationFileChanged;
+            configurationWatcher.Renamed += OnConfigurationFileRenamed;
             configurationWatcher.EnableRaisingEvents = true;
         }
 
         private CancellationTokenSource? cts;
 
+        private async void OnConfigurationFileRenamed(object sender, RenamedEventArgs e)
+        {
+            if (e.OldFullPath == GetConfigurationPath())
+                await ReloadConfigurationWithConfirmationAsync();
+            else
+                OnConfigurationFileChanged(sender, e);
+        }
+
         private async void OnConfigurationFileChanged(object sender, FileSystemEventArgs e)
         {
             if (e.FullPath == GetConfigurationPath())
+                await ReloadConfigurationWithConfirmationAsync();
+        }
+
+        private async Task ReloadConfigurationWithConfirmationAsync()
+        {
+            if (cts != null)
+                cts.Cancel();
+
+            cts = new CancellationTokenSource();
+
+            bool isCancelled = await WaitWithCancellationAsync(cts.Token);
+            cts = null;
+
+            if (isCancelled)
+                return;
+
+            if (MessageBox.Show("Configuration has changed. Do you want to apply changes?", "Snippet Manager", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                if (cts != null)
-                    cts.Cancel();
-
-                cts = new CancellationTokenSource();
-
-                bool isCancelled = await WaitWithCancellationAsync(cts.Token);
-                cts = null;
-                
-                if (isCancelled)
-                    return;
-
-                if (MessageBox.Show("Configuration has changed. Do you want to apply changes?", "Snippet Manager", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                Dispatcher.Invoke(() =>
                 {
                     navigator.CloseMain();
 
@@ -233,7 +251,7 @@ namespace Neptuo.Productivity.SnippetManager
                         hotkeys.Remove(hotkey.Value.key, hotkey.Value.modifiers);
                         BindHotkey();
                     }
-                }
+                });
             }
         }
 
