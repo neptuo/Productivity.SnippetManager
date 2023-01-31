@@ -42,13 +42,18 @@ namespace Neptuo.Productivity.SnippetManager
             configuration = CreateConfiguration();
             provider = CreateProvider();
             navigator = new Navigator(
-                provider, 
-                Dispatcher, 
-                enabled => configurationWatcher?.EnableRaisingEvents = enabled
+                provider,
+                Dispatcher,
+                EnableRaisingEventsFromConfigurationWatcher
             );
             hotkeys = new ComponentDispatcherHotkeyCollection();
         }
 
+        private void EnableRaisingEventsFromConfigurationWatcher(bool enabled)
+        {
+            if (configurationWatcher != null)
+                configurationWatcher.EnableRaisingEvents = enabled;
+        }
         private CompositeSnippetProvider CreateProvider()
         {
             List<ISnippetProvider> providers = new List<ISnippetProvider>();
@@ -217,11 +222,11 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     navigator.CloseMain();
 
-                    string? oldHotKey = configuration.General?.HotKey;
+                    string? oldHotKey = configuration.General?.HotKey ?? Configuration.Example.General?.HotKey;
 
                     configuration = CreateConfiguration();
                     provider = CreateProvider();
-                    navigator = new Navigator(provider, Dispatcher);
+                    navigator = new Navigator(provider, Dispatcher, EnableRaisingEventsFromConfigurationWatcher);
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {
