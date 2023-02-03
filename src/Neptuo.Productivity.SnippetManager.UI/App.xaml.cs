@@ -32,20 +32,13 @@ namespace Neptuo.Productivity.SnippetManager
         private Configuration configuration;
         private CompositeSnippetProvider provider;
         private Navigator navigator;
+        private TrayIcon trayIcon;
         private ComponentDispatcherHotkeyCollection hotkeys;
-        private NotifyIcon? trayIcon;
         private FileSystemWatcher? configurationWatcher;
         private (Key key, ModifierKeys modifiers)? hotkey;
 
         public App()
         {
-            configuration = CreateConfiguration();
-            provider = CreateProvider();
-            navigator = new Navigator(
-                provider,
-                Dispatcher,
-                EnableRaisingEventsFromConfigurationWatcher
-            );
             hotkeys = new ComponentDispatcherHotkeyCollection();
         }
 
@@ -81,8 +74,16 @@ namespace Neptuo.Productivity.SnippetManager
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            configuration = CreateConfiguration();
+            provider = CreateProvider();
+            navigator = new Navigator(
+                provider,
+                EnableRaisingEventsFromConfigurationWatcher,
+                Shutdown
+            );
+            trayIcon = new TrayIcon(navigator);
+
             BindHotkey();
-            CreateTrayIcon();
             CreateConfigurationWatcher();
         }
 
@@ -147,49 +148,30 @@ namespace Neptuo.Productivity.SnippetManager
             return true;
         }
 
-        private void CreateTrayIcon()
-        {
-            trayIcon = new NotifyIcon
-            {
-                Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule!.FileName!),
-                Text = "Snippet Manager " + ApplicationVersion.GetDisplayString(),
-                Visible = true
-            };
-            trayIcon.MouseClick += (sender, e) =>
-            {
-                if (e.Button != MouseButtons.Right)
-                    navigator.OpenMain(stickToActiveCaret: false);
-            };
-
-            trayIcon.ContextMenuStrip = new ContextMenuStrip();
-            trayIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(stickToActiveCaret: false); };
-            trayIcon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) =>
-            {
-                navigator.OpenConfiguration();
-            };
-            trayIcon.ContextMenuStrip.Items.Add("About").Click += (sender, e) =>
-            {
-                Process.Start(new ProcessStartInfo()
-                {
-                    FileName = "https://github.com/neptuo/Productivity.SnippetManager",
-                    UseShellExecute = true
-                });
-            };
-            trayIcon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); Shutdown(); };
-        }
-
         private Configuration CreateConfiguration()
         {
             var filePath = GetConfigurationPath();
             if (!File.Exists(filePath))
                 return new Configuration();
 
-            using var fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-            var configuration = JsonSerializer.Deserialize<Configuration>(fileStream);
-            if (configuration == null)
-                return new Configuration();
+            try
+            {
+                using var fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+                var configuration = JsonSerializer.Deserialize<Configuration>(fileStream);
+                if (configuration == null)
+                    throw new JsonException("Deserialized configuration is null");
 
-            return configuration;
+                return configuration;
+            }
+            catch (JsonException)
+            {
+                MessageBox.Show("The configuration is not valid. Opening the configuration file and exiting...", "Snippet Manager");
+                // Duplicated in Navigator.cs/OpenConfiguration
+                Process.Start("explorer", GetConfigurationPath());
+                Shutdown(1);
+
+                return new Configuration();
+            }
         }
 
         public static string GetConfigurationPath()
@@ -244,7 +226,7 @@ namespace Neptuo.Productivity.SnippetManager
 
                     configuration = CreateConfiguration();
                     provider = CreateProvider();
-                    navigator = new Navigator(provider, Dispatcher, EnableRaisingEventsFromConfigurationWatcher);
+                    navigator = new Navigator(provider, EnableRaisingEventsFromConfigurationWatcher, Shutdown);
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {
@@ -265,9 +247,7 @@ namespace Neptuo.Productivity.SnippetManager
         {
             base.OnExit(e);
 
-            if (trayIcon != null)
-                trayIcon.Visible = false;
-
+            trayIcon.Dispose();
             configurationWatcher?.Dispose();
         }
     }
