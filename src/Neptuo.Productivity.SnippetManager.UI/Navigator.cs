@@ -13,14 +13,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Threading;
 using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
 
@@ -31,19 +29,25 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly ObservableCollection<SnippetModel> allSnippets;
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
-    private readonly Dispatcher dispatcher;
     private bool isSnipperProviderInitialized = false;
     private Task? snipperProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
+    private readonly Action shutdown;
 
-    public Navigator(ISnippetProvider snippetProvider, Dispatcher dispatcher, Action<bool> setConfigChangeEnabled)
+    public Navigator(ISnippetProvider snippetProvider, Action<bool> setConfigChangeEnabled, Action shutdown)
     {
         this.snippetProvider = snippetProvider;
-        this.dispatcher = dispatcher;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
+        this.shutdown = shutdown;
         this.allSnippets = new();
         this.snippetProviderContext = new(allSnippets);
         this.snippetProviderContext.Changed += OnModelsChanged;
+    }
+
+    private void OnModelsChanged()
+    {
+        if (main != null)
+            DispatcherHelper.Run(main.Dispatcher, () => main.Search());
     }
 
     private MainWindow? main;
@@ -108,11 +112,41 @@ public class Navigator : IClipboardService, ISendTextService
         }
     }
 
-    private void OnModelsChanged()
+    public void OpenConfiguration()
     {
-        if (main != null)
-            DispatcherHelper.Run(main.Dispatcher, () => main.Search());
+        string filePath = App.GetConfigurationPath();
+        if (!File.Exists(filePath))
+        {
+            var result = MessageBox.Show("Configuration file doesn't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    setConfigChangeEnabled(false);
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                    };
+                    File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
+                }
+                finally
+                {
+                    setConfigChangeEnabled(true);
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        // Duplicated in App.xaml
+        Process.Start("explorer", filePath);
     }
+
+    public void Shutdown() 
+        => shutdown();
 
     #region Services
 
@@ -139,38 +173,6 @@ public class Navigator : IClipboardService, ISendTextService
     {
         main?.Close();
         Clipboard.SetText(text);
-    }
-
-    public void OpenConfiguration()
-    {
-        string filePath = App.GetConfigurationPath();
-        if (!File.Exists(filePath))
-        {
-            var result = MessageBox.Show("Configuration file does't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    setConfigChangeEnabled(false);
-                    var options = new JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                    };
-                    File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
-                }
-                finally
-                {
-                    setConfigChangeEnabled(true);
-                }
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        Process.Start("explorer", filePath);
     }
 
     #endregion
