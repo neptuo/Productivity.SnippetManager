@@ -59,7 +59,7 @@ namespace Neptuo.Productivity.SnippetManager
                         if (names.Length == 1)
                             names = new[] { configuration.UserName, names[0] };
 
-                        AddSnippetsForRepository(snippets, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], null);
+                        AddSnippetsForRepository(snippets, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], true, null);
                     }
 
                     context.AddRange(snippets);
@@ -80,10 +80,11 @@ namespace Neptuo.Productivity.SnippetManager
             foreach (var repository in repositories)
             {
                 AddSnippetsForRepository(
-                    snippets, 
+                    snippets,
                     repository.Name,
                     repository.HtmlUrl,
                     repository.Owner.Login,
+                    repository.HasIssues,
                     repository.DefaultBranch
                 );
             }
@@ -91,22 +92,27 @@ namespace Neptuo.Productivity.SnippetManager
             context.AddRange(snippets);
         }
 
-        private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, string? defaultBranch)
+        private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
         {
             snippets.Add(new SnippetModel(
                 title: $"GitHub - {owner} - {repository}",
                 text: htmlUrl
             ));
-            snippets.Add(new SnippetModel(
-                title: $"GitHub - {owner} - {repository} - Issues",
-                text: $"{htmlUrl}/issues",
-                priority: SnippetPriority.Low
-            ));
-            snippets.Add(new SnippetModel(
-                title: $"GitHub - {owner} - {repository} - Issues - New",
-                text: $"{htmlUrl}/issues/new",
-                priority: SnippetPriority.Low
-            ));
+            
+            if (hasIssues)
+            {
+                snippets.Add(new SnippetModel(
+                    title: $"GitHub - {owner} - {repository} - Issues",
+                    text: $"{htmlUrl}/issues",
+                    priority: SnippetPriority.Low
+                ));
+                snippets.Add(new SnippetModel(
+                    title: $"GitHub - {owner} - {repository} - Issues - New",
+                    text: $"{htmlUrl}/issues/new",
+                    priority: SnippetPriority.Low
+                ));
+            }
+
             snippets.Add(new SnippetModel(
                 title: $"GitHub - {owner} - {repository} - Pull requests",
                 text: $"{htmlUrl}/pulls",
