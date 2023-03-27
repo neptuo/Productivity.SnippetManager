@@ -462,6 +462,8 @@ namespace Snippets
             Stop(true, true, false);
         }
 
+        public Func<int, int, IntPtr, bool> OnKeyboardHook;
+
         /// <summary>
         /// Occurs when the user moves the mouse, presses any mouse button or scrolls the wheel
         /// </summary>
@@ -726,10 +728,11 @@ namespace Snippets
         /// </returns>
         private int KeyboardHookProc(int nCode, Int32 wParam, IntPtr lParam)
         {
+            bool handled = OnKeyboardHook(nCode, wParam, lParam);
+
             //indicates if any of underlaing events set e.Handled flag
-            bool handled = false;
             //it was ok and someone listens to events
-            if ((nCode >= 0) && (KeyDown != null || KeyUp != null || KeyPress != null))
+            if (!handled && (nCode >= 0) && (KeyDown != null || KeyUp != null || KeyPress != null))
             {
                 //read structure KeyboardHookStruct at lParam
                 KeyboardHookStruct MyKeyboardHookStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));

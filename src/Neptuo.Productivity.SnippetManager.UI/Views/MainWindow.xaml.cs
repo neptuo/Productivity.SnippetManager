@@ -29,6 +29,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
     public partial class MainWindow : Window
     {
         private readonly UserActivityHook hook;
+        private readonly BackgroundTextBox backgroundTextBox;
         private CaretPosition? stickPoint;
 
         public MainViewModel ViewModel
@@ -41,7 +42,10 @@ namespace Neptuo.Productivity.SnippetManager.Views
         {
             InitializeComponent();
 
+            backgroundTextBox = new BackgroundTextBox();
+
             hook = new UserActivityHook();
+            hook.OnKeyboardHook = OnKeyboardHook;
             hook.KeyDown += OnHookKeyDown;
             hook.KeyPress += OnHookKeyPress;
             hook.KeyUp += OnHookKeyUp;
@@ -49,6 +53,26 @@ namespace Neptuo.Productivity.SnippetManager.Views
         }
 
         private bool hookHandled = false;
+
+        class BackgroundTextBox : System.Windows.Forms.TextBox
+        {
+            public void HandleMessage(Message msg)
+            {
+                base.WndProc(ref msg);
+            }
+        }
+
+        private bool OnKeyboardHook(int nCode, int wParam, IntPtr lParam)
+        {
+            backgroundTextBox.HandleMessage(new Message()
+            {
+                Msg = nCode,
+                WParam = (IntPtr)wParam,
+                LParam = lParam
+            });
+            SearchText.Text = backgroundTextBox.Text;
+            return false;
+        }
 
         private void OnHookKeyDown(object? sender, System.Windows.Forms.KeyEventArgs e)
         {
