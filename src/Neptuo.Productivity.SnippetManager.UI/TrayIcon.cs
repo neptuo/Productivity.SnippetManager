@@ -24,7 +24,7 @@ public class TrayIcon : IDisposable
         icon = new NotifyIcon
         {
             Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule!.FileName!),
-            Text = "Snippet Manager " + ApplicationVersion.GetDisplayString(),
+            Text = "Snippet Manager",
             Visible = true
         };
         icon.MouseClick += (sender, e) =>
@@ -34,19 +34,9 @@ public class TrayIcon : IDisposable
         };
 
         icon.ContextMenuStrip = new ContextMenuStrip();
-        icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => { navigator.OpenMain(stickToActiveCaret: false); };
-        icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) =>
-        {
-            navigator.OpenConfiguration();
-        };
-        icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) =>
-        {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = "https://github.com/neptuo/Productivity.SnippetManager",
-                UseShellExecute = true
-            });
-        };
+        icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
+        icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
+        icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) => navigator.OpenHelp();
         icon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); navigator.Shutdown(); };
     }
 

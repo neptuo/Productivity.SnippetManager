@@ -78,6 +78,20 @@ public class Navigator : IClipboardService, ISendTextService
     public void CloseMain()
         => main?.Close();
 
+    private HelpWindow? help;
+
+    public void OpenHelp()
+    {
+        if (help == null)
+        {
+            help = new HelpWindow(this);
+            help.Closed += (sender, e) => { help = null; };
+        }
+
+        help.Show();
+        help.Activate();
+    }
+
     private void UpdateWindowStickPointToCaret(MainWindow wnd, bool stickToActiveCaret)
     {
         var caret = stickToActiveCaret ? CaretPosition.Find() : null;
@@ -144,6 +158,12 @@ public class Navigator : IClipboardService, ISendTextService
         // Duplicated in App.xaml
         Process.Start("explorer", filePath);
     }
+
+    public void OpenGitHub() => Process.Start(new ProcessStartInfo()
+    {
+        FileName = "https://github.com/neptuo/Productivity.SnippetManager",
+        UseShellExecute = true
+    });
 
     public void Shutdown() 
         => shutdown();
