@@ -1,4 +1,6 @@
-﻿using Neptuo.Productivity.SnippetManager.Views;
+﻿using Neptuo;
+using Neptuo.Productivity.SnippetManager.Views;
+using Neptuo.Security.Cryptography;
 using Neptuo.Windows.HotKeys;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Policy;
 using System.Text.Json;
 using System.Threading;
@@ -40,6 +43,13 @@ namespace Neptuo.Productivity.SnippetManager
         public App()
         {
             hotkeys = new ComponentDispatcherHotkeyCollection();
+
+            var factory = new SnippetProviderFactory();
+            factory.Add(c => c.Clipboard, c => new ClipboardSnippetProvider());
+            factory.Add(c => c.Guid, c => new GuidSnippetProvider());
+            factory.Add(c => c.Xml, c => new XmlSnippetProvider(c));
+            factory.Add(c => c.GitHub, c => new GitHubSnippetProvider(c));
+            factory.Add(c => c.Snippets, new InlineSnippetProviderFactory());
         }
 
         private void EnableRaisingEventsFromConfigurationWatcher(bool enabled)
@@ -48,9 +58,125 @@ namespace Neptuo.Productivity.SnippetManager
                 configurationWatcher.EnableRaisingEvents = enabled;
         }
 
+        interface ISnippetProviderFactory<T>
+        {
+            bool TryCreate(T? configuration, out ISnippetProvider? provider);
+        }
+
+        class SnippetProviderFactory
+        {
+            private List<Func<Configuration, ISnippetProvider?>> storage = new List<Func<Configuration, ISnippetProvider?>>();
+
+            public void Add<T>(Func<Configuration, T?> configurationSelector, ISnippetProviderFactory<T> factory)
+            {
+                storage.Add(configuration =>
+                {
+                    var conf = configurationSelector(configuration);
+                    if (factory.TryCreate(conf, out var provider))
+                        return provider;
+
+                    return null;
+                });
+            }
+
+            public void AddEnabled<T>(Func<Configuration, T> configurationSelector, ISnippetProvider provider)
+            {
+                storage.Add(configuration =>
+                {
+                    throw Ensure.Exception.NotImplemented();
+                });
+            }
+
+            public void Add<T>(Func<Configuration, T?> configurationSelector, Func<T, ISnippetProvider> providerFactory)
+                where T : ProviderConfiguration, IEquatable<T>
+            {
+                Add(configurationSelector, new DelegateSnippetProviderFactory<T>(providerFactory));
+            }
+
+            public ISnippetProvider Create(Configuration configuration)
+            {
+                var providers = new List<ISnippetProvider>();
+
+                foreach (var factory in storage)
+                {
+                    var provider = factory(configuration);
+                    if (provider != null)
+                        providers.Add(provider);
+                }
+
+                return new CompositeSnippetProvider(providers);
+            }
+        }
+
+        abstract class SnippetProviderFactoryBase<T> : ISnippetProviderFactory<T>
+            where T : ProviderConfiguration, IEquatable<T>
+        {
+            private ISnippetProvider? lastProvider;
+            private T? lastConfiguration;
+            private bool isNullConfigurationEnabled;
+
+            public SnippetProviderFactoryBase(bool isNullConfigurationEnabled) 
+                => this.isNullConfigurationEnabled = isNullConfigurationEnabled;
+
+            public bool TryCreate(T? configuration, out ISnippetProvider? provider)
+            {
+                // TODO: isNullConfigurationEnabled
+
+                if (configuration == null || !configuration.IsEnabled)
+                {
+                    lastConfiguration = null;
+                    lastProvider = null;
+                    provider = null;
+                    return false;
+                }
+
+                if (lastConfiguration != null && IsEqual(lastConfiguration, configuration))
+                {
+                    provider = lastProvider;
+                    return true;
+                }
+
+                lastConfiguration = configuration;
+                provider = lastProvider = Create(configuration);
+                return true;
+            }
+
+            protected abstract ISnippetProvider Create(T configuration);
+
+            private bool IsEqual(T? last, T? current) 
+                => last != null && last.Equals(current);
+        }
+
+        class InlineSnippetProviderFactory : ISnippetProviderFactory<Dictionary<string, string>>
+        {
+            public bool TryCreate(Dictionary<string, string>? configuration, out ISnippetProvider? provider)
+            {
+                if (configuration != null)
+                {
+                    provider = new InlineSnippetProvider(configuration));
+                    return true;
+                }
+
+                provider = null;
+                return false;
+            }
+        }
+
+        class DelegateSnippetProviderFactory<T> : SnippetProviderFactoryBase<T>
+            where T : ProviderConfiguration, IEquatable<T>
+        {
+            private readonly Func<T, ISnippetProvider> factory;
+
+            public DelegateSnippetProviderFactory(Func<T, ISnippetProvider> factory) 
+                => this.factory = factory;
+
+            protected override ISnippetProvider Create(T configuration)
+                => factory(configuration);
+        }
+
         private CompositeSnippetProvider CreateProvider()
         {
-            List<ISnippetProvider> providers = new List<ISnippetProvider>();
+            var providers = new List<ISnippetProvider>();
 
             if (configuration.Clipboard == null || configuration.Clipboard.IsEnabled)
                 providers.Add(new ClipboardSnippetProvider());
@@ -61,8 +187,8 @@ namespace Neptuo.Productivity.SnippetManager
             if (configuration.Xml == null || configuration.Xml.IsEnabled)
                 providers.Add(new XmlSnippetProvider(configuration.Xml ?? new XmlConfiguration()));
 
-            if (configuration.GitHub == null || configuration.GitHub.IsEnabled)
-                providers.Add(new GitHubSnippetProvider(configuration.GitHub ?? new GitHubConfiguration()));
+            if (configuration.GitHub != null && configuration.GitHub.IsEnabled)
+                providers.Add(new GitHubSnippetProvider(configuration.GitHub));
 
             // Useful only is we have configured snippets
             if (configuration.Snippets != null)
