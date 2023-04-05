@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<Nullable>enable</Nullable>
 		<RootNamespace>Neptuo.Productivity.SnippetManager</RootNamespace>
+		<NoWarn>NU1701</NoWarn>
 	</PropertyGroup>
 
 </Project>
