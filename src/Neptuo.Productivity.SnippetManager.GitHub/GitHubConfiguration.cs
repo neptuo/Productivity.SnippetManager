@@ -29,7 +29,7 @@ namespace Neptuo.Productivity.SnippetManager
         private bool EqualsExtraRepositories(GitHubConfiguration other)
         {
             if (ExtraRepositories != null && other.ExtraRepositories != null)
-                return !ExtraRepositories.Intersect(other.ExtraRepositories).Any();
+                return !ExtraRepositories.Except(other.ExtraRepositories).Any() && !other.ExtraRepositories.Except(ExtraRepositories).Any();
 
             if (ExtraRepositories == null && other.ExtraRepositories == null)
                 return true;
