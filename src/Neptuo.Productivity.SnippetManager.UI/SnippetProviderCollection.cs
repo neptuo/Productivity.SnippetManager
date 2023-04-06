@@ -28,7 +28,7 @@ public class SnippetProviderCollection
         Add(configurationSelector, new SimpleConfigurationSnippetProviderFactory<T>(providerFactory));
     }
 
-    public void AddEnabledAndChanged<T>(Func<Configuration, T?> configurationSelector, Func<T, ISnippetProvider> providerFactory, bool isNullConfigurationEnabled = false)
+    public void AddConfigChangeTracking<T>(Func<Configuration, T?> configurationSelector, Func<T, ISnippetProvider> providerFactory, bool isNullConfigurationEnabled = false)
         where T : ProviderConfiguration, IEquatable<T>, new()
     {
         Add(configurationSelector, new DelegateSnippetProviderFactory<T>(providerFactory, isNullConfigurationEnabled));

@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class XmlSnippetProvider : ISnippetProvider, IDisposable
+public class XmlSnippetProvider : SingleInitializeSnippetProvider, IDisposable
 {
     private readonly List<SnippetModel> lastSnippets = new();
     private readonly List<SnippetModel> nextSnippets = new();
@@ -21,7 +21,7 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
     public XmlSnippetProvider(XmlConfiguration configuration)
         => this.configuration = configuration;
 
-    public Task InitializeAsync(SnippetProviderContext context)
+    protected override Task InitializeOnceAsync(SnippetProviderContext context)
     {
         string sourcePath = configuration.GetFilePathOrDefault();
         if (!File.Exists(sourcePath))
@@ -85,7 +85,7 @@ public class XmlSnippetProvider : ISnippetProvider, IDisposable
         }
     });
 
-    public async Task UpdateAsync(SnippetProviderContext context)
+    protected override async Task UpdateOverrideAsync(SnippetProviderContext context)
     {
         if (loadSnippetsTask != null)
         {

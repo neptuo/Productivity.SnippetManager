@@ -38,10 +38,10 @@ namespace Neptuo.Productivity.SnippetManager
         public App()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-            snippetProviders.AddEnabledAndChanged(c => c.Clipboard, c => new ClipboardSnippetProvider(), true);
-            snippetProviders.AddEnabledAndChanged(c => c.Guid, c => new GuidSnippetProvider(), true);
-            snippetProviders.AddEnabledAndChanged(c => c.Xml, c => new XmlSnippetProvider(c), true);
-            snippetProviders.AddNotNullConfiguration(c => c.GitHub, c => new GitHubSnippetProvider(c));
+            snippetProviders.AddConfigChangeTracking(c => c.Clipboard, c => new ClipboardSnippetProvider(), true);
+            snippetProviders.AddConfigChangeTracking(c => c.Guid, c => new GuidSnippetProvider(), true);
+            snippetProviders.AddConfigChangeTracking(c => c.Xml, c => new XmlSnippetProvider(c), true);
+            snippetProviders.AddConfigChangeTracking(c => c.GitHub, c => new GitHubSnippetProvider(c));
             snippetProviders.AddNotNullConfiguration(c => c.Snippets, c => new InlineSnippetProvider(c));
         }
 

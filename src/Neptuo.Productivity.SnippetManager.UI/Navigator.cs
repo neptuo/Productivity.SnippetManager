@@ -29,8 +29,8 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly ObservableCollection<SnippetModel> allSnippets;
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
-    private bool isSnipperProviderInitialized = false;
-    private Task? snipperProviderInitializeTask;
+    private bool isSnippetProviderInitialized = false;
+    private Task? snippetProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
 
@@ -100,16 +100,16 @@ public class Navigator : IClipboardService, ISendTextService
 
     private async Task UpdateSnippetsAsync(MainViewModel viewModel)
     {
-        if (!isSnipperProviderInitialized)
+        if (!isSnippetProviderInitialized)
         {
-            if (snipperProviderInitializeTask == null)
-                snipperProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
+            if (snippetProviderInitializeTask == null)
+                snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
             else
                 main?.Search();
 
-            await snipperProviderInitializeTask;
-            snipperProviderInitializeTask = null;
-            isSnipperProviderInitialized = true;
+            await snippetProviderInitializeTask;
+            snippetProviderInitializeTask = null;
+            isSnippetProviderInitialized = true;
 
             // Main lost focus and is closed.
             if (main == null)
