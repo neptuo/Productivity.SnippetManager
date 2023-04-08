@@ -34,13 +34,17 @@ public class Navigator : IClipboardService, ISendTextService
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
     private readonly Func<string> getXmlSnippetsPath;
+    private readonly Func<Configuration> getExampleConfiguration;
+    private readonly JsonConfiguration jsonConfiguration;
 
-    public Navigator(ISnippetProvider snippetProvider, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath)
+    public Navigator(ISnippetProvider snippetProvider, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration, JsonConfiguration jsonConfiguration)
     {
         this.snippetProvider = snippetProvider;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
+        this.getExampleConfiguration = getExampleConfiguration;
+        this.jsonConfiguration = jsonConfiguration;
         this.allSnippets = new();
         this.snippetProviderContext = new(allSnippets);
         this.snippetProviderContext.Changed += OnModelsChanged;
@@ -139,12 +143,9 @@ public class Navigator : IClipboardService, ISendTextService
                 try
                 {
                     setConfigChangeEnabled(false);
-                    var options = new JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                    };
-                    File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
+
+                    var example = getExampleConfiguration();
+                    jsonConfiguration.Write(filePath, example);
                 }
                 finally
                 {

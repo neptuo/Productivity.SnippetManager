@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager
 {
-    public class XmlConfiguration : ProviderConfiguration, IEquatable<XmlConfiguration>
+    public class XmlConfiguration : ProviderConfiguration, IEquatable<XmlConfiguration>, IProviderConfiguration<XmlConfiguration>
     {
         public string? FilePath { get; set; }
 

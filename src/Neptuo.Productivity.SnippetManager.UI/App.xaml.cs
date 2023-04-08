@@ -8,7 +8,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -33,16 +35,18 @@ namespace Neptuo.Productivity.SnippetManager
         private FileSystemWatcher? configurationWatcher;
         private (Key key, ModifierKeys modifiers)? hotkey;
         private readonly SnippetProviderCollection snippetProviders = new SnippetProviderCollection();
+        private readonly JsonConfiguration jsonConfiguration;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public App()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-            snippetProviders.AddConfigChangeTracking(c => c.Clipboard, c => new ClipboardSnippetProvider(), true);
-            snippetProviders.AddConfigChangeTracking(c => c.Guid, c => new GuidSnippetProvider(), true);
-            snippetProviders.AddConfigChangeTracking(c => c.Xml, c => new XmlSnippetProvider(c), true);
-            snippetProviders.AddConfigChangeTracking(c => c.GitHub, c => new GitHubSnippetProvider(c));
-            snippetProviders.AddNotNullConfiguration(c => c.Snippets, c => new InlineSnippetProvider(c));
+            snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Clipboard", c => new ClipboardSnippetProvider(), true);
+            snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Guid", c => new GuidSnippetProvider(), true);
+            snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => new XmlSnippetProvider(c), true);
+            snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
+            snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
+            jsonConfiguration = new JsonConfiguration(snippetProviders);
         }
 
         private void EnableRaisingEventsFromConfigurationWatcher(bool enabled)
@@ -59,12 +63,23 @@ namespace Neptuo.Productivity.SnippetManager
                 provider,
                 EnableRaisingEventsFromConfigurationWatcher,
                 Shutdown,
-                (configuration.Xml ?? Configuration.Example.Xml!).GetFilePathOrDefault
+                (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault,
+                GetExampleConfiguration,
+                jsonConfiguration
             );
             trayIcon = new TrayIcon(navigator);
 
             BindHotkey();
             CreateConfigurationWatcher();
+        }
+
+        private Configuration GetExampleConfiguration()
+        {
+            var example = new Configuration();
+            example.General = GeneralConfiguration.Example;
+            snippetProviders.AddExampleConfigurations(example.Providers);
+
+            return example;
         }
 
         private void BindHotkey()
@@ -136,8 +151,7 @@ namespace Neptuo.Productivity.SnippetManager
 
             try
             {
-                using var fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-                var configuration = JsonSerializer.Deserialize<Configuration>(fileStream);
+                var configuration = jsonConfiguration.Read(filePath);
                 if (configuration == null)
                     throw new JsonException("Deserialized configuration is null");
 
@@ -202,11 +216,18 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     navigator.CloseMain();
 
-                    string? oldHotKey = configuration.General?.HotKey ?? Configuration.Example.General?.HotKey;
+                    string? oldHotKey = configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey;
 
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration);
-                    navigator = new Navigator(provider, EnableRaisingEventsFromConfigurationWatcher, Shutdown, (configuration.Xml ?? Configuration.Example.Xml!).GetFilePathOrDefault);
+                    navigator = new Navigator(
+                        provider, 
+                        EnableRaisingEventsFromConfigurationWatcher, 
+                        Shutdown, 
+                        (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault,
+                        GetExampleConfiguration,
+                        jsonConfiguration
+                    );
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {

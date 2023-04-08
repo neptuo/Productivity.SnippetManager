@@ -9,42 +9,57 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class SnippetProviderCollection
 {
-    private List<Func<Configuration, ISnippetProvider?>> storage = new List<Func<Configuration, ISnippetProvider?>>();
+    private Dictionary<string, (Type configurationType, Func<Configuration, ISnippetProvider?> factory, Func<object> exampleConfiguration)> storage = new();
 
-    public void Add<T>(Func<Configuration, T?> configurationSelector, ISnippetProviderFactory<T> factory)
+    public void Add<T>(string key, ISnippetProviderFactory<T> factory)
+        where T : IProviderConfiguration<T>
     {
-        storage.Add(configuration =>
-        {
-            var conf = configurationSelector(configuration);
-            if (factory.TryCreate(conf, out var provider))
-                return provider;
+        storage[key] = (
+            typeof(T), 
+            configuration =>
+            {
+                configuration.Providers.TryGetValue(key, out var conf);
+                if (factory.TryCreate((T?)conf, out var provider))
+                    return provider;
 
-            return null;
-        });
+                return null;
+            }, 
+            () => T.Example
+        );
     }
 
-    public void AddNotNullConfiguration<T>(Func<Configuration, T?> configurationSelector, Func<T, ISnippetProvider?> providerFactory)
+    public void AddNotNullConfiguration<T>(string key, Func<T, ISnippetProvider?> providerFactory)
+        where T : IProviderConfiguration<T>
     {
-        Add(configurationSelector, new SimpleConfigurationSnippetProviderFactory<T>(providerFactory));
+        Add(key, new SimpleConfigurationSnippetProviderFactory<T>(providerFactory));
     }
 
-    public void AddConfigChangeTracking<T>(Func<Configuration, T?> configurationSelector, Func<T, ISnippetProvider> providerFactory, bool isNullConfigurationEnabled = false)
-        where T : ProviderConfiguration, IEquatable<T>, new()
+    public void AddConfigChangeTracking<T>(string key, Func<T, ISnippetProvider> providerFactory, bool isNullConfigurationEnabled = false)
+        where T : ProviderConfiguration, IEquatable<T>, IProviderConfiguration<T>, new()
     {
-        Add(configurationSelector, new DelegateSnippetProviderFactory<T>(providerFactory, isNullConfigurationEnabled));
+        Add(key, new DelegateSnippetProviderFactory<T>(providerFactory, isNullConfigurationEnabled));
     }
 
     public ISnippetProvider Create(Configuration configuration)
     {
         var providers = new List<ISnippetProvider>();
 
-        foreach (var factory in storage)
+        foreach (var entry in storage)
         {
-            var provider = factory(configuration);
+            var provider = entry.Value.factory(configuration);
             if (provider != null)
                 providers.Add(provider);
         }
 
         return new CompositeSnippetProvider(providers);
+    }
+
+    public IEnumerable<(string key, Type configurationType)> GetConfigurationMappings() 
+        => storage.Select(s => (s.Key, s.Value.configurationType));
+
+    public void AddExampleConfigurations(Dictionary<string, object> examples)
+    {
+        foreach (var entry in storage)
+            examples[entry.Key] = entry.Value.exampleConfiguration();
     }
 }

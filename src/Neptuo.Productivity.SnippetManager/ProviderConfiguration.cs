@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager
 {
-    public class ProviderConfiguration : IEquatable<ProviderConfiguration>
+    public class ProviderConfiguration : IEquatable<ProviderConfiguration>, IProviderConfiguration<ProviderConfiguration>
     {
         [DefaultValue(true)]
         [JsonPropertyName("Enabled")]
