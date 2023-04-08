@@ -35,7 +35,7 @@ namespace Neptuo.Productivity.SnippetManager
         private FileSystemWatcher? configurationWatcher;
         private (Key key, ModifierKeys modifiers)? hotkey;
         private readonly SnippetProviderCollection snippetProviders = new SnippetProviderCollection();
-        private readonly JsonConfiguration jsonConfiguration;
+        private readonly ConfigurationRepository configurationRepository;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public App()
@@ -46,7 +46,7 @@ namespace Neptuo.Productivity.SnippetManager
             snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => new XmlSnippetProvider(c), true);
             snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
             snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
-            jsonConfiguration = new JsonConfiguration(snippetProviders);
+            configurationRepository = new ConfigurationRepository(snippetProviders);
         }
 
         private void EnableRaisingEventsFromConfigurationWatcher(bool enabled)
@@ -63,15 +63,18 @@ namespace Neptuo.Productivity.SnippetManager
                 provider,
                 EnableRaisingEventsFromConfigurationWatcher,
                 Shutdown,
-                (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault,
+                GetXmlConfigurationPath,
                 GetExampleConfiguration,
-                jsonConfiguration
+                configurationRepository
             );
             trayIcon = new TrayIcon(navigator);
 
             BindHotkey();
             CreateConfigurationWatcher();
         }
+
+        private string GetXmlConfigurationPath() 
+            => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
 
         private Configuration GetExampleConfiguration()
         {
@@ -151,7 +154,7 @@ namespace Neptuo.Productivity.SnippetManager
 
             try
             {
-                var configuration = jsonConfiguration.Read(filePath);
+                var configuration = configurationRepository.Read(filePath);
                 if (configuration == null)
                     throw new JsonException("Deserialized configuration is null");
 
@@ -223,10 +226,10 @@ namespace Neptuo.Productivity.SnippetManager
                     navigator = new Navigator(
                         provider, 
                         EnableRaisingEventsFromConfigurationWatcher, 
-                        Shutdown, 
-                        (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault,
+                        Shutdown,
+                        GetXmlConfigurationPath,
                         GetExampleConfiguration,
-                        jsonConfiguration
+                        configurationRepository
                     );
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)

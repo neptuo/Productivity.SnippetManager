@@ -1,5 +1,4 @@
-﻿using Neptuo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class JsonConfiguration
+public class ConfigurationRepository
 {
     private readonly SnippetProviderCollection snippetProviders;
     private readonly JsonSerializerOptions options;
 
-    public JsonConfiguration(SnippetProviderCollection snippetProviders)
+    public ConfigurationRepository(SnippetProviderCollection snippetProviders)
     {
         this.snippetProviders = snippetProviders;
         options = new JsonSerializerOptions()
@@ -25,12 +24,12 @@ public class JsonConfiguration
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             TypeInfoResolver = new DefaultJsonTypeInfoResolver()
             {
-                Modifiers = { JsonConfigurationModifier }
+                Modifiers = { TypeInfoModifier }
             }
         };
     }
 
-    private void JsonConfigurationModifier(JsonTypeInfo typeInfo)
+    private void TypeInfoModifier(JsonTypeInfo typeInfo)
     {
         if (typeInfo.Kind != JsonTypeInfoKind.Object || typeInfo.Type != typeof(Configuration))
             return;
