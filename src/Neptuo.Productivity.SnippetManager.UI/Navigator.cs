@@ -37,14 +37,14 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly ConfigurationRepository configurationRepository;
 
-    public Navigator(ISnippetProvider snippetProvider, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration, ConfigurationRepository configurationRepository)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
     {
         this.snippetProvider = snippetProvider;
+        this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
         this.getExampleConfiguration = getExampleConfiguration;
-        this.configurationRepository = configurationRepository;
         this.allSnippets = new();
         this.snippetProviderContext = new(allSnippets);
         this.snippetProviderContext.Changed += OnModelsChanged;
