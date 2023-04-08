@@ -185,6 +185,7 @@ namespace Neptuo.Productivity.SnippetManager
         }
 
         private CancellationTokenSource? cts;
+        private bool isConfigurationChangedDialogOpen;
 
         private async void OnConfigurationFileRenamed(object sender, RenamedEventArgs e)
         {
@@ -210,10 +211,21 @@ namespace Neptuo.Productivity.SnippetManager
             bool isCancelled = await WaitWithCancellationAsync(cts.Token);
             cts = null;
 
-            if (isCancelled)
+            if (isCancelled || isConfigurationChangedDialogOpen)
                 return;
 
-            if (MessageBox.Show("Configuration has changed. Do you want to apply changes?", "Snippet Manager", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            var shouldReload = false;
+            try
+            {
+                isConfigurationChangedDialogOpen = true;
+                shouldReload = MessageBox.Show("Configuration has changed. Do you want to apply changes?", "Snippet Manager", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+            }
+            finally
+            {
+                isConfigurationChangedDialogOpen = false;
+            }
+
+            if (shouldReload)
             {
                 Dispatcher.Invoke(() =>
                 {
