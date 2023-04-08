@@ -32,7 +32,7 @@ namespace Neptuo.Productivity.SnippetManager
         private Navigator navigator;
         private TrayIcon trayIcon;
         private readonly ComponentDispatcherHotkeyCollection hotkeys = new ComponentDispatcherHotkeyCollection();
-        private FileSystemWatcher? configurationWatcher;
+        private ConfigurationWatcher configurationWatcher;
         private (Key key, ModifierKeys modifiers)? hotkey;
         private readonly SnippetProviderCollection snippetProviders = new SnippetProviderCollection();
         private readonly ConfigurationRepository configurationRepository;
@@ -49,29 +49,25 @@ namespace Neptuo.Productivity.SnippetManager
             configurationRepository = new ConfigurationRepository(snippetProviders);
         }
 
-        private void EnableRaisingEventsFromConfigurationWatcher(bool enabled)
-        {
-            if (configurationWatcher != null)
-                configurationWatcher.EnableRaisingEvents = enabled;
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration);
-            navigator = new Navigator(
-                provider,
-                configurationRepository,
-                EnableRaisingEventsFromConfigurationWatcher,
-                Shutdown,
-                GetXmlConfigurationPath,
-                GetExampleConfiguration
-            );
+            navigator = CreateNavigator();
             trayIcon = new TrayIcon(navigator);
 
             BindHotkey();
-            CreateConfigurationWatcher();
+            configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
         }
+
+        private Navigator CreateNavigator() => new Navigator(
+            provider,
+            configurationRepository,
+            enabled => configurationWatcher.EnableRaisingEventsFromConfigurationWatcher(enabled),
+            Shutdown,
+            GetXmlConfigurationPath,
+            GetExampleConfiguration
+        );
 
         private string GetXmlConfigurationPath() 
             => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
@@ -174,58 +170,9 @@ namespace Neptuo.Productivity.SnippetManager
         public static string GetConfigurationPath()
             => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.json");
 
-        private void CreateConfigurationWatcher()
+        private void AskToReloadConfiguration()
         {
-            configurationWatcher = new FileSystemWatcher(Path.GetDirectoryName(GetConfigurationPath())!, "*.json");
-            configurationWatcher.Changed += OnConfigurationFileChanged;
-            configurationWatcher.Deleted += OnConfigurationFileChanged;
-            configurationWatcher.Created += OnConfigurationFileChanged;
-            configurationWatcher.Renamed += OnConfigurationFileRenamed;
-            configurationWatcher.EnableRaisingEvents = true;
-        }
-
-        private CancellationTokenSource? cts;
-        private bool isConfigurationChangedDialogOpen;
-
-        private async void OnConfigurationFileRenamed(object sender, RenamedEventArgs e)
-        {
-            if (e.OldFullPath == GetConfigurationPath())
-                await ReloadConfigurationWithConfirmationAsync();
-            else
-                OnConfigurationFileChanged(sender, e);
-        }
-
-        private async void OnConfigurationFileChanged(object sender, FileSystemEventArgs e)
-        {
-            if (e.FullPath == GetConfigurationPath())
-                await ReloadConfigurationWithConfirmationAsync();
-        }
-
-        private async Task ReloadConfigurationWithConfirmationAsync()
-        {
-            if (cts != null)
-                cts.Cancel();
-
-            cts = new CancellationTokenSource();
-
-            bool isCancelled = await WaitWithCancellationAsync(cts.Token);
-            cts = null;
-
-            if (isCancelled || isConfigurationChangedDialogOpen)
-                return;
-
-            var shouldReload = false;
-            try
-            {
-                isConfigurationChangedDialogOpen = true;
-                shouldReload = MessageBox.Show("Configuration has changed. Do you want to apply changes?", "Snippet Manager", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-            }
-            finally
-            {
-                isConfigurationChangedDialogOpen = false;
-            }
-
-            if (shouldReload)
+            if (navigator.ConfirmConfigurationReload())
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -235,14 +182,7 @@ namespace Neptuo.Productivity.SnippetManager
 
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration);
-                    navigator = new Navigator(
-                        provider, 
-                        configurationRepository,
-                        EnableRaisingEventsFromConfigurationWatcher, 
-                        Shutdown,
-                        GetXmlConfigurationPath,
-                        GetExampleConfiguration
-                    );
+                    navigator = CreateNavigator();
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {
@@ -251,12 +191,6 @@ namespace Neptuo.Productivity.SnippetManager
                     }
                 });
             }
-        }
-
-        private async Task<bool> WaitWithCancellationAsync(CancellationToken cancellationToken)
-        {
-            await Task.Delay(2 * 1000);
-            return cancellationToken.IsCancellationRequested;
         }
 
         protected override void OnExit(ExitEventArgs e)

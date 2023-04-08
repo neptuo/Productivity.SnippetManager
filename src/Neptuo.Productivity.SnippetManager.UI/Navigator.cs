@@ -197,6 +197,24 @@ public class Navigator : IClipboardService, ISendTextService
         UseShellExecute = true
     });
 
+    private bool isConfigurationChangedDialogOpen;
+
+    public bool ConfirmConfigurationReload()
+    {
+        if (isConfigurationChangedDialogOpen)
+            return false;
+
+        try
+        {
+            isConfigurationChangedDialogOpen = true;
+            return MessageBox.Show("Configuration has changed. Do you want to apply changes?", "Snippet Manager", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+        finally
+        {
+            isConfigurationChangedDialogOpen = false;
+        }
+    }
+
     public void Shutdown() 
         => shutdown();
 
