@@ -58,7 +58,8 @@ namespace Neptuo.Productivity.SnippetManager
             navigator = new Navigator(
                 provider,
                 EnableRaisingEventsFromConfigurationWatcher,
-                Shutdown
+                Shutdown,
+                (configuration.Xml ?? Configuration.Example.Xml!).GetFilePathOrDefault
             );
             trayIcon = new TrayIcon(navigator);
 
@@ -205,7 +206,7 @@ namespace Neptuo.Productivity.SnippetManager
 
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration);
-                    navigator = new Navigator(provider, EnableRaisingEventsFromConfigurationWatcher, Shutdown);
+                    navigator = new Navigator(provider, EnableRaisingEventsFromConfigurationWatcher, Shutdown, (configuration.Xml ?? Configuration.Example.Xml!).GetFilePathOrDefault);
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {

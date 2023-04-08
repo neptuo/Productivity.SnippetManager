@@ -13,14 +13,10 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class TrayIcon : IDisposable
 {
-    private readonly Navigator navigator;
     private readonly NotifyIcon icon;
 
     public TrayIcon(Navigator navigator)
     {
-        Ensure.NotNull(navigator, "navigator");
-        this.navigator = navigator;
-
         icon = new NotifyIcon
         {
             Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule!.FileName!),
@@ -36,6 +32,7 @@ public class TrayIcon : IDisposable
         icon.ContextMenuStrip = new ContextMenuStrip();
         icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
         icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
+        icon.ContextMenuStrip.Items.Add("XML snippets").Click += (sender, e) => navigator.OpenXmlSnippets();
         icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) => navigator.OpenHelp();
         icon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); navigator.Shutdown(); };
     }

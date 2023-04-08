@@ -33,12 +33,14 @@ public class Navigator : IClipboardService, ISendTextService
     private Task? snippetProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
+    private readonly Func<string> getXmlSnippetsPath;
 
-    public Navigator(ISnippetProvider snippetProvider, Action<bool> setConfigChangeEnabled, Action shutdown)
+    public Navigator(ISnippetProvider snippetProvider, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath)
     {
         this.snippetProvider = snippetProvider;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
+        this.getXmlSnippetsPath = getXmlSnippetsPath;
         this.allSnippets = new();
         this.snippetProviderContext = new(allSnippets);
         this.snippetProviderContext.Changed += OnModelsChanged;
@@ -148,6 +150,35 @@ public class Navigator : IClipboardService, ISendTextService
                 {
                     setConfigChangeEnabled(true);
                 }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        // Duplicated in App.xaml
+        Process.Start("explorer", filePath);
+    }
+
+    public void OpenXmlSnippets()
+    {
+        string filePath = getXmlSnippetsPath();
+        if (!File.Exists(filePath))
+        {
+            var result = MessageBox.Show("XML snippets file doesn't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                File.WriteAllText(filePath, """
+                    <?xml version="1.0" encoding="utf-8" ?>
+                    <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
+                    	<Snippet Title="Greet" Text="Hello, World!" />
+                    	<Snippet Title="Wheather Forecast" Priority="High">
+                    <![CDATA[Prague 22,
+                    London 18,
+                    New York 25]]></Snippet>
+                    </Snippets>
+                    """);
             }
             else
             {
