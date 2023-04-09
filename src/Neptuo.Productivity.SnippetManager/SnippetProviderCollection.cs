@@ -9,7 +9,7 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class SnippetProviderCollection
 {
-    private Dictionary<string, (Type configurationType, Func<Configuration, ISnippetProvider?> factory, Func<object> exampleConfiguration)> storage = new();
+    private Dictionary<string, (Type configurationType, Func<Dictionary<string, object>, ISnippetProvider?> factory, Func<object> exampleConfiguration)> storage = new();
 
     public void Add<T>(string key, ISnippetProviderFactory<T> factory)
         where T : IProviderConfiguration<T>
@@ -18,7 +18,7 @@ public class SnippetProviderCollection
             typeof(T), 
             configuration =>
             {
-                configuration.Providers.TryGetValue(key, out var conf);
+                configuration.TryGetValue(key, out var conf);
                 if (factory.TryCreate((T?)conf, out var provider))
                     return provider;
 
@@ -40,7 +40,7 @@ public class SnippetProviderCollection
         Add(key, new DelegateSnippetProviderFactory<T>(providerFactory, isNullConfigurationEnabled));
     }
 
-    public ISnippetProvider Create(Configuration configuration)
+    public ISnippetProvider Create(Dictionary<string, object> configuration)
     {
         var providers = new List<ISnippetProvider>();
 

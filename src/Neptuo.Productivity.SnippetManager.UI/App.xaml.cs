@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,7 +50,7 @@ namespace Neptuo.Productivity.SnippetManager
         protected override void OnStartup(StartupEventArgs e)
         {
             configuration = CreateConfiguration();
-            provider = snippetProviders.Create(configuration);
+            provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator();
             trayIcon = new TrayIcon(navigator);
 
@@ -181,7 +179,7 @@ namespace Neptuo.Productivity.SnippetManager
                     string? oldHotKey = configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey;
 
                     configuration = CreateConfiguration();
-                    provider = snippetProviders.Create(configuration);
+                    provider = snippetProviders.Create(configuration.Providers);
                     navigator = CreateNavigator();
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
