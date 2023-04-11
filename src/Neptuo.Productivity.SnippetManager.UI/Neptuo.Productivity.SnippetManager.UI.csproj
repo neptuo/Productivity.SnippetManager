@@ -16,6 +16,7 @@
 		<PackageReference Include="Neptuo.Windows.Converters" Version="1.0.0" />
 		<PackageReference Include="Neptuo.Windows.HotKeys" Version="2.0.0" />
 		<PackageReference Include="Neptuo.Windows.Threading" Version="1.0.1" />
+		<PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

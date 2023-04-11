@@ -54,8 +54,10 @@ namespace Neptuo.Productivity.SnippetManager
             navigator = CreateNavigator();
             trayIcon = new TrayIcon(navigator);
 
-            BindHotkey();
+            //BindHotkey();
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
+
+            new ManagedExtensibility().Initialize();
         }
 
         private Navigator CreateNavigator() => new Navigator(
