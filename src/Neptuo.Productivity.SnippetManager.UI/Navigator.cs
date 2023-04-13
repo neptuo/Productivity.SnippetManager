@@ -29,18 +29,22 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly ObservableCollection<SnippetModel> allSnippets;
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
-    private bool isSnipperProviderInitialized = false;
-    private Task? snipperProviderInitializeTask;
+    private bool isSnippetProviderInitialized = false;
+    private Task? snippetProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
     private readonly Func<string> getXmlSnippetsPath;
+    private readonly Func<Configuration> getExampleConfiguration;
+    private readonly ConfigurationRepository configurationRepository;
 
-    public Navigator(ISnippetProvider snippetProvider, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
     {
         this.snippetProvider = snippetProvider;
+        this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
+        this.getExampleConfiguration = getExampleConfiguration;
         this.allSnippets = new();
         this.snippetProviderContext = new(allSnippets);
         this.snippetProviderContext.Changed += OnModelsChanged;
@@ -102,16 +106,16 @@ public class Navigator : IClipboardService, ISendTextService
 
     private async Task UpdateSnippetsAsync(MainViewModel viewModel)
     {
-        if (!isSnipperProviderInitialized)
+        if (!isSnippetProviderInitialized)
         {
-            if (snipperProviderInitializeTask == null)
-                snipperProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
+            if (snippetProviderInitializeTask == null)
+                snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
             else
                 main?.Search();
 
-            await snipperProviderInitializeTask;
-            snipperProviderInitializeTask = null;
-            isSnipperProviderInitialized = true;
+            await snippetProviderInitializeTask;
+            snippetProviderInitializeTask = null;
+            isSnippetProviderInitialized = true;
 
             // Main lost focus and is closed.
             if (main == null)
@@ -139,12 +143,9 @@ public class Navigator : IClipboardService, ISendTextService
                 try
                 {
                     setConfigChangeEnabled(false);
-                    var options = new JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                    };
-                    File.WriteAllText(filePath, JsonSerializer.Serialize(Configuration.Example, options: options));
+
+                    var example = getExampleConfiguration();
+                    configurationRepository.Write(filePath, example);
                 }
                 finally
                 {
@@ -195,6 +196,24 @@ public class Navigator : IClipboardService, ISendTextService
         FileName = "https://github.com/neptuo/Productivity.SnippetManager",
         UseShellExecute = true
     });
+
+    private bool isConfigurationChangedDialogOpen;
+
+    public bool ConfirmConfigurationReload()
+    {
+        if (isConfigurationChangedDialogOpen)
+            return false;
+
+        try
+        {
+            isConfigurationChangedDialogOpen = true;
+            return MessageBox.Show("Configuration has changed. Do you want to apply changes?", "Snippet Manager", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+        finally
+        {
+            isConfigurationChangedDialogOpen = false;
+        }
+    }
 
     public void Shutdown() 
         => shutdown();

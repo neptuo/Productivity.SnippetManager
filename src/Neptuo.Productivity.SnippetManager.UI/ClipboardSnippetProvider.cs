@@ -9,14 +9,11 @@ using System.Windows.Forms;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class ClipboardSnippetProvider : ISnippetProvider
+public class ClipboardSnippetProvider : TransientSnippetProvider
 {
     private const string Title = "Text from Clipboard";
 
-    public Task InitializeAsync(SnippetProviderContext context)
-        => UpdateAsync(context);
-
-    public Task UpdateAsync(SnippetProviderContext context)
+    public override Task UpdateAsync(SnippetProviderContext context)
     {
         var existing = context.Models.FirstOrDefault(m => m.Title == Title);
         if (existing != null)

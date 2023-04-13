@@ -8,14 +8,11 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class GuidSnippetProvider : ISnippetProvider
+public class GuidSnippetProvider : TransientSnippetProvider
 {
     private const string Title = "GUID";
 
-    public Task InitializeAsync(SnippetProviderContext context) 
-        => UpdateAsync(context);
-
-    public Task UpdateAsync(SnippetProviderContext context)
+    public override Task UpdateAsync(SnippetProviderContext context)
     {
         var existing = context.Models.FirstOrDefault(m => m.Title == Title);
         if (existing != null)

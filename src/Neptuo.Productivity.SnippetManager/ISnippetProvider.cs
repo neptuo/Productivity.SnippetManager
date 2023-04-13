@@ -6,11 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Neptuo.Productivity.SnippetManager
+namespace Neptuo.Productivity.SnippetManager;
+
+public interface ISnippetProvider
 {
-    public interface ISnippetProvider
-    {
-        Task InitializeAsync(SnippetProviderContext context);
-        Task UpdateAsync(SnippetProviderContext context);
-    }
+    Task InitializeAsync(SnippetProviderContext context);
+    Task UpdateAsync(SnippetProviderContext context);
 }

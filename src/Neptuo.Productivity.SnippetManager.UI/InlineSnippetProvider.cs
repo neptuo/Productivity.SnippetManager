@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Neptuo.Productivity.SnippetManager;
 
@@ -14,7 +13,7 @@ public class InlineSnippetProvider : ISnippetProvider
 {
     private readonly Dictionary<string, string> snippets;
 
-    public InlineSnippetProvider(Dictionary<string, string> snippets) 
+    public InlineSnippetProvider(InlineSnippetConfiguration snippets) 
         => this.snippets = snippets;
 
     public Task InitializeAsync(SnippetProviderContext context)

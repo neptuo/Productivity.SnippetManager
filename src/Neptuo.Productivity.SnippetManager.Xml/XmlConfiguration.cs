@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager
 {
-    public class XmlConfiguration : ProviderConfiguration
+    public class XmlConfiguration : ProviderConfiguration, IEquatable<XmlConfiguration>, IProviderConfiguration<XmlConfiguration>
     {
         public string? FilePath { get; set; }
 
@@ -17,6 +17,9 @@ namespace Neptuo.Productivity.SnippetManager
             string filePath = FilePath ?? Path.Combine(userProfilePath, "SnippetManager.xml");
             return Path.GetFullPath(filePath, userProfilePath);
         }
+
+        public bool Equals(XmlConfiguration? other) 
+            => base.Equals(other) && FilePath == other.FilePath;
 
         public static new XmlConfiguration Example
         {
