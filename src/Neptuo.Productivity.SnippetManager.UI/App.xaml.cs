@@ -29,9 +29,8 @@ namespace Neptuo.Productivity.SnippetManager
         private ISnippetProvider provider;
         private Navigator navigator;
         private TrayIcon trayIcon;
-        private readonly ComponentDispatcherHotkeyCollection hotkeys = new ComponentDispatcherHotkeyCollection();
         private ConfigurationWatcher configurationWatcher;
-        private (Key key, ModifierKeys modifiers)? hotkey;
+        private Hotkey hotkey;
         private readonly SnippetProviderCollection snippetProviders = new SnippetProviderCollection();
         private readonly ConfigurationRepository configurationRepository;
 
@@ -45,6 +44,7 @@ namespace Neptuo.Productivity.SnippetManager
             snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
             snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
             configurationRepository = new ConfigurationRepository(snippetProviders);
+            hotkey = new Hotkey();
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -52,9 +52,9 @@ namespace Neptuo.Productivity.SnippetManager
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator();
-            trayIcon = new TrayIcon(navigator);
+            trayIcon = new TrayIcon(navigator, hotkey);
 
-            BindHotkey();
+            hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
         }
 
@@ -77,67 +77,6 @@ namespace Neptuo.Productivity.SnippetManager
             snippetProviders.AddExampleConfigurations(example.Providers);
 
             return example;
-        }
-
-        private void BindHotkey()
-        {
-            var key = Key.V;
-            var modifiers = ModifierKeys.Control | ModifierKeys.Shift;
-            if (!String.IsNullOrEmpty(configuration.General?.HotKey) && !TryParseHotKey(configuration.General.HotKey, out key, out modifiers))
-            {
-                MessageBox.Show("Error in hotkey configuration", "Snippet Manager", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown();
-            }
-
-            hotkey = (key, modifiers);
-
-            try
-            {
-                hotkeys.Add(key, modifiers, (_, _) => navigator.OpenMain());
-            }
-            catch (Win32Exception)
-            {
-                MessageBox.Show("The configured hotkey is probably taken by other application. Edit your configuration.", "Snippet Manager", MessageBoxButton.OK, MessageBoxImage.Error);
-                navigator.OpenConfiguration();
-                Dispatcher.Invoke(() => Shutdown());
-            }
-        }
-
-        private bool TryParseHotKey(string hotKey, out Key key, out ModifierKeys modifiers)
-        {
-            modifiers = ModifierKeys.None;
-            key = Key.None;
-
-            string[] parts = hotKey.Split('+', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length > 1)
-            {
-                for (int i = 0; i < parts.Length; i++)
-                {
-                    if (i < parts.Length - 1)
-                    {
-                        if (Enum.TryParse<ModifierKeys>(parts[i], out var mod))
-                        {
-                            if (i == 0)
-                                modifiers = mod;
-                            else
-                                modifiers |= mod;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (Enum.TryParse<Key>(parts[i], out var k))
-                            key = k;
-                        else
-                            return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         private Configuration CreateConfiguration()
@@ -184,8 +123,8 @@ namespace Neptuo.Productivity.SnippetManager
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {
-                        hotkeys.Remove(hotkey.Value.key, hotkey.Value.modifiers);
-                        BindHotkey();
+                        hotkey.UnBind();
+                        hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
                     }
                 });
             }
