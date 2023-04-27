@@ -19,6 +19,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
 
@@ -225,12 +226,21 @@ public class Navigator : IClipboardService, ISendTextService
         var scope = new ClipboardScope();
         try
         {
+            bool isCtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
             main?.Close();
 
             Clipboard.SetText(text);
 
             await Task.Delay(100);
             SendKeys.SendWait("^{v}");
+
+            if (isCtrlDown)
+            {
+                await Task.Delay(10);
+                SendKeys.SendWait("{ENTER}");
+            }
+
             await Task.Delay(100);
         }
         finally
