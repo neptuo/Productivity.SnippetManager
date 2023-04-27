@@ -233,11 +233,12 @@ public class Navigator : IClipboardService, ISendTextService
             Clipboard.SetText(text);
 
             await Task.Delay(100);
-            SendKeys.SendWait("^{v}");
+
+            SendKeys.SendWait("+{INSERT}");
 
             if (isCtrlDown)
             {
-                await Task.Delay(10);
+                await Task.Delay(100);
                 SendKeys.SendWait("{ENTER}");
             }
 
