@@ -63,5 +63,7 @@ internal class ViewModelLocator
         Add("GitHub - dotnet - runtime", "https://github.com/dotnet/runtime");
         Add("Money", "https://app.money.neptuo.com");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
+
+        MainViewModel.Selected.Add(new SnippetModel("Selected parent", "Selected paretn"));
     }
 }

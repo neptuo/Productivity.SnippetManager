@@ -94,37 +94,42 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
 
     private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
     {
-        snippets.Add(new SnippetModel(
+        var main = new SnippetModel(
             title: $"GitHub - {owner} - {repository}",
             text: htmlUrl
-        ));
+        );
+        snippets.Add(main);
 
         if (hasIssues)
         {
             snippets.Add(new SnippetModel(
-                title: $"GitHub - {owner} - {repository} - Issues",
+                title: $"Issues",
                 text: $"{htmlUrl}/issues",
-                priority: SnippetPriority.Low
+                priority: SnippetPriority.Low,
+                parentId: main.Id
             ));
             snippets.Add(new SnippetModel(
-                title: $"GitHub - {owner} - {repository} - Issues - New",
+                title: $"Issues - New",
                 text: $"{htmlUrl}/issues/new",
-                priority: SnippetPriority.Low
+                priority: SnippetPriority.Low,
+                parentId: main.Id
             ));
         }
 
         snippets.Add(new SnippetModel(
-            title: $"GitHub - {owner} - {repository} - Pull requests",
+            title: $"Pull requests",
             text: $"{htmlUrl}/pulls",
-            priority: SnippetPriority.Low
+            priority: SnippetPriority.Low,
+            parentId: main.Id
         ));
 
         if (defaultBranch != null)
         {
             snippets.Add(new SnippetModel(
-                title: $"GitHub - {owner} - {repository} - Find file",
+                title: $"Find file",
                 text: $"{htmlUrl}/find/{defaultBranch}",
-                priority: SnippetPriority.Low
+                priority: SnippetPriority.Low,
+                parentId: main.Id
             ));
         }
     }

@@ -20,6 +20,16 @@
             </Grid.RowDefinitions>
 
             <StackPanel>
+                <ItemsControl ItemsSource="{Binding Selected}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Title}" FontSize="11" />
+                                <TextBlock Text="»" FontSize="11" Margin="4,0,0,0" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <Grid>
                     <TextBlock Text="&#xE721;" Style="{StaticResource FontIconStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" />
                     <TextBlock Text="Search..." VerticalAlignment="Center" Margin="4,0,0,0" Visibility="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}" FontSize="14" Opacity=".5" />

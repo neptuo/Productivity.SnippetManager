@@ -1,5 +1,6 @@
 ﻿using Neptuo.Observables;
 using Neptuo.Observables.Collections;
+using Neptuo.Observables.Commands;
 using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using System;
@@ -20,10 +21,13 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
     {
         private const int PageSize = 5;
 
+        public ObservableCollection<SnippetModel> Selected { get; } = new ObservableCollection<SnippetModel>();
         public ObservableCollection<SnippetModel> Snippets { get; } = new ObservableCollection<SnippetModel>();
 
         public ApplySnippetCommand Apply { get; }
         public CopySnippetCommand Copy { get; }
+        public DelegateCommand<SnippetModel> Select { get; }
+        public DelegateCommand UnSelectLast { get; }
 
         private string[]? normalizedSearchText;
         private ICollection<SnippetModel> allSnippets;
@@ -48,6 +52,8 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             this.allSnippets = allSnippets;
             Apply = apply;
             Copy = copy;
+            Select = new DelegateCommand<SnippetModel>(SelectExecute, CanSelectExecute);
+            UnSelectLast = new DelegateCommand(UnSelectLastExecute, CanUnSelectLastExecute);
             IsInitializing = true;
         }
 
@@ -58,6 +64,26 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
                 normalizedSearchText = null;
 
             SearchNormalizedText();
+        }
+
+        private bool CanSelectExecute(SnippetModel snippet)
+            => (Selected.Count == 0 && snippet.ParentId == null) || Selected.Last().Id == snippet.ParentId;
+
+        private void SelectExecute(SnippetModel snippet)
+        {
+            Selected.Add(snippet);
+            Search(string.Empty);
+            UnSelectLast.RaiseCanExecuteChanged();
+        }
+
+        private bool CanUnSelectLastExecute()
+            => Selected.Count > 0;
+
+        private void UnSelectLastExecute()
+        {
+            Selected.Remove(Selected.Last());
+            Search(string.Empty);
+            UnSelectLast.RaiseCanExecuteChanged();
         }
 
         private void SearchNormalizedText()
@@ -86,8 +112,20 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private bool IsFilterPassed(SnippetModel snippet)
         {
+            SnippetModel? parent = Selected.LastOrDefault();
+            if (parent == null && snippet.ParentId != null)
+                return false;
+
+            if (parent != null && !parent.Id.Equals(snippet.ParentId))
+                return false;
+
             if (normalizedSearchText == null)
+            {
+                if (parent != null)
+                    return true;
+
                 return snippet.Priority <= SnippetPriority.High;
+            }
 
             bool result = true;
             string pathMatch = snippet.Title.ToLowerInvariant();

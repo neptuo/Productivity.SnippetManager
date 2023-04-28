@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,9 @@ namespace Neptuo.Productivity.SnippetManager.Models
     {
         private static string[] lineSeparators = new[] { Environment.NewLine, "\n" };
 
+        public Guid Id { get; } = Guid.NewGuid();
+        public Guid? ParentId { get; }
+
         public string Title { get; }
         public string? Description { get; }
         public string Text { get; }
@@ -20,12 +24,13 @@ namespace Neptuo.Productivity.SnippetManager.Models
 
         public bool IsFilled => true;
 
-        public SnippetModel(string title, string text, string? description = null, int priority = SnippetPriority.Normal)
+        public SnippetModel(string title, string text, string? description = null, int priority = SnippetPriority.Normal, Guid? parentId = null)
         {
             Title = title;
             Text = text;
-            Priority = priority;
             Description = description;
+            Priority = priority;
+            ParentId = parentId;
 
             if (description == null)
             {
