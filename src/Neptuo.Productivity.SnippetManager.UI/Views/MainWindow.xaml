@@ -5,12 +5,15 @@
         xmlns:converters="clr-namespace:Neptuo.Windows.Converters;assembly=Neptuo.Windows.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=netstandard"
         xmlns:dd="clr-namespace:Neptuo.Productivity.SnippetManager.Views.DesignData" d:DataContext="{x:Static dd:ViewModelLocator.MainViewModel}"
         mc:Ignorable="d" Title="Snippets" Width="400" SizeToContent="Height"
         ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Topmost="True" Background="Transparent"
         PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
     <Window.Resources>
         <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="Visible" FalseValue="Collapsed" />
+        <controls:StringConverter x:Key="RaquoPrefixConverter" Prefix="» " />
+        <system:Double x:Key="BreadcrumbsFontSize">10</system:Double>
     </Window.Resources>
     <Border Style="{StaticResource WindowBorderStyle}" Background="{StaticResource BackgroundBrush}" Padding="4" BorderThickness="1" CornerRadius="4">
         <Grid>
@@ -20,16 +23,18 @@
             </Grid.RowDefinitions>
 
             <StackPanel>
-                <ItemsControl ItemsSource="{Binding Selected}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Title}" FontSize="11" />
-                                <TextBlock Text="»" FontSize="11" Margin="4,0,0,0" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <StackPanel Orientation="Horizontal" Margin="4,0,0,0">
+                    <TextBlock Text="Snippets" FontSize="{StaticResource BreadcrumbsFontSize}" />
+                    <ItemsControl ItemsSource="{Binding Selected}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Title, Converter={StaticResource RaquoPrefixConverter}}" FontSize="{StaticResource BreadcrumbsFontSize}" Margin="4,0,0,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
                 <Grid>
                     <TextBlock Text="&#xE721;" Style="{StaticResource FontIconStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" />
                     <TextBlock Text="Search..." VerticalAlignment="Center" Margin="4,0,0,0" Visibility="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}" FontSize="14" Opacity=".5" />
