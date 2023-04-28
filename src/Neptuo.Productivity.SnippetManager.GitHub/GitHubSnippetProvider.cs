@@ -27,43 +27,52 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
             if (configuration.UserName == null)
                 return;
 
+            var parent = new SnippetModel(
+                title: $"GitHub",
+                text: "https://github.com"
+            );
+            context.Add(parent);
+
             var github = new GitHubClient(new ProductHeaderValue("SnippetMananger"));
             if (configuration.AccessToken != null)
                 github.Credentials = new Credentials(configuration.AccessToken);
 
             var repositories = await github.Repository.GetAllForUser(configuration.UserName);
 
-            AddSnippetsForRepositories(context, repositories);
+            AddSnippetsForRepositories(context, repositories, parent.Id);
 
-            var organizations = await github.Organization.GetAllForUser(configuration.UserName);
-            foreach (var organization in organizations)
-            {
-                try
-                {
-                    Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
-                    var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
-                    Debug.WriteLine($"GitHub snippets downloaded");
-                    AddSnippetsForRepositories(context, orgRepositories);
-                    Debug.WriteLine($"GitHub snippets added");
-                }
-                catch (ForbiddenException)
-                { }
-            }
+#if !DEBUG
+    throw new Exception("This was committed accidentallly!");
+#endif
+            //var organizations = await github.Organization.GetAllForUser(configuration.UserName);
+            //foreach (var organization in organizations)
+            //{
+            //    try
+            //    {
+            //        Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
+            //        var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
+            //        Debug.WriteLine($"GitHub snippets downloaded");
+            //        AddSnippetsForRepositories(context, orgRepositories);
+            //        Debug.WriteLine($"GitHub snippets added");
+            //    }
+            //    catch (ForbiddenException)
+            //    { }
+            //}
 
-            if (configuration.ExtraRepositories != null)
-            {
-                List<SnippetModel> snippets = new List<SnippetModel>();
-                foreach (var extraRepository in configuration.ExtraRepositories)
-                {
-                    var names = extraRepository.Split("/");
-                    if (names.Length == 1)
-                        names = new[] { configuration.UserName, names[0] };
+            //if (configuration.ExtraRepositories != null)
+            //{
+            //    List<SnippetModel> snippets = new List<SnippetModel>();
+            //    foreach (var extraRepository in configuration.ExtraRepositories)
+            //    {
+            //        var names = extraRepository.Split("/");
+            //        if (names.Length == 1)
+            //            names = new[] { configuration.UserName, names[0] };
 
-                    AddSnippetsForRepository(snippets, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], true, null);
-                }
+            //        AddSnippetsForRepository(snippets, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], true, null);
+            //    }
 
-                context.AddRange(snippets);
-            }
+            //    context.AddRange(snippets);
+            //}
         }
         catch (Exception ex)
         {
@@ -73,32 +82,45 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         Debug.WriteLine($"GitHub done");
     }
 
-    private static void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories)
+    private static void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories, Guid parentId)
     {
         List<SnippetModel> snippets = new List<SnippetModel>();
 
+        SnippetModel? parent = null;
         foreach (var repository in repositories)
         {
+            if (snippets.Count == 0)
+            {
+                parent = new SnippetModel(
+                    title: repository.Owner.Login,
+                    text: repository.Owner.HtmlUrl,
+                    parentId: parentId
+                );
+                context.Add(parent);
+            }
+
             AddSnippetsForRepository(
                 snippets,
                 repository.Name,
                 repository.HtmlUrl,
                 repository.Owner.Login,
                 repository.HasIssues,
-                repository.DefaultBranch
+                repository.DefaultBranch,
+                parent!.Id
             );
         }
 
         context.AddRange(snippets);
     }
 
-    private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
+    private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch, Guid parentId)
     {
-        var main = new SnippetModel(
-            title: $"GitHub - {owner} - {repository}",
-            text: htmlUrl
+        var parent = new SnippetModel(
+            title: repository,
+            text: htmlUrl,
+            parentId: parentId
         );
-        snippets.Add(main);
+        snippets.Add(parent);
 
         if (hasIssues)
         {
@@ -106,13 +128,13 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
                 title: $"Issues",
                 text: $"{htmlUrl}/issues",
                 priority: SnippetPriority.Low,
-                parentId: main.Id
+                parentId: parent.Id
             ));
             snippets.Add(new SnippetModel(
                 title: $"Issues - New",
                 text: $"{htmlUrl}/issues/new",
                 priority: SnippetPriority.Low,
-                parentId: main.Id
+                parentId: parent.Id
             ));
         }
 
@@ -120,7 +142,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
             title: $"Pull requests",
             text: $"{htmlUrl}/pulls",
             priority: SnippetPriority.Low,
-            parentId: main.Id
+            parentId: parent.Id
         ));
 
         if (defaultBranch != null)
@@ -129,7 +151,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
                 title: $"Find file",
                 text: $"{htmlUrl}/find/{defaultBranch}",
                 priority: SnippetPriority.Low,
-                parentId: main.Id
+                parentId: parent.Id
             ));
         }
     }
