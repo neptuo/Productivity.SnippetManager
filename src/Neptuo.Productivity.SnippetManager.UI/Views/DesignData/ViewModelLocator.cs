@@ -64,6 +64,7 @@ internal class ViewModelLocator
         Add("Money", "https://app.money.neptuo.com");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
 
-        MainViewModel.Selected.Add(new SnippetModel("Selected parent", "Selected paretn"));
+        MainViewModel.Selected.Add(new SnippetModel("Selected grandparent", "Selected grandparent"));
+        MainViewModel.Selected.Add(new SnippetModel("Selected parent", "Selected parent"));
     }
 }

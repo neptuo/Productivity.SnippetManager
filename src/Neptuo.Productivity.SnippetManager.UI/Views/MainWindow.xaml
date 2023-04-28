@@ -26,6 +26,11 @@
                 <StackPanel Orientation="Horizontal" Margin="4,0,0,0">
                     <TextBlock Text="Snippets" FontSize="{StaticResource BreadcrumbsFontSize}" />
                     <ItemsControl ItemsSource="{Binding Selected}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
