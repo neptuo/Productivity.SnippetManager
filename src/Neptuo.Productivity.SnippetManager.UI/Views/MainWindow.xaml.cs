@@ -128,6 +128,11 @@ namespace Neptuo.Productivity.SnippetManager.Views
 
                 e.Handled = true;
             }
+            else if (e.Key == Key.Back)
+            {
+                if (String.IsNullOrEmpty(SearchText.Text) && ViewModel.UnSelectLast.CanExecute())
+                    ViewModel.UnSelectLast.Execute();
+            }
 
             // Lastly, if non of the hot keys was pressed. Try to focus search box.
             if (!e.Handled && !SearchText.IsFocused)
@@ -202,7 +207,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
             }
         }
 
-        private Screen GetTargetScreen() 
+        private Screen GetTargetScreen()
             => Screen.FromHandle(stickPoint?.WindowHandle ?? Win32.GetForegroundWindow());
 
         private void StickToCaret()
