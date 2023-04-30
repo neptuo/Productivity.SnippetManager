@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class SnippetTokenizer
+public class SearchTokenizer
 {
-    public static IReadOnlyList<string> Tokenize(string input)
+    public static IReadOnlyList<string> Tokenize(string? input)
     {
         if (String.IsNullOrEmpty(input))
             return Array.Empty<string>();

@@ -29,7 +29,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public DelegateCommand<SnippetModel> Select { get; }
         public DelegateCommand UnSelectLast { get; }
 
-        private string[]? normalizedSearchText;
+        private IReadOnlyList<string>? normalizedSearchText;
         private ICollection<SnippetModel> allSnippets;
         private int searchResultCount = 0;
 
@@ -59,8 +59,8 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         public void Search(string searchText)
         {
-            normalizedSearchText = searchText?.ToLowerInvariant().Split(' ');
-            if (normalizedSearchText != null && normalizedSearchText.Length == 1 && normalizedSearchText[0] == string.Empty)
+            normalizedSearchText = SearchTokenizer.Tokenize(searchText?.ToLowerInvariant());
+            if (normalizedSearchText != null && normalizedSearchText.Count == 1 && normalizedSearchText[0] == string.Empty)
                 normalizedSearchText = null;
 
             SearchNormalizedText();
@@ -129,7 +129,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
             bool result = true;
             string pathMatch = snippet.Title.ToLowerInvariant();
-            for (int i = 0; i < normalizedSearchText.Length; i++)
+            for (int i = 0; i < normalizedSearchText.Count; i++)
             {
                 int currentIndex = pathMatch.IndexOf(normalizedSearchText[i]);
                 if (currentIndex == -1)

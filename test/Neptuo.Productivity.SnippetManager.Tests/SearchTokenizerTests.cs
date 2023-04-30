@@ -1,6 +1,6 @@
 namespace Neptuo.Productivity.SnippetManager.Tests
 {
-    public class SnippetTokenizerTests
+    public class SearchTokenizerTests
     {
         public static IEnumerable<object[]> GetBasicData()
         {
@@ -15,7 +15,7 @@ namespace Neptuo.Productivity.SnippetManager.Tests
         [MemberData(nameof(GetBasicData))]
         public void Basic(string input, string[] output)
         {
-            var result = SnippetTokenizer.Tokenize(input);
+            var result = SearchTokenizer.Tokenize(input);
             Assert.Equal(output.Length, result.Count);
 
             for (int i = 0; i < output.Length; i++)
