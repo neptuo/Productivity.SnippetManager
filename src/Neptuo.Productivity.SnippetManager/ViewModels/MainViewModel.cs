@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public DelegateCommand UnSelectLast { get; }
 
         private IReadOnlyList<string>? normalizedSearchText;
-        private ICollection<SnippetModel> allSnippets;
+        private ISnippetTree snippetTree;
         private int searchResultCount = 0;
 
         private bool isInitializing;
@@ -47,9 +48,9 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             }
         }
 
-        public MainViewModel(ICollection<SnippetModel> allSnippets, ApplySnippetCommand apply, CopySnippetCommand copy)
+        public MainViewModel(ISnippetTree snippetTree, ApplySnippetCommand apply, CopySnippetCommand copy)
         {
-            this.allSnippets = allSnippets;
+            this.snippetTree = snippetTree;
             Apply = apply;
             Copy = copy;
             Select = new DelegateCommand<SnippetModel>(SelectExecute, CanSelectExecute);
@@ -60,9 +61,6 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public void Search(string searchText)
         {
             normalizedSearchText = SearchTokenizer.Tokenize(searchText?.ToLowerInvariant());
-            if (normalizedSearchText != null && normalizedSearchText.Count == 1 && normalizedSearchText[0] == string.Empty)
-                normalizedSearchText = null;
-
             SearchNormalizedText();
         }
 
@@ -91,50 +89,60 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             Snippets.Clear();
 
             searchResultCount = 0;
-            foreach (var snippet in allSnippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
+
+            SnippetModel? parent = Selected.LastOrDefault();
+            var children = parent == null
+                ? snippetTree.GetRoots()
+                : snippetTree.GetChildren(parent);
+
+            SearchTree(children, 0);
+        }
+
+        private void SearchTree(IEnumerable<SnippetModel> snippets, int fromIndex)
+        {
+            foreach (var snippet in snippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
             {
                 if (searchResultCount >= PageSize)
                     break;
 
-                if (OnFilter(snippet))
+                int matchedIndex = IsFilterPassed(snippet, 0);
+                if (matchedIndex == normalizedSearchText!.Count)
+                {
                     Snippets.Add(snippet);
+                    searchResultCount++;
+                    continue;
+                }
+                else if (matchedIndex > 0)
+                {
+                    var children = snippetTree.GetChildren(snippet);
+                    SearchTree(children, matchedIndex + 1);
+                }
+                else if (matchedIndex == -1)
+                {
+                    // TODO: Nothing matched, should we go in depth?
+                }
             }
         }
 
-        private bool OnFilter(SnippetModel snippet)
+        private int IsFilterPassed(SnippetModel snippet, int fromIndex)
         {
-            var isPassed = IsFilterPassed(snippet);
-            if (isPassed)
-                searchResultCount++;
+            // First pass: shallow from the top
+            // Second pass: depth first
 
-            return isPassed;
-        }
+            // "maraf", "money"
+            // GitHub - maraf - Money - issues
 
-        private bool IsFilterPassed(SnippetModel snippet)
-        {
-            SnippetModel? parent = Selected.LastOrDefault();
-            if (parent == null && snippet.ParentId != null)
-                return false;
+            if (normalizedSearchText!.Count == 0)
+                return snippet.Priority <= SnippetPriority.High ? 0 : -1;
 
-            if (parent != null && !parent.Id.Equals(snippet.ParentId))
-                return false;
-
-            if (normalizedSearchText == null)
-            {
-                if (parent != null)
-                    return true;
-
-                return snippet.Priority <= SnippetPriority.High;
-            }
-
-            bool result = true;
+            int result = -1;
             string pathMatch = snippet.Title.ToLowerInvariant();
             for (int i = 0; i < normalizedSearchText.Count; i++)
             {
                 int currentIndex = pathMatch.IndexOf(normalizedSearchText[i]);
                 if (currentIndex == -1)
                 {
-                    result = false;
+                    result = i;
                     break;
                 }
 
