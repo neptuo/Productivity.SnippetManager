@@ -17,10 +17,6 @@ namespace Neptuo.Productivity.SnippetManager
 
         public event Action? Changed;
 
-        public SnippetProviderContext() 
-            : this(new List<SnippetModel>())
-        { }
-
         public SnippetProviderContext(ICollection<SnippetModel> models) 
             => this.models = models;
 
