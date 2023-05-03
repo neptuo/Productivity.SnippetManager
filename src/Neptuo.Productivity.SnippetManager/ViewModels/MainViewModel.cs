@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private IReadOnlyList<string>? normalizedSearchText;
         private ISnippetTree snippetTree;
-        private int searchResultCount = 0;
+        private List<SnippetModel> searchResult = new();
 
         private bool isInitializing;
         public bool IsInitializing
@@ -84,42 +85,82 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             UnSelectLast.RaiseCanExecuteChanged();
         }
 
+        private const bool SupplyChildrenFromSelectedSnippets = false;
+        private const bool SupplyNonRootSnippets = true;
+
         private void SearchNormalizedText()
         {
             Snippets.Clear();
+            searchResult.Clear();
 
-            searchResultCount = 0;
+            SearchFromCurrentTopNode(false);
 
+            if (SupplyChildrenFromSelectedSnippets)
+            {
+                // TODO: If we don't have enough items, you should include some children from the first match
+                // Not sure at the moment, user can always use TAB to pin
+                List<SnippetModel> toAdd = new();
+                if (searchResult.Count < PageSize)
+                {
+                    foreach (var snippet in searchResult)
+                    {
+                        foreach (var child in snippetTree.GetChildren(snippet))
+                        {
+                            toAdd.Add(child);
+
+                            if (searchResult.Count + toAdd.Count >= PageSize)
+                                break;
+                        }
+
+                        if (searchResult.Count + toAdd.Count >= PageSize)
+                            break;
+                    }
+                }
+
+                searchResult.AddRange(toAdd);
+            }
+
+            if (SupplyNonRootSnippets)
+            {
+                // If we have zero items, we should go in depth first
+                if (searchResult.Count == 0)
+                    SearchFromCurrentTopNode(true);
+            }
+
+            Snippets.AddRange(searchResult.OrderBy(m => m.Priority).ThenBy(m => m.Title));
+        }
+
+        private void SearchFromCurrentTopNode(bool goInDepth)
+        {
             SnippetModel? parent = Selected.LastOrDefault();
             var children = parent == null
                 ? snippetTree.GetRoots()
                 : snippetTree.GetChildren(parent);
 
-            SearchTree(children, 0);
+            SearchTree(children, 0, goInDepth);
         }
 
-        private void SearchTree(IEnumerable<SnippetModel> snippets, int fromIndex)
+        private void SearchTree(IEnumerable<SnippetModel> snippets, int fromIndex, bool goInDepth)
         {
             foreach (var snippet in snippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
             {
-                if (searchResultCount >= PageSize)
+                if (searchResult.Count >= PageSize)
                     break;
 
-                int matchedIndex = IsFilterPassed(snippet, 0);
-                if (matchedIndex == normalizedSearchText!.Count)
+                int lastMatchedIndex = IsFilterPassed(snippet, fromIndex);
+                if (lastMatchedIndex == normalizedSearchText!.Count - 1)
                 {
-                    Snippets.Add(snippet);
-                    searchResultCount++;
+                    searchResult.Add(snippet);
                     continue;
                 }
-                else if (matchedIndex > 0)
+                else if (lastMatchedIndex >= 0 || (goInDepth && lastMatchedIndex == -1))
                 {
                     var children = snippetTree.GetChildren(snippet);
-                    SearchTree(children, matchedIndex + 1);
+                    SearchTree(children, lastMatchedIndex + 1, goInDepth);
                 }
-                else if (matchedIndex == -1)
+                else
                 {
-                    // TODO: Nothing matched, should we go in depth?
+                    Debug.Assert(true, "Unreachable code");
                 }
             }
         }
@@ -137,15 +178,13 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
             int result = -1;
             string pathMatch = snippet.Title.ToLowerInvariant();
-            for (int i = 0; i < normalizedSearchText.Count; i++)
+            for (int i = fromIndex; i < normalizedSearchText.Count; i++)
             {
                 int currentIndex = pathMatch.IndexOf(normalizedSearchText[i]);
                 if (currentIndex == -1)
-                {
-                    result = i;
                     break;
-                }
 
+                result = i;
                 pathMatch = pathMatch.Substring(currentIndex + normalizedSearchText[i].Length);
             }
 

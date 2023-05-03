@@ -20,13 +20,17 @@ internal class ViewModelLocator
         {
             if (mainViewModel == null)
             {
+                var tree = LoadSnippets();
+
                 mainViewModel = new MainViewModel(
-                    new ObservableCollection<SnippetModel>(), 
+                    tree, 
                     new ApplySnippetCommand(InteropService.Instance), 
                     new CopySnippetCommand(InteropService.Instance)
                 );
 
-                LoadSnippets();
+                MainViewModel.Selected.Add(new SnippetModel("Selected grandparent", "Selected grandparent"));
+                MainViewModel.Selected.Add(new SnippetModel("Selected parent", "Selected parent"));
+
 
                 MainViewModel.IsInitializing = false;
             }
@@ -35,10 +39,12 @@ internal class ViewModelLocator
         }
     }
 
-    private static void LoadSnippets()
+    private static ISnippetTree LoadSnippets()
     {
+        SnippetProviderContext ctx = new SnippetProviderContext();
+
         void Add(string title, string text, string? description = null)
-            => MainViewModel.Snippets.Add(new SnippetModel(title, text, description, SnippetPriority.High));
+            => ctx.Add(new SnippetModel(title, text, description, SnippetPriority.High));
 
         Add(
             "C# class",
@@ -63,8 +69,6 @@ internal class ViewModelLocator
         Add("GitHub - dotnet - runtime", "https://github.com/dotnet/runtime");
         Add("Money", "https://app.money.neptuo.com");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
-
-        MainViewModel.Selected.Add(new SnippetModel("Selected grandparent", "Selected grandparent"));
-        MainViewModel.Selected.Add(new SnippetModel("Selected parent", "Selected parent"));
+        return ctx;
     }
 }

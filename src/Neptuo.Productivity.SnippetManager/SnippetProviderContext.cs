@@ -30,6 +30,7 @@ namespace Neptuo.Productivity.SnippetManager
                     parent.children = new();
 
                 parent.children.Add(snippet);
+                byId[snippet.ParentId.Value] = parent;
             }
         }
 
