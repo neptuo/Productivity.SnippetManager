@@ -215,7 +215,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             // GitHub - maraf - Money - issues
 
             if (normalizedSearchText!.Count == 0)
-                return snippet.Priority <= SnippetPriority.High ? 0 : -1;
+                return snippet.Priority >= SnippetPriority.High ? 0 : -1;
 
             int result = -1;
             string pathMatch = snippet.Title.ToLowerInvariant();
