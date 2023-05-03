@@ -78,11 +78,20 @@ namespace Neptuo.Productivity.SnippetManager
 
             return Enumerable.Empty<SnippetModel>();
         }
+
+        public SnippetModel? FindById(Guid id)
+        {
+            if (byId.TryGetValue(id, out var entry))
+                return entry.model;
+
+            return null;
+        }
     }
 
     public interface ISnippetTree
     {
         IEnumerable<SnippetModel> GetRoots();
         IEnumerable<SnippetModel> GetChildren(SnippetModel parent);
+        SnippetModel? FindById(Guid id);
     }
 }

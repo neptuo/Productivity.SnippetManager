@@ -66,10 +66,51 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         }
 
         private bool CanSelectExecute(SnippetModel snippet)
-            => (Selected.Count == 0 && snippet.ParentId == null) || Selected.Last().Id == snippet.ParentId;
+        {
+            if (Selected.Count == 0 || snippet.ParentId == null)
+                return true;
+
+            SnippetModel? current = snippet;
+            while (current.ParentId != null)
+            {
+                if (Selected.Last().Id == current.ParentId)
+                    return true;
+
+                current = snippetTree.FindById(current.ParentId.Value);
+                if (current == null)
+                    break;
+            }
+
+            return false;
+        }
 
         private void SelectExecute(SnippetModel snippet)
         {
+            if (snippet.ParentId != null)
+            {
+                var last = Selected.LastOrDefault();
+                var ancestors = new Stack<SnippetModel>();
+
+                SnippetModel? current = snippet;
+                while (last?.Id != current.ParentId)
+                {
+                    if (current.ParentId == null)
+                        break;
+
+                    current = snippetTree.FindById(current.ParentId.Value);
+                    if (current == null)
+                    {
+                        Debug.Assert(true, "Unreachable code");
+                        break;
+                    }
+
+                    ancestors.Push(current);
+                }
+
+                while (ancestors.TryPop(out current))
+                    Selected.Add(current);
+            }
+
             Selected.Add(snippet);
             Search(string.Empty);
             UnSelectLast.RaiseCanExecuteChanged();
