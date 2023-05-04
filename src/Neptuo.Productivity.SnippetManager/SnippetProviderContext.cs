@@ -3,10 +3,12 @@ using Neptuo.Productivity.SnippetManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 
 namespace Neptuo.Productivity.SnippetManager
 {
@@ -86,12 +88,38 @@ namespace Neptuo.Productivity.SnippetManager
 
             return null;
         }
+
+        public IEnumerable<SnippetModel> GetAncestors(SnippetModel child, SnippetModel? lastAncestor = null)
+        {
+            var ancestors = new Stack<SnippetModel>();
+            if (child.ParentId != null)
+            {
+                SnippetModel? current = child;
+                while (lastAncestor?.Id != current.ParentId)
+                {
+                    if (current.ParentId == null)
+                        break;
+
+                    current = FindById(current.ParentId.Value);
+                    if (current == null)
+                    {
+                        Debug.Assert(true, "Unreachable code");
+                        break;
+                    }
+
+                    ancestors.Push(current);
+                }
+            }
+
+            return ancestors;
+        }
     }
 
     public interface ISnippetTree
     {
+        SnippetModel? FindById(Guid id);
         IEnumerable<SnippetModel> GetRoots();
         IEnumerable<SnippetModel> GetChildren(SnippetModel parent);
-        SnippetModel? FindById(Guid id);
+        IEnumerable<SnippetModel> GetAncestors(SnippetModel child, SnippetModel? lastAncestor = null);
     }
 }

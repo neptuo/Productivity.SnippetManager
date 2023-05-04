@@ -86,30 +86,10 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private void SelectExecute(SnippetModel snippet)
         {
-            if (snippet.ParentId != null)
-            {
-                var last = Selected.LastOrDefault();
-                var ancestors = new Stack<SnippetModel>();
+            var ancestors = snippetTree.GetAncestors(snippet, Selected.LastOrDefault());
 
-                SnippetModel? current = snippet;
-                while (last?.Id != current.ParentId)
-                {
-                    if (current.ParentId == null)
-                        break;
-
-                    current = snippetTree.FindById(current.ParentId.Value);
-                    if (current == null)
-                    {
-                        Debug.Assert(true, "Unreachable code");
-                        break;
-                    }
-
-                    ancestors.Push(current);
-                }
-
-                while (ancestors.TryPop(out current))
-                    Selected.Add(current);
-            }
+            foreach(var ancestor in ancestors)
+                Selected.Add(ancestor);
 
             Selected.Add(snippet);
             Search(string.Empty);
