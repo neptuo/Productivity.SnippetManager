@@ -21,8 +21,6 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 {
     public class MainViewModel : ObservableModel
     {
-        private const int PageSize = 5;
-
         public ObservableCollection<SnippetModel> Selected { get; } = new ObservableCollection<SnippetModel>();
         public ObservableCollection<SnippetModel> Snippets { get; } = new ObservableCollection<SnippetModel>();
 
@@ -31,9 +29,8 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public DelegateCommand<SnippetModel> Select { get; }
         public DelegateCommand UnSelectLast { get; }
 
-        private IReadOnlyList<string>? normalizedSearchText;
         private ISnippetTree snippetTree;
-        private List<SnippetModel> searchResult = new();
+        private SnippetSearcher searcher;
 
         private bool isInitializing;
         public bool IsInitializing
@@ -52,6 +49,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
         public MainViewModel(ISnippetTree snippetTree, ApplySnippetCommand apply, CopySnippetCommand copy)
         {
             this.snippetTree = snippetTree;
+            this.searcher = new(snippetTree, 5);
             Apply = apply;
             Copy = copy;
             Select = new DelegateCommand<SnippetModel>(SelectExecute, CanSelectExecute);
@@ -61,8 +59,10 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         public void Search(string searchText)
         {
-            normalizedSearchText = SearchTokenizer.Tokenize(searchText?.ToLowerInvariant());
-            SearchNormalizedText();
+            Snippets.Clear();
+            var normalizedSearchText = SearchTokenizer.Tokenize(searchText?.ToLowerInvariant());
+            var searchResult = searcher.Search(normalizedSearchText, Selected.LastOrDefault());
+            Snippets.AddRange(searchResult);
         }
 
         private bool CanSelectExecute(SnippetModel snippet)
@@ -106,110 +106,5 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             UnSelectLast.RaiseCanExecuteChanged();
         }
 
-        private const bool SupplyChildrenFromSelectedSnippets = false;
-        private const bool SupplyNonRootSnippets = true;
-
-        private void SearchNormalizedText()
-        {
-            Snippets.Clear();
-            searchResult.Clear();
-
-            SearchFromCurrentTopNode(false);
-
-            if (SupplyChildrenFromSelectedSnippets)
-            {
-                // TODO: If we don't have enough items, you should include some children from the first match
-                // Not sure at the moment, user can always use TAB to pin
-                List<SnippetModel> toAdd = new();
-                if (searchResult.Count < PageSize)
-                {
-                    foreach (var snippet in searchResult)
-                    {
-                        foreach (var child in snippetTree.GetChildren(snippet))
-                        {
-                            toAdd.Add(child);
-
-                            if (searchResult.Count + toAdd.Count >= PageSize)
-                                break;
-                        }
-
-                        if (searchResult.Count + toAdd.Count >= PageSize)
-                            break;
-                    }
-                }
-
-                searchResult.AddRange(toAdd);
-            }
-
-            if (SupplyNonRootSnippets)
-            {
-                // If we have zero items, we should go in depth first
-                if (searchResult.Count == 0)
-                    SearchFromCurrentTopNode(true);
-            }
-
-            Snippets.AddRange(searchResult.OrderBy(m => m.Priority).ThenBy(m => m.Title));
-        }
-
-        private void SearchFromCurrentTopNode(bool goInDepth)
-        {
-            SnippetModel? parent = Selected.LastOrDefault();
-            var children = parent == null
-                ? snippetTree.GetRoots()
-                : snippetTree.GetChildren(parent);
-
-            SearchTree(children, 0, goInDepth);
-        }
-
-        private void SearchTree(IEnumerable<SnippetModel> snippets, int fromIndex, bool goInDepth)
-        {
-            foreach (var snippet in snippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
-            {
-                if (searchResult.Count >= PageSize)
-                    break;
-
-                int lastMatchedIndex = IsFilterPassed(snippet, fromIndex);
-                if (lastMatchedIndex == normalizedSearchText!.Count - 1)
-                {
-                    searchResult.Add(snippet);
-                    continue;
-                }
-                else if (lastMatchedIndex >= 0 || (goInDepth && lastMatchedIndex == -1))
-                {
-                    var children = snippetTree.GetChildren(snippet);
-                    SearchTree(children, lastMatchedIndex + 1, goInDepth);
-                }
-                else
-                {
-                    Debug.Assert(true, "Unreachable code");
-                }
-            }
-        }
-
-        private int IsFilterPassed(SnippetModel snippet, int fromIndex)
-        {
-            // First pass: shallow from the top
-            // Second pass: depth first
-
-            // "maraf", "money"
-            // GitHub - maraf - Money - issues
-
-            if (normalizedSearchText!.Count == 0)
-                return snippet.Priority >= SnippetPriority.High ? 0 : -1;
-
-            int result = -1;
-            string pathMatch = snippet.Title.ToLowerInvariant();
-            for (int i = fromIndex; i < normalizedSearchText.Count; i++)
-            {
-                int currentIndex = pathMatch.IndexOf(normalizedSearchText[i]);
-                if (currentIndex == -1)
-                    break;
-
-                result = i;
-                pathMatch = pathMatch.Substring(currentIndex + normalizedSearchText[i].Length);
-            }
-
-            return result;
-        }
     }
 }

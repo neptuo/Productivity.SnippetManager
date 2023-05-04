@@ -114,12 +114,4 @@ namespace Neptuo.Productivity.SnippetManager
             return ancestors;
         }
     }
-
-    public interface ISnippetTree
-    {
-        SnippetModel? FindById(Guid id);
-        IEnumerable<SnippetModel> GetRoots();
-        IEnumerable<SnippetModel> GetChildren(SnippetModel parent);
-        IEnumerable<SnippetModel> GetAncestors(SnippetModel child, SnippetModel? lastAncestor = null);
-    }
 }
