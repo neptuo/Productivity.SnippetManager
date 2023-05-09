@@ -13,7 +13,7 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class SnippetSearcher
 {
-    private const bool SupplyChildrenFromSelectedSnippets = true;
+    private const bool SupplyChildrenFromSelectedSnippets = false;
     private const bool SupplyNonRootSnippets = true;
 
     private readonly ISnippetTree snippetTree;
