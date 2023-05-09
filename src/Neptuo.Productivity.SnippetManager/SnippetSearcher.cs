@@ -94,7 +94,7 @@ public class SnippetSearcher
             else if (lastMatchedIndex >= 0 || (goInDepth && lastMatchedIndex == -1))
             {
                 var children = snippetTree.GetChildren(snippet);
-                SearchTree(searchResult, children, normalizedSearchText, lastMatchedIndex + 1, goInDepth);
+                SearchTree(searchResult, children, normalizedSearchText, fromIndex + lastMatchedIndex + 1, goInDepth);
             }
             else
             {
