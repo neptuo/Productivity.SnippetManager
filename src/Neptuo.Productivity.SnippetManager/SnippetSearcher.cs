@@ -15,6 +15,7 @@ public class SnippetSearcher
 {
     private const bool SupplyChildrenFromSelectedSnippets = true;
     private const bool SupplyNonRootSnippets = true;
+
     private readonly ISnippetTree snippetTree;
     private readonly int pageSize;
 
@@ -30,7 +31,7 @@ public class SnippetSearcher
 
         searchResult.Clear();
 
-        SearchFromCurrentTopNode(searchResult, currentRoot, normalizedSearchText, false);
+        SearchTree(searchResult, currentRoot, normalizedSearchText);
 
         if (SupplyChildrenFromSelectedSnippets)
         {
@@ -57,11 +58,11 @@ public class SnippetSearcher
             searchResult.AddRange(toAdd);
         }
 
-        if (SupplyNonRootSnippets && currentRoot == null)
+        if (SupplyNonRootSnippets)
         {
             // If we have zero items, we should go in depth first
             if (searchResult.Count == 0)
-                SearchFromCurrentTopNode(searchResult, null, normalizedSearchText, true);
+                SearchTree(searchResult, currentRoot, normalizedSearchText, goInDepth: true);
         }
 
         // TODO: searchResult.Count == 0 && we have parent
@@ -69,18 +70,13 @@ public class SnippetSearcher
         return searchResult.OrderBy(m => m.Priority).ThenBy(m => m.Title);
     }
 
-    private void SearchFromCurrentTopNode(List<SnippetModel> searchResult, SnippetModel? currentRoot, IReadOnlyList<string>? normalizedSearchText, bool goInDepth)
+    private void SearchTree(List<SnippetModel> searchResult, SnippetModel? parent, IReadOnlyList<string>? normalizedSearchText, int fromIndex = 0, bool goInDepth = false)
     {
-        var children = currentRoot == null
+        var children = parent == null
             ? snippetTree.GetRoots()
-            : snippetTree.GetChildren(currentRoot);
+            : snippetTree.GetChildren(parent);
 
-        SearchTree(searchResult, children, normalizedSearchText, 0, goInDepth);
-    }
-
-    private void SearchTree(List<SnippetModel> searchResult, IEnumerable<SnippetModel> snippets, IReadOnlyList<string>? normalizedSearchText, int fromIndex, bool goInDepth)
-    {
-        foreach (var snippet in snippets.OrderBy(m => m.Priority).ThenBy(m => m.Title))
+        foreach (var snippet in children.OrderBy(m => m.Priority).ThenBy(m => m.Title))
         {
             if (searchResult.Count >= pageSize)
                 break;
@@ -93,8 +89,7 @@ public class SnippetSearcher
             }
             else if (lastMatchedIndex >= 0 || (goInDepth && lastMatchedIndex == -1))
             {
-                var children = snippetTree.GetChildren(snippet);
-                SearchTree(searchResult, children, normalizedSearchText, fromIndex + lastMatchedIndex + 1, goInDepth);
+                SearchTree(searchResult, snippet, normalizedSearchText, fromIndex + lastMatchedIndex + 1, goInDepth);
             }
             else
             {
