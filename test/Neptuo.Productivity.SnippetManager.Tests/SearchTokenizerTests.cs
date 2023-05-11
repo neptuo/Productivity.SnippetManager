@@ -1,25 +1,24 @@
-namespace Neptuo.Productivity.SnippetManager.Tests
+namespace Neptuo.Productivity.SnippetManager.Tests;
+
+public class SearchTokenizerTests
 {
-    public class SearchTokenizerTests
+    public static IEnumerable<object[]> GetBasicData()
     {
-        public static IEnumerable<object[]> GetBasicData()
+        return new object[][]
         {
-            return new object[][]
-            {
                 new object[] { "Hello, World!", new string[] { "Hello,", "World!" } },
                 new object[] { "Hello, \"This is Sparta\" World!", new string[] { "Hello,", "This is Sparta", "World!" } }
-            };
-        }
+        };
+    }
 
-        [Theory]
-        [MemberData(nameof(GetBasicData))]
-        public void Basic(string input, string[] output)
-        {
-            var result = SearchTokenizer.Tokenize(input);
-            Assert.Equal(output.Length, result.Count);
+    [Theory]
+    [MemberData(nameof(GetBasicData))]
+    public void Basic(string input, string[] output)
+    {
+        var result = SearchTokenizer.Tokenize(input);
+        Assert.Equal(output.Length, result.Count);
 
-            for (int i = 0; i < output.Length; i++)
-                Assert.Equal(output[i], result[i]);
-        }
+        for (int i = 0; i < output.Length; i++)
+            Assert.Equal(output[i], result[i]);
     }
 }

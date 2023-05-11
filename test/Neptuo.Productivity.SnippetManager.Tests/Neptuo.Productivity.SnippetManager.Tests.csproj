@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\src\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<None Update="GitHubSnippets.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

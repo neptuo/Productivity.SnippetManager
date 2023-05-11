@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager.Models
 {
+    [DebuggerDisplay("Snippet {Title}")]
     public class SnippetModel : IAppliableSnippetModel
     {
         private static string[] lineSeparators = new[] { Environment.NewLine, "\n" };

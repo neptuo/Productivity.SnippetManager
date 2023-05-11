@@ -70,7 +70,7 @@ public class SnippetSearcher
         return searchResult.OrderBy(m => m.Priority).ThenBy(m => m.Title);
     }
 
-    private void SearchTree(List<SnippetModel> searchResult, SnippetModel? parent, IReadOnlyList<string>? normalizedSearchText, int fromIndex = 0, bool goInDepth = false)
+    private void SearchTree(List<SnippetModel> searchResult, SnippetModel? parent, IReadOnlyList<string> normalizedSearchText, int fromIndex = 0, bool goInDepth = false)
     {
         var children = parent == null
             ? snippetTree.GetRoots()
@@ -81,15 +81,23 @@ public class SnippetSearcher
             if (searchResult.Count >= pageSize)
                 break;
 
-            int lastMatchedIndex = IsFilterPassed(snippet, normalizedSearchText, fromIndex);
-            if (lastMatchedIndex == normalizedSearchText!.Count - 1)
+            if (normalizedSearchText.Count == 0)
+            {
+                if (snippet.Priority <= SnippetPriority.High || parent != null)
+                    searchResult.Add(snippet);
+
+                continue;
+            }
+
+            int lastMatchedIndex = IsFilterPassed(snippet, parent, normalizedSearchText, fromIndex);
+            if (lastMatchedIndex >= normalizedSearchText!.Count - 1)
             {
                 searchResult.Add(snippet);
                 continue;
             }
-            else if (lastMatchedIndex >= 0 || (goInDepth && lastMatchedIndex == -1))
+            else if (lastMatchedIndex >= fromIndex || (goInDepth && lastMatchedIndex == -1))
             {
-                SearchTree(searchResult, snippet, normalizedSearchText, fromIndex + lastMatchedIndex + 1, goInDepth);
+                SearchTree(searchResult, snippet, normalizedSearchText, lastMatchedIndex + 1, goInDepth);
             }
             else
             {
@@ -98,11 +106,8 @@ public class SnippetSearcher
         }
     }
 
-    private int IsFilterPassed(SnippetModel snippet, IReadOnlyList<string>? normalizedSearchText, int fromIndex)
+    private int IsFilterPassed(SnippetModel snippet, SnippetModel? parent, IReadOnlyList<string> normalizedSearchText, int fromIndex)
     {
-        if (normalizedSearchText!.Count == 0)
-            return snippet.Priority >= SnippetPriority.High ? 0 : -1;
-
         int result = -1;
         string pathMatch = snippet.Title.ToLowerInvariant();
         for (int i = fromIndex; i < normalizedSearchText.Count; i++)
