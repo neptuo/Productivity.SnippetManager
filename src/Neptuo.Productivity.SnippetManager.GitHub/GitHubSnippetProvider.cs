@@ -139,7 +139,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         }
 
         snippets.Add(new SnippetModel(
-            title: $"Pull requests",
+            title: $"Pulls",
             text: $"{htmlUrl}/pulls",
             priority: SnippetPriority.Low,
             parentId: parent.Id
