@@ -78,6 +78,13 @@ public class SnippetSearcherTests
     }
 
     [Fact]
+    public void NoParent_2Tokens_Root_Skipped()
+    {
+        var result = Search(null, "g", "aspnet");
+        Assert.Single(result);
+    }
+
+    [Fact]
     public void NoParent_2Tokens_Nested()
     {
         var result = Search(null, "mara", "aspnet");
