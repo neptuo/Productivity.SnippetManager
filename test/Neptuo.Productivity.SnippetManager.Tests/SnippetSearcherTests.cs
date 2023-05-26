@@ -48,7 +48,7 @@ public class SnippetSearcherTests
     }
 
     [Fact]
-    public void ContextReady() => Assert.Equal(309, snippetContext.Models.Count());
+    public void ContextReady() => Assert.Equal(289, snippetContext.Models.Count());
 
     private SnippetModel[] Search(SnippetModel? currentRoot, params string[] normalizedSearchText)
     {
@@ -82,6 +82,20 @@ public class SnippetSearcherTests
     {
         var result = Search(null, "g", "aspnet");
         Assert.Single(result);
+    }
+
+    [Fact]
+    public void NoParent_2Tokens_Root_Skipped_DifferentBranches()
+    {
+        var result = Search(null, "g", "re");
+        Assert.Collection(
+            result,
+            item => Assert.Equal("https://github.com/maraf/aspnetcore", item.Text),
+            item => Assert.Equal("https://github.com/maraf/dotnet-wasm-react", item.Text),
+            item => Assert.Equal("https://github.com/maraf/ImagePreviewer", item.Text),
+            item => Assert.Equal("https://github.com/maraf/JokeStore", item.Text),
+            item => Assert.Equal("https://github.com/neptuo/Recollections", item.Text)
+        );
     }
 
     [Fact]

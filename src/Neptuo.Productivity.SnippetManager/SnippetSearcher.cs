@@ -25,13 +25,13 @@ public class SnippetSearcher
         this.pageSize = pageSize;
     }
 
-    public IEnumerable<SnippetModel> Search(IReadOnlyList<string>? normalizedSearchText, SnippetModel? currentRoot)
+    public IEnumerable<SnippetModel> Search(IReadOnlyList<string> normalizedSearchText, SnippetModel? currentRoot)
     {
         List<SnippetModel> searchResult = new();
 
         searchResult.Clear();
 
-        SearchTree(searchResult, currentRoot, normalizedSearchText);
+        SearchTree(searchResult, currentRoot, normalizedSearchText, goInDepth: true);
 
         if (SupplyChildrenFromSelectedSnippets)
         {
@@ -84,7 +84,7 @@ public class SnippetSearcher
             if (normalizedSearchText.Count == 0)
             {
                 if (snippet.Priority <= SnippetPriority.High || parent != null)
-                    searchResult.Add(snippet);
+                    AddResult(searchResult, snippet);
 
                 continue;
             }
@@ -92,12 +92,13 @@ public class SnippetSearcher
             int lastMatchedIndex = IsFilterPassed(snippet, parent, normalizedSearchText, fromIndex);
             if (lastMatchedIndex >= normalizedSearchText!.Count - 1)
             {
-                searchResult.Add(snippet);
+                // Don't probe more when whole search phrase is matched
+                AddResult(searchResult, snippet);
                 continue;
             }
             else if (lastMatchedIndex >= fromIndex || (goInDepth && lastMatchedIndex == -1))
             {
-                SearchTree(searchResult, snippet, normalizedSearchText, lastMatchedIndex + 1, goInDepth);
+                SearchTree(searchResult, snippet, normalizedSearchText, (goInDepth && lastMatchedIndex == -1) ? fromIndex : (lastMatchedIndex + 1), goInDepth);
             }
             else
             {
@@ -105,6 +106,9 @@ public class SnippetSearcher
             }
         }
     }
+
+    private static void AddResult(List<SnippetModel> searchResult, SnippetModel snippet) 
+        => searchResult.Add(snippet);
 
     private int IsFilterPassed(SnippetModel snippet, SnippetModel? parent, IReadOnlyList<string> normalizedSearchText, int fromIndex)
     {

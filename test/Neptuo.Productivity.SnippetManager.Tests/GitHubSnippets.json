@@ -26,7 +26,7 @@
   {
     "Id": "7743d569-8856-4198-8997-1192e420b0c2",
     "ParentId": "385ee8e4-ba87-4776-8982-511bf8d8b0f1",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/aspnetcore/pulls",
     "Text": "https://github.com/maraf/aspnetcore/pulls",
     "Priority": 1000
@@ -50,7 +50,7 @@
   {
     "Id": "b6bb8d87-f8c2-42eb-89cc-a950395146f0",
     "ParentId": "7ede13b1-242f-4a17-b2c1-c929e73f6d45",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/blazor-analytics/pulls",
     "Text": "https://github.com/maraf/blazor-analytics/pulls",
     "Priority": 1000
@@ -74,7 +74,7 @@
   {
     "Id": "fb2048a3-702e-4001-bbb6-ce55e823e0bc",
     "ParentId": "6dcda13d-df4c-4b73-ba6e-98c40d9e81f4",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Blazor.Docs/pulls",
     "Text": "https://github.com/maraf/Blazor.Docs/pulls",
     "Priority": 1000
@@ -114,7 +114,7 @@
   {
     "Id": "2af12fd8-1c38-461f-9856-8836837248b9",
     "ParentId": "93fa5d81-46cb-40f9-8057-736663f910f8",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/certbot-arm/pulls",
     "Text": "https://github.com/maraf/certbot-arm/pulls",
     "Priority": 1000
@@ -154,7 +154,7 @@
   {
     "Id": "2c766370-6901-4bf7-997c-94d4bf207739",
     "ParentId": "d3b140ad-ce86-4af5-81d7-f2b30af9ba44",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Chat/pulls",
     "Text": "https://github.com/maraf/Chat/pulls",
     "Priority": 1000
@@ -194,7 +194,7 @@
   {
     "Id": "0504fe69-c641-4135-8927-bdc9771c68b5",
     "ParentId": "910643a0-f1fa-43e9-9e1e-baaac3f9db14",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Chicago/pulls",
     "Text": "https://github.com/maraf/Chicago/pulls",
     "Priority": 1000
@@ -234,7 +234,7 @@
   {
     "Id": "951bbc62-7545-4b4e-919c-3df184bee0fb",
     "ParentId": "bb9f3ce4-74a7-4d1d-9e8e-e9999df7664c",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/ChromiumUpdater/pulls",
     "Text": "https://github.com/maraf/ChromiumUpdater/pulls",
     "Priority": 1000
@@ -258,7 +258,7 @@
   {
     "Id": "f55352c7-fcae-48b1-be86-fafe401f9671",
     "ParentId": "0a61e235-7255-4288-a443-63063f887c42",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/com.neptuo.mara/pulls",
     "Text": "https://github.com/maraf/com.neptuo.mara/pulls",
     "Priority": 1000
@@ -298,7 +298,7 @@
   {
     "Id": "3449bcbe-f3f1-4e05-ba79-f3b13f4df8c6",
     "ParentId": "4f424b44-53f0-488c-b6c0-e9aeef59f93d",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/com.neptuo.money/pulls",
     "Text": "https://github.com/maraf/com.neptuo.money/pulls",
     "Priority": 1000
@@ -322,7 +322,7 @@
   {
     "Id": "bcb0023f-d161-4841-93f6-c4f8cbcc0a0e",
     "ParentId": "a8161070-e955-4df1-83b7-56f0b3aad651",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/com.neptuo.money.app/pulls",
     "Text": "https://github.com/maraf/com.neptuo.money.app/pulls",
     "Priority": 1000
@@ -346,7 +346,7 @@
   {
     "Id": "0d1dda1d-259f-40bd-8068-1c1842ecdd82",
     "ParentId": "e7da790c-7dad-4904-9400-06b6b2746a4f",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/com.neptuo.money.app.beta/pulls",
     "Text": "https://github.com/maraf/com.neptuo.money.app.beta/pulls",
     "Priority": 1000
@@ -386,7 +386,7 @@
   {
     "Id": "690c3f94-964c-4ce6-a79b-5e55217bbd79",
     "ParentId": "fa57f83d-404f-4467-a236-b6ff62735c44",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/CSharpToJavascriptComparison/pulls",
     "Text": "https://github.com/maraf/CSharpToJavascriptComparison/pulls",
     "Priority": 1000
@@ -400,46 +400,6 @@
     "Priority": 1000
   },
   {
-    "Id": "a4c5517a-2220-4816-91b9-ff899f83cdcd",
-    "ParentId": "7242701a-d038-44ef-9aa3-28b12a9796c7",
-    "Title": "Ctu-Carshare",
-    "Description": "https://github.com/maraf/Ctu-Carshare",
-    "Text": "https://github.com/maraf/Ctu-Carshare",
-    "Priority": 100
-  },
-  {
-    "Id": "8e201ef1-3197-418d-a337-a70ea426ce88",
-    "ParentId": "a4c5517a-2220-4816-91b9-ff899f83cdcd",
-    "Title": "Issues",
-    "Description": "https://github.com/maraf/Ctu-Carshare/issues",
-    "Text": "https://github.com/maraf/Ctu-Carshare/issues",
-    "Priority": 1000
-  },
-  {
-    "Id": "53351f37-22be-46a3-a52e-45230331eed0",
-    "ParentId": "a4c5517a-2220-4816-91b9-ff899f83cdcd",
-    "Title": "Issues - New",
-    "Description": "https://github.com/maraf/Ctu-Carshare/issues/new",
-    "Text": "https://github.com/maraf/Ctu-Carshare/issues/new",
-    "Priority": 1000
-  },
-  {
-    "Id": "a0c56271-dfa6-4fc7-ab65-856603b04c9a",
-    "ParentId": "a4c5517a-2220-4816-91b9-ff899f83cdcd",
-    "Title": "Pull requests",
-    "Description": "https://github.com/maraf/Ctu-Carshare/pulls",
-    "Text": "https://github.com/maraf/Ctu-Carshare/pulls",
-    "Priority": 1000
-  },
-  {
-    "Id": "9c042b7b-20a8-4798-bb8f-882078b2d609",
-    "ParentId": "a4c5517a-2220-4816-91b9-ff899f83cdcd",
-    "Title": "Find file",
-    "Description": "https://github.com/maraf/Ctu-Carshare/find/master",
-    "Text": "https://github.com/maraf/Ctu-Carshare/find/master",
-    "Priority": 1000
-  },
-  {
     "Id": "5b2bb84f-c9ad-4e18-b118-4b299bd24473",
     "ParentId": "7242701a-d038-44ef-9aa3-28b12a9796c7",
     "Title": "cz.cestapanadorta",
@@ -450,7 +410,7 @@
   {
     "Id": "11a14fae-ce02-4544-b7d0-e897a7b22490",
     "ParentId": "5b2bb84f-c9ad-4e18-b118-4b299bd24473",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/cz.cestapanadorta/pulls",
     "Text": "https://github.com/maraf/cz.cestapanadorta/pulls",
     "Priority": 1000
@@ -490,7 +450,7 @@
   {
     "Id": "93d93209-b0b3-4356-9dfa-0ba31c87a02a",
     "ParentId": "8f0d754f-63a6-4627-9f98-0b4d476b261a",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/cz.papayateam/pulls",
     "Text": "https://github.com/maraf/cz.papayateam/pulls",
     "Priority": 1000
@@ -530,7 +490,7 @@
   {
     "Id": "a5779743-d34f-4bb1-81cc-895c250a6849",
     "ParentId": "48ae4481-8b45-4253-a628-9c91526eb8f3",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/cz.pernate/pulls",
     "Text": "https://github.com/maraf/cz.pernate/pulls",
     "Priority": 1000
@@ -570,7 +530,7 @@
   {
     "Id": "20f20254-a5cc-42ca-8100-163e862cfaf6",
     "ParentId": "ff270227-6ec8-48dc-844c-e03f34e65a7f",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Desktop-TaskPanel/pulls",
     "Text": "https://github.com/maraf/Desktop-TaskPanel/pulls",
     "Priority": 1000
@@ -610,7 +570,7 @@
   {
     "Id": "161b1101-baab-4f28-9d86-ef73beb3c960",
     "ParentId": "35fc287f-f6d5-46d7-96d9-adcb8ee72f4c",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/dotnet-wasm-react/pulls",
     "Text": "https://github.com/maraf/dotnet-wasm-react/pulls",
     "Priority": 1000
@@ -634,7 +594,7 @@
   {
     "Id": "7da7e58a-c0bb-471f-ac15-df1ce261fc95",
     "ParentId": "e155d46b-1f9f-4f35-a4f0-cc25f9f7dc91",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/dotnet-wasm-todo-mvc/pulls",
     "Text": "https://github.com/maraf/dotnet-wasm-todo-mvc/pulls",
     "Priority": 1000
@@ -658,7 +618,7 @@
   {
     "Id": "95d07158-6d7a-4aab-a40f-b53862d26c60",
     "ParentId": "e76dc86c-8fca-4194-b639-322dfd3513b9",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Earbook/pulls",
     "Text": "https://github.com/maraf/Earbook/pulls",
     "Priority": 1000
@@ -698,7 +658,7 @@
   {
     "Id": "3eb80279-29e6-49cc-b240-72e965506c52",
     "ParentId": "968f48e3-49cf-42e5-a721-4fe77c548868",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/FbmDesktop/pulls",
     "Text": "https://github.com/maraf/FbmDesktop/pulls",
     "Priority": 1000
@@ -738,7 +698,7 @@
   {
     "Id": "938c8396-3f78-4b8a-823e-53ac6b1d30ed",
     "ParentId": "204f2f7e-b35e-49e6-9e96-214b0ea792ea",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/FileBackuper/pulls",
     "Text": "https://github.com/maraf/FileBackuper/pulls",
     "Priority": 1000
@@ -778,7 +738,7 @@
   {
     "Id": "dce8e350-f8e0-488e-80ee-4120b7f42d94",
     "ParentId": "f2e223cb-e723-4714-8c55-9429c75642f5",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/FileUpload/pulls",
     "Text": "https://github.com/maraf/FileUpload/pulls",
     "Priority": 1000
@@ -789,46 +749,6 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/FileUpload/find/master",
     "Text": "https://github.com/maraf/FileUpload/find/master",
-    "Priority": 1000
-  },
-  {
-    "Id": "8ad40519-4005-4abf-9734-045f83271cd1",
-    "ParentId": "7242701a-d038-44ef-9aa3-28b12a9796c7",
-    "Title": "FootballArenaCrawler",
-    "Description": "https://github.com/maraf/FootballArenaCrawler",
-    "Text": "https://github.com/maraf/FootballArenaCrawler",
-    "Priority": 100
-  },
-  {
-    "Id": "64610960-bb37-4b3c-96aa-b80aa0268646",
-    "ParentId": "8ad40519-4005-4abf-9734-045f83271cd1",
-    "Title": "Issues",
-    "Description": "https://github.com/maraf/FootballArenaCrawler/issues",
-    "Text": "https://github.com/maraf/FootballArenaCrawler/issues",
-    "Priority": 1000
-  },
-  {
-    "Id": "f45f5d77-4c8d-4996-949e-3b878fee22cb",
-    "ParentId": "8ad40519-4005-4abf-9734-045f83271cd1",
-    "Title": "Issues - New",
-    "Description": "https://github.com/maraf/FootballArenaCrawler/issues/new",
-    "Text": "https://github.com/maraf/FootballArenaCrawler/issues/new",
-    "Priority": 1000
-  },
-  {
-    "Id": "036bee6e-fe7f-489b-8415-d5fe0d01b040",
-    "ParentId": "8ad40519-4005-4abf-9734-045f83271cd1",
-    "Title": "Pull requests",
-    "Description": "https://github.com/maraf/FootballArenaCrawler/pulls",
-    "Text": "https://github.com/maraf/FootballArenaCrawler/pulls",
-    "Priority": 1000
-  },
-  {
-    "Id": "a6bba775-95b0-446a-83cf-73e986912a61",
-    "ParentId": "8ad40519-4005-4abf-9734-045f83271cd1",
-    "Title": "Find file",
-    "Description": "https://github.com/maraf/FootballArenaCrawler/find/master",
-    "Text": "https://github.com/maraf/FootballArenaCrawler/find/master",
     "Priority": 1000
   },
   {
@@ -858,7 +778,7 @@
   {
     "Id": "3bd32404-2852-4e3a-9a65-c58c8f284454",
     "ParentId": "d5b01ee1-f503-42e1-9959-506d8e1e4c91",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/G810Playground/pulls",
     "Text": "https://github.com/maraf/G810Playground/pulls",
     "Priority": 1000
@@ -882,7 +802,7 @@
   {
     "Id": "40770193-588e-40d8-b120-ac0eb891c376",
     "ParentId": "f6fa5427-ddab-42af-a628-9470245cfd92",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/GitExtensions/pulls",
     "Text": "https://github.com/maraf/GitExtensions/pulls",
     "Priority": 1000
@@ -922,7 +842,7 @@
   {
     "Id": "9061ac18-5778-4b21-ad00-c9a0e4f2821a",
     "ParentId": "cdd710ed-9678-4abd-b855-6c591f9c9fa0",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/pulls",
     "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/pulls",
     "Priority": 1000
@@ -962,7 +882,7 @@
   {
     "Id": "5b3f22fc-73da-4188-a005-12a71bb22ed3",
     "ParentId": "e447d3b3-7755-4a18-b503-c9e109b349c2",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/pulls",
     "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/pulls",
     "Priority": 1000
@@ -986,7 +906,7 @@
   {
     "Id": "1f3219f9-b3c9-4b38-bad5-2d5aadad9865",
     "ParentId": "37386deb-7b7d-45a9-a283-4c14cb9a4714",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/gitextensions.extensibility/pulls",
     "Text": "https://github.com/maraf/gitextensions.extensibility/pulls",
     "Priority": 1000
@@ -1010,7 +930,7 @@
   {
     "Id": "4dfbb265-d97c-41f7-b26c-9a85eb8d07ac",
     "ParentId": "02720a32-0ed1-4d5a-b5cc-863c5a361c31",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/gitextensions.pluginmanager/pulls",
     "Text": "https://github.com/maraf/gitextensions.pluginmanager/pulls",
     "Priority": 1000
@@ -1034,7 +954,7 @@
   {
     "Id": "6a33fb98-cc42-4c8e-a68e-348a66a507b4",
     "ParentId": "e26a8aed-0128-452a-82f6-a3d406745313",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/gitextensions.plugintemplate/pulls",
     "Text": "https://github.com/maraf/gitextensions.plugintemplate/pulls",
     "Priority": 1000
@@ -1074,7 +994,7 @@
   {
     "Id": "529795c9-430f-46a9-910c-a659ad645528",
     "ParentId": "78e57846-06d2-400d-b35c-640028a6a6f5",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/pulls",
     "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/pulls",
     "Priority": 1000
@@ -1114,7 +1034,7 @@
   {
     "Id": "a3231cbf-1ed1-4a28-a301-540ee18e24ff",
     "ParentId": "bb039863-d8c2-4f67-9d61-6dea29aa5c6a",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/GitHubSubscriptionManager/pulls",
     "Text": "https://github.com/maraf/GitHubSubscriptionManager/pulls",
     "Priority": 1000
@@ -1154,7 +1074,7 @@
   {
     "Id": "9076ec80-0752-4dae-b351-ed39879aaa2d",
     "ParentId": "db679353-aa64-4d57-a456-f8e00729bac2",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/hello-github-actions/pulls",
     "Text": "https://github.com/maraf/hello-github-actions/pulls",
     "Priority": 1000
@@ -1194,7 +1114,7 @@
   {
     "Id": "27c943df-e622-4c7e-885e-8a185afa389d",
     "ParentId": "06395a1c-052f-479f-ae62-ce1e9a18dd97",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/pulls",
     "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/pulls",
     "Priority": 1000
@@ -1234,7 +1154,7 @@
   {
     "Id": "30f9b352-95b6-4cf4-b318-e65bd15ad582",
     "ParentId": "4c1a5206-6bd1-4f01-ad35-4452205f7594",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/ImagePreviewer/pulls",
     "Text": "https://github.com/maraf/ImagePreviewer/pulls",
     "Priority": 1000
@@ -1274,7 +1194,7 @@
   {
     "Id": "667dd9c2-5e4e-4a1e-960f-d77899ea0c03",
     "ParentId": "b16bc552-8ee9-414a-ae48-1926b2e9936d",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/ImageViewer/pulls",
     "Text": "https://github.com/maraf/ImageViewer/pulls",
     "Priority": 1000
@@ -1314,7 +1234,7 @@
   {
     "Id": "78f1db5f-ae4b-4a89-aa93-b961e6ebd2a8",
     "ParentId": "82afee7f-6665-4f65-951f-e824accc814d",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/JokeStore/pulls",
     "Text": "https://github.com/maraf/JokeStore/pulls",
     "Priority": 1000
@@ -1338,7 +1258,7 @@
   {
     "Id": "40eb3508-4e22-41a9-b729-c88badf39c75",
     "ParentId": "4581da35-7edb-4c12-898d-7ed07c32fec2",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/kb/pulls",
     "Text": "https://github.com/maraf/kb/pulls",
     "Priority": 1000
@@ -1378,7 +1298,7 @@
   {
     "Id": "cd9e3f0c-2df8-44cc-be35-eba95fbce213",
     "ParentId": "7b0b9749-877a-4ad5-9aba-f1f34199d845",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/LinkExtractor/pulls",
     "Text": "https://github.com/maraf/LinkExtractor/pulls",
     "Priority": 1000
@@ -1418,7 +1338,7 @@
   {
     "Id": "f8358631-91a0-45ab-b465-1ea48a606c34",
     "ParentId": "e54e6052-d091-4f2d-a487-6cae01050d9a",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/MediaLibrary/pulls",
     "Text": "https://github.com/maraf/MediaLibrary/pulls",
     "Priority": 1000
@@ -1458,7 +1378,7 @@
   {
     "Id": "f92d2e91-3e88-4664-afa2-bce3d8950e40",
     "ParentId": "f87e7bd8-6c00-4348-86c9-562683072578",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Money/pulls",
     "Text": "https://github.com/maraf/Money/pulls",
     "Priority": 1000
@@ -1498,7 +1418,7 @@
   {
     "Id": "43706595-b824-469e-bf8b-dec5bf26c5d4",
     "ParentId": "ab183ffa-2059-463d-9cbe-16c61deb93cf",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/MonitorInputSwitcher/pulls",
     "Text": "https://github.com/maraf/MonitorInputSwitcher/pulls",
     "Priority": 1000
@@ -1538,7 +1458,7 @@
   {
     "Id": "12841590-268b-4104-99c9-0b2d9110c248",
     "ParentId": "3e7ca836-2511-45e2-86d3-16e839329d14",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/MultiBlazorServer/pulls",
     "Text": "https://github.com/maraf/MultiBlazorServer/pulls",
     "Priority": 1000
@@ -1578,7 +1498,7 @@
   {
     "Id": "b8397635-ccaf-4408-8419-c419e7dfb588",
     "ParentId": "07d742a9-68d6-418d-989e-ebcca2298fe0",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/OpenSpecialFolder/pulls",
     "Text": "https://github.com/maraf/OpenSpecialFolder/pulls",
     "Priority": 1000
@@ -1618,7 +1538,7 @@
   {
     "Id": "bfec3088-14e8-421d-8bae-da1c37e3afaa",
     "ParentId": "93008333-d5dd-464b-9b08-ea40dbc86cd6",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/packages/pulls",
     "Text": "https://github.com/maraf/packages/pulls",
     "Priority": 1000
@@ -1658,7 +1578,7 @@
   {
     "Id": "8623f0cd-1d28-40bb-9081-80add516655e",
     "ParentId": "b0172da2-9ea9-40d9-9a89-802b4f57490e",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Pisqorks/pulls",
     "Text": "https://github.com/maraf/Pisqorks/pulls",
     "Priority": 1000
@@ -1698,7 +1618,7 @@
   {
     "Id": "4a9a0a7b-a99d-42f2-a749-0512ffd68519",
     "ParentId": "81ca23f5-9018-473e-a3e0-23ebda2370ef",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/PixelRoutine/pulls",
     "Text": "https://github.com/maraf/PixelRoutine/pulls",
     "Priority": 1000
@@ -1738,7 +1658,7 @@
   {
     "Id": "e83d1670-c81b-4d7f-a498-80288dc1d950",
     "ParentId": "20bbdbc8-9fee-4e26-a172-c8778e63639f",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Playground/pulls",
     "Text": "https://github.com/maraf/Playground/pulls",
     "Priority": 1000
@@ -1778,7 +1698,7 @@
   {
     "Id": "59cc684a-2968-43c2-92da-c524dbd69a8b",
     "ParentId": "901d428f-7cf3-4f8e-94d6-9dc0d1e78c41",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/PluginManager/pulls",
     "Text": "https://github.com/maraf/PluginManager/pulls",
     "Priority": 1000
@@ -1802,7 +1722,7 @@
   {
     "Id": "2cc75f53-0346-4949-bb23-7c18868d3b52",
     "ParentId": "9b63c8d2-df8f-4533-96f9-d1d749805dbf",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/runtime/pulls",
     "Text": "https://github.com/maraf/runtime/pulls",
     "Priority": 1000
@@ -1826,7 +1746,7 @@
   {
     "Id": "3ef5c25a-da2d-4e1f-94e7-5af9cf6addc7",
     "ParentId": "0562c8c2-a08d-4a22-ad4a-5aa516db8468",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/sdk/pulls",
     "Text": "https://github.com/maraf/sdk/pulls",
     "Priority": 1000
@@ -1866,7 +1786,7 @@
   {
     "Id": "1dae4b24-84fd-4cca-9b58-fce232771af1",
     "ParentId": "980b1690-e944-4e65-8b80-1232d5948ad2",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/ServiceRunner/pulls",
     "Text": "https://github.com/maraf/ServiceRunner/pulls",
     "Priority": 1000
@@ -1906,7 +1826,7 @@
   {
     "Id": "13f08754-1816-4209-b803-a3533b8b371b",
     "ParentId": "e8589bb7-8ca9-42fc-b0bd-524301eab257",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/SharpKit.ExtendedClr/pulls",
     "Text": "https://github.com/maraf/SharpKit.ExtendedClr/pulls",
     "Priority": 1000
@@ -1946,7 +1866,7 @@
   {
     "Id": "2975fd11-b678-4e92-b0e8-302d39ae2b2c",
     "ParentId": "34d623bf-ae50-4a28-a095-404018088cca",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/SharpKit.MsTest/pulls",
     "Text": "https://github.com/maraf/SharpKit.MsTest/pulls",
     "Priority": 1000
@@ -1957,46 +1877,6 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/SharpKit.MsTest/find/master",
     "Text": "https://github.com/maraf/SharpKit.MsTest/find/master",
-    "Priority": 1000
-  },
-  {
-    "Id": "4a631a8b-96be-492f-863e-7c71682ac379",
-    "ParentId": "7242701a-d038-44ef-9aa3-28b12a9796c7",
-    "Title": "SharpKit.UnobtrusiveFeatures",
-    "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures",
-    "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures",
-    "Priority": 100
-  },
-  {
-    "Id": "2b57856d-3ab5-4ad9-8c35-90bc65eb117a",
-    "ParentId": "4a631a8b-96be-492f-863e-7c71682ac379",
-    "Title": "Issues",
-    "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues",
-    "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues",
-    "Priority": 1000
-  },
-  {
-    "Id": "8372562d-94ee-4451-9926-17edf708dab4",
-    "ParentId": "4a631a8b-96be-492f-863e-7c71682ac379",
-    "Title": "Issues - New",
-    "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues/new",
-    "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues/new",
-    "Priority": 1000
-  },
-  {
-    "Id": "7365b36c-7a68-4a85-89e3-e1d577830ea8",
-    "ParentId": "4a631a8b-96be-492f-863e-7c71682ac379",
-    "Title": "Pull requests",
-    "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/pulls",
-    "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/pulls",
-    "Priority": 1000
-  },
-  {
-    "Id": "7678a1bf-fb84-4812-9e68-e32e7dd76f37",
-    "ParentId": "4a631a8b-96be-492f-863e-7c71682ac379",
-    "Title": "Find file",
-    "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/find/master",
-    "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/find/master",
     "Priority": 1000
   },
   {
@@ -2026,7 +1906,7 @@
   {
     "Id": "5e87d4a6-b800-4493-bea3-fb2cb82d4bd9",
     "ParentId": "0b331e2a-52cc-400e-9ef7-49879580ba9d",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/Snake20/pulls",
     "Text": "https://github.com/maraf/Snake20/pulls",
     "Priority": 1000
@@ -2066,7 +1946,7 @@
   {
     "Id": "121c9f8a-4a90-4628-9c21-827c766a4040",
     "ParentId": "70ca31a6-076d-4afe-b918-e5f7451899ff",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/snippets/pulls",
     "Text": "https://github.com/maraf/snippets/pulls",
     "Priority": 1000
@@ -2106,7 +1986,7 @@
   {
     "Id": "d85958d7-853c-4991-8e38-7029f7d94047",
     "ParentId": "c9727f08-275f-45a7-845f-bb3787d8ea85",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/StaticSiteCrawler/pulls",
     "Text": "https://github.com/maraf/StaticSiteCrawler/pulls",
     "Priority": 1000
@@ -2120,46 +2000,6 @@
     "Priority": 1000
   },
   {
-    "Id": "77adadc5-1fbc-4da1-9c3a-3d49f286513c",
-    "ParentId": "7242701a-d038-44ef-9aa3-28b12a9796c7",
-    "Title": "TaskReminder",
-    "Description": "https://github.com/maraf/TaskReminder",
-    "Text": "https://github.com/maraf/TaskReminder",
-    "Priority": 100
-  },
-  {
-    "Id": "875a6af9-1eb3-4c09-835d-70096a3185a3",
-    "ParentId": "77adadc5-1fbc-4da1-9c3a-3d49f286513c",
-    "Title": "Issues",
-    "Description": "https://github.com/maraf/TaskReminder/issues",
-    "Text": "https://github.com/maraf/TaskReminder/issues",
-    "Priority": 1000
-  },
-  {
-    "Id": "78e91563-7160-4d93-a687-93a96d3436e1",
-    "ParentId": "77adadc5-1fbc-4da1-9c3a-3d49f286513c",
-    "Title": "Issues - New",
-    "Description": "https://github.com/maraf/TaskReminder/issues/new",
-    "Text": "https://github.com/maraf/TaskReminder/issues/new",
-    "Priority": 1000
-  },
-  {
-    "Id": "bfebad8e-bf1d-4428-8ed8-27785ff054dc",
-    "ParentId": "77adadc5-1fbc-4da1-9c3a-3d49f286513c",
-    "Title": "Pull requests",
-    "Description": "https://github.com/maraf/TaskReminder/pulls",
-    "Text": "https://github.com/maraf/TaskReminder/pulls",
-    "Priority": 1000
-  },
-  {
-    "Id": "3ddb49e9-bbbb-4a56-ada2-87f06a8dbe8e",
-    "ParentId": "77adadc5-1fbc-4da1-9c3a-3d49f286513c",
-    "Title": "Find file",
-    "Description": "https://github.com/maraf/TaskReminder/find/master",
-    "Text": "https://github.com/maraf/TaskReminder/find/master",
-    "Priority": 1000
-  },
-  {
     "Id": "cca13a53-edc5-42ad-be2f-c458ced861b7",
     "ParentId": "7242701a-d038-44ef-9aa3-28b12a9796c7",
     "Title": "TelegramFileDownloader",
@@ -2170,7 +2010,7 @@
   {
     "Id": "1b6dfd31-4144-4deb-bbbd-38abe62ad006",
     "ParentId": "cca13a53-edc5-42ad-be2f-c458ced861b7",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/TelegramFileDownloader/pulls",
     "Text": "https://github.com/maraf/TelegramFileDownloader/pulls",
     "Priority": 1000
@@ -2210,7 +2050,7 @@
   {
     "Id": "800319a4-fc77-43b4-ba15-fd1ed3934cb2",
     "ParentId": "b8e2fe10-65b0-47b1-a09f-9f6e665df2b6",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/TextBrowser/pulls",
     "Text": "https://github.com/maraf/TextBrowser/pulls",
     "Priority": 1000
@@ -2250,7 +2090,7 @@
   {
     "Id": "18134484-a797-4cc7-a988-13beea814522",
     "ParentId": "d77cb06b-5c97-4ba4-9b81-7c10215c3e52",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/vocabularyapp/pulls",
     "Text": "https://github.com/maraf/vocabularyapp/pulls",
     "Priority": 1000
@@ -2290,7 +2130,7 @@
   {
     "Id": "baff74c2-f9bb-4fb0-9e8c-490d85ec83cb",
     "ParentId": "fff815ad-56f6-4369-9dc1-50cff29b49c3",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/WebCamImageCollector/pulls",
     "Text": "https://github.com/maraf/WebCamImageCollector/pulls",
     "Priority": 1000
@@ -2314,7 +2154,7 @@
   {
     "Id": "bebfddd9-9b7b-40f5-9fb9-3b337cae66d7",
     "ParentId": "018b5a0e-3496-4935-a41e-0ad5a9423491",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/WebDesk/pulls",
     "Text": "https://github.com/maraf/WebDesk/pulls",
     "Priority": 1000
@@ -2338,7 +2178,7 @@
   {
     "Id": "4d7672b8-90b3-48a0-ad65-ca504cd6a0b0",
     "ParentId": "c46e2a5d-9d40-4184-8455-9058461410c7",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/website/pulls",
     "Text": "https://github.com/maraf/website/pulls",
     "Priority": 1000
@@ -2378,7 +2218,7 @@
   {
     "Id": "2be4d075-f8fc-45f0-83e7-0de36af54ecd",
     "ParentId": "9442e483-7879-4dcb-9ee4-cbbddee07b52",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/WindowsDock/pulls",
     "Text": "https://github.com/maraf/WindowsDock/pulls",
     "Priority": 1000
@@ -2402,7 +2242,7 @@
   {
     "Id": "34e0a1b5-bf69-49ca-9003-681dc1eff85e",
     "ParentId": "0c146590-4707-4ab5-8b88-e516954fe40a",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/maraf/xharness/pulls",
     "Text": "https://github.com/maraf/xharness/pulls",
     "Priority": 1000
@@ -2450,7 +2290,7 @@
   {
     "Id": "abec752d-ec16-4428-a3cf-a3a85575192d",
     "ParentId": "f55d069c-039b-4039-8056-b73df95c76dd",
-    "Title": "Pull requests",
+    "Title": "Pulls",
     "Description": "https://github.com/neptuo/Recollections/pulls",
     "Text": "https://github.com/neptuo/Recollections/pulls",
     "Priority": 1000
