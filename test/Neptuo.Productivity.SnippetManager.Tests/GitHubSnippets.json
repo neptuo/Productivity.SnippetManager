@@ -5,8 +5,7 @@
     "Title": "GitHub",
     "Description": "https://github.com",
     "Text": "https://github.com",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "7242701a-d038-44ef-9aa3-28b12a9796c7",
@@ -14,8 +13,7 @@
     "Title": "maraf",
     "Description": "https://github.com/maraf",
     "Text": "https://github.com/maraf",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "385ee8e4-ba87-4776-8982-511bf8d8b0f1",
@@ -23,8 +21,7 @@
     "Title": "aspnetcore",
     "Description": "https://github.com/maraf/aspnetcore",
     "Text": "https://github.com/maraf/aspnetcore",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "7743d569-8856-4198-8997-1192e420b0c2",
@@ -32,8 +29,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/aspnetcore/pulls",
     "Text": "https://github.com/maraf/aspnetcore/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "c7bec3e1-3ba1-4537-b951-74438403105a",
@@ -41,8 +37,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/aspnetcore/find/main",
     "Text": "https://github.com/maraf/aspnetcore/find/main",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "7ede13b1-242f-4a17-b2c1-c929e73f6d45",
@@ -50,8 +45,7 @@
     "Title": "blazor-analytics",
     "Description": "https://github.com/maraf/blazor-analytics",
     "Text": "https://github.com/maraf/blazor-analytics",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "b6bb8d87-f8c2-42eb-89cc-a950395146f0",
@@ -59,8 +53,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/blazor-analytics/pulls",
     "Text": "https://github.com/maraf/blazor-analytics/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "5694f07c-8ca5-4a7a-998e-596731a15b7e",
@@ -68,8 +61,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/blazor-analytics/find/master",
     "Text": "https://github.com/maraf/blazor-analytics/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "6dcda13d-df4c-4b73-ba6e-98c40d9e81f4",
@@ -77,8 +69,7 @@
     "Title": "Blazor.Docs",
     "Description": "https://github.com/maraf/Blazor.Docs",
     "Text": "https://github.com/maraf/Blazor.Docs",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "fb2048a3-702e-4001-bbb6-ce55e823e0bc",
@@ -86,8 +77,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Blazor.Docs/pulls",
     "Text": "https://github.com/maraf/Blazor.Docs/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "eba30e72-6bb0-40a1-9d16-35130b810426",
@@ -95,8 +85,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Blazor.Docs/find/master",
     "Text": "https://github.com/maraf/Blazor.Docs/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "93fa5d81-46cb-40f9-8057-736663f910f8",
@@ -104,8 +93,7 @@
     "Title": "certbot-arm",
     "Description": "https://github.com/maraf/certbot-arm",
     "Text": "https://github.com/maraf/certbot-arm",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "a0f7f0fe-519e-426f-bcb1-425f96e13e39",
@@ -113,8 +101,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/certbot-arm/issues",
     "Text": "https://github.com/maraf/certbot-arm/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "b901df7a-6969-4c66-8876-4fe737536440",
@@ -122,8 +109,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/certbot-arm/issues/new",
     "Text": "https://github.com/maraf/certbot-arm/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "2af12fd8-1c38-461f-9856-8836837248b9",
@@ -131,8 +117,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/certbot-arm/pulls",
     "Text": "https://github.com/maraf/certbot-arm/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "857ce803-a94c-4ad5-aa1b-38815ca1c879",
@@ -140,8 +125,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/certbot-arm/find/master",
     "Text": "https://github.com/maraf/certbot-arm/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "d3b140ad-ce86-4af5-81d7-f2b30af9ba44",
@@ -149,8 +133,7 @@
     "Title": "Chat",
     "Description": "https://github.com/maraf/Chat",
     "Text": "https://github.com/maraf/Chat",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "27f66cda-65cf-401e-9a3d-931249d5d754",
@@ -158,8 +141,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Chat/issues",
     "Text": "https://github.com/maraf/Chat/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "c31b0fcb-132d-497d-8f04-77daac4e3dec",
@@ -167,8 +149,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Chat/issues/new",
     "Text": "https://github.com/maraf/Chat/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "2c766370-6901-4bf7-997c-94d4bf207739",
@@ -176,8 +157,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Chat/pulls",
     "Text": "https://github.com/maraf/Chat/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "b428a1be-11e4-42d2-800f-e41875e85b93",
@@ -185,8 +165,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Chat/find/master",
     "Text": "https://github.com/maraf/Chat/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "910643a0-f1fa-43e9-9e1e-baaac3f9db14",
@@ -194,8 +173,7 @@
     "Title": "Chicago",
     "Description": "https://github.com/maraf/Chicago",
     "Text": "https://github.com/maraf/Chicago",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "2f7dd6b7-55ed-4721-bc04-b125dd470a48",
@@ -203,8 +181,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Chicago/issues",
     "Text": "https://github.com/maraf/Chicago/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "1f06c203-b4c8-4c5f-9324-fab8ff3c0bfc",
@@ -212,8 +189,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Chicago/issues/new",
     "Text": "https://github.com/maraf/Chicago/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "0504fe69-c641-4135-8927-bdc9771c68b5",
@@ -221,8 +197,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Chicago/pulls",
     "Text": "https://github.com/maraf/Chicago/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8387dd09-9d11-4ad6-a1fc-ca2b5ca11d59",
@@ -230,8 +205,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Chicago/find/master",
     "Text": "https://github.com/maraf/Chicago/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "bb9f3ce4-74a7-4d1d-9e8e-e9999df7664c",
@@ -239,8 +213,7 @@
     "Title": "ChromiumUpdater",
     "Description": "https://github.com/maraf/ChromiumUpdater",
     "Text": "https://github.com/maraf/ChromiumUpdater",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "28f68f13-1df7-43a1-ba26-8c6cb41c6913",
@@ -248,8 +221,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/ChromiumUpdater/issues",
     "Text": "https://github.com/maraf/ChromiumUpdater/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "1f40781f-6c8f-4138-976c-9d9b51a45d99",
@@ -257,8 +229,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/ChromiumUpdater/issues/new",
     "Text": "https://github.com/maraf/ChromiumUpdater/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "951bbc62-7545-4b4e-919c-3df184bee0fb",
@@ -266,8 +237,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/ChromiumUpdater/pulls",
     "Text": "https://github.com/maraf/ChromiumUpdater/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "1fec5b57-c718-4624-a11d-6b4b35cd223b",
@@ -275,8 +245,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/ChromiumUpdater/find/master",
     "Text": "https://github.com/maraf/ChromiumUpdater/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "0a61e235-7255-4288-a443-63063f887c42",
@@ -284,8 +253,7 @@
     "Title": "com.neptuo.mara",
     "Description": "https://github.com/maraf/com.neptuo.mara",
     "Text": "https://github.com/maraf/com.neptuo.mara",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "f55352c7-fcae-48b1-be86-fafe401f9671",
@@ -293,8 +261,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/com.neptuo.mara/pulls",
     "Text": "https://github.com/maraf/com.neptuo.mara/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "5641758b-636e-433b-91ec-b92f77a07268",
@@ -302,8 +269,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/com.neptuo.mara/find/master",
     "Text": "https://github.com/maraf/com.neptuo.mara/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "4f424b44-53f0-488c-b6c0-e9aeef59f93d",
@@ -311,8 +277,7 @@
     "Title": "com.neptuo.money",
     "Description": "https://github.com/maraf/com.neptuo.money",
     "Text": "https://github.com/maraf/com.neptuo.money",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "e30670ac-35cc-4c43-bb17-3aa372086365",
@@ -320,8 +285,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/com.neptuo.money/issues",
     "Text": "https://github.com/maraf/com.neptuo.money/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "baa3b413-d6fd-4b8d-a3cf-90768e0e1b0e",
@@ -329,8 +293,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/com.neptuo.money/issues/new",
     "Text": "https://github.com/maraf/com.neptuo.money/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "3449bcbe-f3f1-4e05-ba79-f3b13f4df8c6",
@@ -338,8 +301,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/com.neptuo.money/pulls",
     "Text": "https://github.com/maraf/com.neptuo.money/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "1c8a9cbf-7896-468f-8d32-e4676a3c68b9",
@@ -347,8 +309,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/com.neptuo.money/find/master",
     "Text": "https://github.com/maraf/com.neptuo.money/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a8161070-e955-4df1-83b7-56f0b3aad651",
@@ -356,8 +317,7 @@
     "Title": "com.neptuo.money.app",
     "Description": "https://github.com/maraf/com.neptuo.money.app",
     "Text": "https://github.com/maraf/com.neptuo.money.app",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "bcb0023f-d161-4841-93f6-c4f8cbcc0a0e",
@@ -365,8 +325,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/com.neptuo.money.app/pulls",
     "Text": "https://github.com/maraf/com.neptuo.money.app/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "24ab6fd5-b0a2-4514-9068-52568078c132",
@@ -374,8 +333,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/com.neptuo.money.app/find/master",
     "Text": "https://github.com/maraf/com.neptuo.money.app/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e7da790c-7dad-4904-9400-06b6b2746a4f",
@@ -383,8 +341,7 @@
     "Title": "com.neptuo.money.app.beta",
     "Description": "https://github.com/maraf/com.neptuo.money.app.beta",
     "Text": "https://github.com/maraf/com.neptuo.money.app.beta",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "0d1dda1d-259f-40bd-8068-1c1842ecdd82",
@@ -392,8 +349,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/com.neptuo.money.app.beta/pulls",
     "Text": "https://github.com/maraf/com.neptuo.money.app.beta/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "7ce2f8fd-53b1-4c58-a5a0-88c8ffce344c",
@@ -401,8 +357,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/com.neptuo.money.app.beta/find/master",
     "Text": "https://github.com/maraf/com.neptuo.money.app.beta/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "fa57f83d-404f-4467-a236-b6ff62735c44",
@@ -410,8 +365,7 @@
     "Title": "CSharpToJavascriptComparison",
     "Description": "https://github.com/maraf/CSharpToJavascriptComparison",
     "Text": "https://github.com/maraf/CSharpToJavascriptComparison",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "f99fcb81-09ac-41f5-bd67-59e42a0da116",
@@ -419,8 +373,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/CSharpToJavascriptComparison/issues",
     "Text": "https://github.com/maraf/CSharpToJavascriptComparison/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "578b0c0c-3523-4a57-9e25-c0187720208d",
@@ -428,8 +381,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/CSharpToJavascriptComparison/issues/new",
     "Text": "https://github.com/maraf/CSharpToJavascriptComparison/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "690c3f94-964c-4ce6-a79b-5e55217bbd79",
@@ -437,8 +389,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/CSharpToJavascriptComparison/pulls",
     "Text": "https://github.com/maraf/CSharpToJavascriptComparison/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "eb860b9b-d61c-47f0-9f8f-c4e3e8b93dc6",
@@ -446,8 +397,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/CSharpToJavascriptComparison/find/master",
     "Text": "https://github.com/maraf/CSharpToJavascriptComparison/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a4c5517a-2220-4816-91b9-ff899f83cdcd",
@@ -455,8 +405,7 @@
     "Title": "Ctu-Carshare",
     "Description": "https://github.com/maraf/Ctu-Carshare",
     "Text": "https://github.com/maraf/Ctu-Carshare",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "8e201ef1-3197-418d-a337-a70ea426ce88",
@@ -464,8 +413,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Ctu-Carshare/issues",
     "Text": "https://github.com/maraf/Ctu-Carshare/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "53351f37-22be-46a3-a52e-45230331eed0",
@@ -473,8 +421,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Ctu-Carshare/issues/new",
     "Text": "https://github.com/maraf/Ctu-Carshare/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a0c56271-dfa6-4fc7-ab65-856603b04c9a",
@@ -482,8 +429,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Ctu-Carshare/pulls",
     "Text": "https://github.com/maraf/Ctu-Carshare/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9c042b7b-20a8-4798-bb8f-882078b2d609",
@@ -491,8 +437,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Ctu-Carshare/find/master",
     "Text": "https://github.com/maraf/Ctu-Carshare/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "5b2bb84f-c9ad-4e18-b118-4b299bd24473",
@@ -500,8 +445,7 @@
     "Title": "cz.cestapanadorta",
     "Description": "https://github.com/maraf/cz.cestapanadorta",
     "Text": "https://github.com/maraf/cz.cestapanadorta",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "11a14fae-ce02-4544-b7d0-e897a7b22490",
@@ -509,8 +453,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/cz.cestapanadorta/pulls",
     "Text": "https://github.com/maraf/cz.cestapanadorta/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "3866398b-c918-4665-84dc-ae2f21ab9494",
@@ -518,8 +461,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/cz.cestapanadorta/find/master",
     "Text": "https://github.com/maraf/cz.cestapanadorta/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8f0d754f-63a6-4627-9f98-0b4d476b261a",
@@ -527,8 +469,7 @@
     "Title": "cz.papayateam",
     "Description": "https://github.com/maraf/cz.papayateam",
     "Text": "https://github.com/maraf/cz.papayateam",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "d57b44ea-d6ca-475d-8d67-09ae0ef6698b",
@@ -536,8 +477,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/cz.papayateam/issues",
     "Text": "https://github.com/maraf/cz.papayateam/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "c20b8bb4-14fa-4650-a4b9-934d1c5baedf",
@@ -545,8 +485,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/cz.papayateam/issues/new",
     "Text": "https://github.com/maraf/cz.papayateam/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "93d93209-b0b3-4356-9dfa-0ba31c87a02a",
@@ -554,8 +493,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/cz.papayateam/pulls",
     "Text": "https://github.com/maraf/cz.papayateam/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9a3934f5-6cf7-4c08-9eff-162e2d646c01",
@@ -563,8 +501,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/cz.papayateam/find/gh-pages",
     "Text": "https://github.com/maraf/cz.papayateam/find/gh-pages",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "48ae4481-8b45-4253-a628-9c91526eb8f3",
@@ -572,8 +509,7 @@
     "Title": "cz.pernate",
     "Description": "https://github.com/maraf/cz.pernate",
     "Text": "https://github.com/maraf/cz.pernate",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "236060db-4992-4410-8d0a-7a9834be8996",
@@ -581,8 +517,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/cz.pernate/issues",
     "Text": "https://github.com/maraf/cz.pernate/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "50b40677-d90b-46fb-9b39-9cd8c5036013",
@@ -590,8 +525,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/cz.pernate/issues/new",
     "Text": "https://github.com/maraf/cz.pernate/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a5779743-d34f-4bb1-81cc-895c250a6849",
@@ -599,8 +533,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/cz.pernate/pulls",
     "Text": "https://github.com/maraf/cz.pernate/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8f83e3bc-425f-4e11-b1ce-3a9df0d069b9",
@@ -608,8 +541,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/cz.pernate/find/master",
     "Text": "https://github.com/maraf/cz.pernate/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ff270227-6ec8-48dc-844c-e03f34e65a7f",
@@ -617,8 +549,7 @@
     "Title": "Desktop-TaskPanel",
     "Description": "https://github.com/maraf/Desktop-TaskPanel",
     "Text": "https://github.com/maraf/Desktop-TaskPanel",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "5ac09217-08a9-45b2-9188-1b73e3e4f742",
@@ -626,8 +557,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Desktop-TaskPanel/issues",
     "Text": "https://github.com/maraf/Desktop-TaskPanel/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ce70831d-4991-4f3c-894b-135dfd1eb728",
@@ -635,8 +565,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Desktop-TaskPanel/issues/new",
     "Text": "https://github.com/maraf/Desktop-TaskPanel/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "20f20254-a5cc-42ca-8100-163e862cfaf6",
@@ -644,8 +573,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Desktop-TaskPanel/pulls",
     "Text": "https://github.com/maraf/Desktop-TaskPanel/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ab782a1b-e307-4531-9be7-73d8675df263",
@@ -653,8 +581,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Desktop-TaskPanel/find/master",
     "Text": "https://github.com/maraf/Desktop-TaskPanel/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "35fc287f-f6d5-46d7-96d9-adcb8ee72f4c",
@@ -662,8 +589,7 @@
     "Title": "dotnet-wasm-react",
     "Description": "https://github.com/maraf/dotnet-wasm-react",
     "Text": "https://github.com/maraf/dotnet-wasm-react",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "85d07b33-c5f9-4e45-8e08-dff91867252c",
@@ -671,8 +597,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/dotnet-wasm-react/issues",
     "Text": "https://github.com/maraf/dotnet-wasm-react/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "24cad227-a315-4837-b720-f97a8c7fdc37",
@@ -680,8 +605,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/dotnet-wasm-react/issues/new",
     "Text": "https://github.com/maraf/dotnet-wasm-react/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "161b1101-baab-4f28-9d86-ef73beb3c960",
@@ -689,8 +613,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/dotnet-wasm-react/pulls",
     "Text": "https://github.com/maraf/dotnet-wasm-react/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a883aa00-269b-49c0-b2c2-14620991a51e",
@@ -698,8 +621,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/dotnet-wasm-react/find/main",
     "Text": "https://github.com/maraf/dotnet-wasm-react/find/main",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e155d46b-1f9f-4f35-a4f0-cc25f9f7dc91",
@@ -707,8 +629,7 @@
     "Title": "dotnet-wasm-todo-mvc",
     "Description": "https://github.com/maraf/dotnet-wasm-todo-mvc",
     "Text": "https://github.com/maraf/dotnet-wasm-todo-mvc",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "7da7e58a-c0bb-471f-ac15-df1ce261fc95",
@@ -716,8 +637,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/dotnet-wasm-todo-mvc/pulls",
     "Text": "https://github.com/maraf/dotnet-wasm-todo-mvc/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "06549766-992a-4871-bdb1-1c47df2d3336",
@@ -725,8 +645,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/dotnet-wasm-todo-mvc/find/main",
     "Text": "https://github.com/maraf/dotnet-wasm-todo-mvc/find/main",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e76dc86c-8fca-4194-b639-322dfd3513b9",
@@ -734,8 +653,7 @@
     "Title": "Earbook",
     "Description": "https://github.com/maraf/Earbook",
     "Text": "https://github.com/maraf/Earbook",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "95d07158-6d7a-4aab-a40f-b53862d26c60",
@@ -743,8 +661,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Earbook/pulls",
     "Text": "https://github.com/maraf/Earbook/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "bc77c282-fdc1-4d73-a35e-fc92aac0244a",
@@ -752,8 +669,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Earbook/find/master",
     "Text": "https://github.com/maraf/Earbook/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "968f48e3-49cf-42e5-a721-4fe77c548868",
@@ -761,8 +677,7 @@
     "Title": "FbmDesktop",
     "Description": "https://github.com/maraf/FbmDesktop",
     "Text": "https://github.com/maraf/FbmDesktop",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "b53f4bf0-b22e-402a-9ead-559725a742fc",
@@ -770,8 +685,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/FbmDesktop/issues",
     "Text": "https://github.com/maraf/FbmDesktop/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "bb2e9e8c-7397-412a-8fe6-d17f8de65860",
@@ -779,8 +693,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/FbmDesktop/issues/new",
     "Text": "https://github.com/maraf/FbmDesktop/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "3eb80279-29e6-49cc-b240-72e965506c52",
@@ -788,8 +701,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/FbmDesktop/pulls",
     "Text": "https://github.com/maraf/FbmDesktop/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "5aa062c9-dc0e-489b-9a8e-ff66cc701280",
@@ -797,8 +709,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/FbmDesktop/find/master",
     "Text": "https://github.com/maraf/FbmDesktop/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "204f2f7e-b35e-49e6-9e96-214b0ea792ea",
@@ -806,8 +717,7 @@
     "Title": "FileBackuper",
     "Description": "https://github.com/maraf/FileBackuper",
     "Text": "https://github.com/maraf/FileBackuper",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "322c643d-185d-48bf-bd0b-d4d78b0ba3e6",
@@ -815,8 +725,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/FileBackuper/issues",
     "Text": "https://github.com/maraf/FileBackuper/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "36a7f6e1-1b40-49c9-ad1f-51599efdf487",
@@ -824,8 +733,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/FileBackuper/issues/new",
     "Text": "https://github.com/maraf/FileBackuper/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "938c8396-3f78-4b8a-823e-53ac6b1d30ed",
@@ -833,8 +741,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/FileBackuper/pulls",
     "Text": "https://github.com/maraf/FileBackuper/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "3f1cff6b-5a23-4d68-96fb-e5a88d66a7ca",
@@ -842,8 +749,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/FileBackuper/find/master",
     "Text": "https://github.com/maraf/FileBackuper/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f2e223cb-e723-4714-8c55-9429c75642f5",
@@ -851,8 +757,7 @@
     "Title": "FileUpload",
     "Description": "https://github.com/maraf/FileUpload",
     "Text": "https://github.com/maraf/FileUpload",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "41ef5d9e-d950-48d1-9105-9960d394e5cd",
@@ -860,8 +765,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/FileUpload/issues",
     "Text": "https://github.com/maraf/FileUpload/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "48d636e7-7464-4436-9764-17fde40e1054",
@@ -869,8 +773,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/FileUpload/issues/new",
     "Text": "https://github.com/maraf/FileUpload/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "dce8e350-f8e0-488e-80ee-4120b7f42d94",
@@ -878,8 +781,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/FileUpload/pulls",
     "Text": "https://github.com/maraf/FileUpload/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "fd8c7a39-93f9-4993-b296-ad8601a53f22",
@@ -887,8 +789,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/FileUpload/find/master",
     "Text": "https://github.com/maraf/FileUpload/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8ad40519-4005-4abf-9734-045f83271cd1",
@@ -896,8 +797,7 @@
     "Title": "FootballArenaCrawler",
     "Description": "https://github.com/maraf/FootballArenaCrawler",
     "Text": "https://github.com/maraf/FootballArenaCrawler",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "64610960-bb37-4b3c-96aa-b80aa0268646",
@@ -905,8 +805,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/FootballArenaCrawler/issues",
     "Text": "https://github.com/maraf/FootballArenaCrawler/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f45f5d77-4c8d-4996-949e-3b878fee22cb",
@@ -914,8 +813,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/FootballArenaCrawler/issues/new",
     "Text": "https://github.com/maraf/FootballArenaCrawler/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "036bee6e-fe7f-489b-8415-d5fe0d01b040",
@@ -923,8 +821,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/FootballArenaCrawler/pulls",
     "Text": "https://github.com/maraf/FootballArenaCrawler/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a6bba775-95b0-446a-83cf-73e986912a61",
@@ -932,8 +829,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/FootballArenaCrawler/find/master",
     "Text": "https://github.com/maraf/FootballArenaCrawler/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "d5b01ee1-f503-42e1-9959-506d8e1e4c91",
@@ -941,8 +837,7 @@
     "Title": "G810Playground",
     "Description": "https://github.com/maraf/G810Playground",
     "Text": "https://github.com/maraf/G810Playground",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "6d504890-5da8-4cd5-a6da-72089caa4dbd",
@@ -950,8 +845,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/G810Playground/issues",
     "Text": "https://github.com/maraf/G810Playground/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ec3fad6b-d309-4250-8ec4-2f166146c54a",
@@ -959,8 +853,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/G810Playground/issues/new",
     "Text": "https://github.com/maraf/G810Playground/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "3bd32404-2852-4e3a-9a65-c58c8f284454",
@@ -968,8 +861,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/G810Playground/pulls",
     "Text": "https://github.com/maraf/G810Playground/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ebcf5f24-0336-47af-9b8d-03de1928f71a",
@@ -977,8 +869,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/G810Playground/find/master",
     "Text": "https://github.com/maraf/G810Playground/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f6fa5427-ddab-42af-a628-9470245cfd92",
@@ -986,8 +877,7 @@
     "Title": "GitExtensions",
     "Description": "https://github.com/maraf/GitExtensions",
     "Text": "https://github.com/maraf/GitExtensions",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "40770193-588e-40d8-b120-ac0eb891c376",
@@ -995,8 +885,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/GitExtensions/pulls",
     "Text": "https://github.com/maraf/GitExtensions/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e47448d0-da61-4188-ad63-1ab922b2c707",
@@ -1004,8 +893,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/GitExtensions/find/master",
     "Text": "https://github.com/maraf/GitExtensions/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "cdd710ed-9678-4abd-b855-6c591f9c9fa0",
@@ -1013,8 +901,7 @@
     "Title": "GitExtensions.BundleBackuper",
     "Description": "https://github.com/maraf/GitExtensions.BundleBackuper",
     "Text": "https://github.com/maraf/GitExtensions.BundleBackuper",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "3c719ee7-72c2-4c50-b313-22099ea07865",
@@ -1022,8 +909,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/issues",
     "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f8f4830e-2478-40b8-8e47-010e2c2ea98b",
@@ -1031,8 +917,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/issues/new",
     "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9061ac18-5778-4b21-ad00-c9a0e4f2821a",
@@ -1040,8 +925,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/pulls",
     "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e8b2f161-4bc1-47f9-9247-feb45e7904d3",
@@ -1049,8 +933,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/find/master",
     "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e447d3b3-7755-4a18-b503-c9e109b349c2",
@@ -1058,8 +941,7 @@
     "Title": "GitExtensions.EmptyPlugin",
     "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin",
     "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "c5b8bdd6-480c-4260-a171-26e5ded6fa30",
@@ -1067,8 +949,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues",
     "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "75e58ad4-986b-414d-8a06-4952dabd1df7",
@@ -1076,8 +957,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues/new",
     "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "5b3f22fc-73da-4188-a005-12a71bb22ed3",
@@ -1085,8 +965,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/pulls",
     "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f683fa66-0737-410c-aecc-e97b86007af7",
@@ -1094,8 +973,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/find/master",
     "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "37386deb-7b7d-45a9-a283-4c14cb9a4714",
@@ -1103,8 +981,7 @@
     "Title": "gitextensions.extensibility",
     "Description": "https://github.com/maraf/gitextensions.extensibility",
     "Text": "https://github.com/maraf/gitextensions.extensibility",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "1f3219f9-b3c9-4b38-bad5-2d5aadad9865",
@@ -1112,8 +989,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/gitextensions.extensibility/pulls",
     "Text": "https://github.com/maraf/gitextensions.extensibility/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8a58a32d-c5b8-4b81-814e-64658fa308c2",
@@ -1121,8 +997,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/gitextensions.extensibility/find/master",
     "Text": "https://github.com/maraf/gitextensions.extensibility/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "02720a32-0ed1-4d5a-b5cc-863c5a361c31",
@@ -1130,8 +1005,7 @@
     "Title": "gitextensions.pluginmanager",
     "Description": "https://github.com/maraf/gitextensions.pluginmanager",
     "Text": "https://github.com/maraf/gitextensions.pluginmanager",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "4dfbb265-d97c-41f7-b26c-9a85eb8d07ac",
@@ -1139,8 +1013,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/gitextensions.pluginmanager/pulls",
     "Text": "https://github.com/maraf/gitextensions.pluginmanager/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "c422f465-fb89-4383-9f72-f07eff2d7bd0",
@@ -1148,8 +1021,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/gitextensions.pluginmanager/find/master",
     "Text": "https://github.com/maraf/gitextensions.pluginmanager/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e26a8aed-0128-452a-82f6-a3d406745313",
@@ -1157,8 +1029,7 @@
     "Title": "gitextensions.plugintemplate",
     "Description": "https://github.com/maraf/gitextensions.plugintemplate",
     "Text": "https://github.com/maraf/gitextensions.plugintemplate",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "6a33fb98-cc42-4c8e-a68e-348a66a507b4",
@@ -1166,8 +1037,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/gitextensions.plugintemplate/pulls",
     "Text": "https://github.com/maraf/gitextensions.plugintemplate/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8f0c3629-ac88-44c4-8da4-0513c8b5357a",
@@ -1175,8 +1045,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/gitextensions.plugintemplate/find/master",
     "Text": "https://github.com/maraf/gitextensions.plugintemplate/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "78e57846-06d2-400d-b35c-640028a6a6f5",
@@ -1184,8 +1053,7 @@
     "Title": "GitExtensions.SolutionRunner",
     "Description": "https://github.com/maraf/GitExtensions.SolutionRunner",
     "Text": "https://github.com/maraf/GitExtensions.SolutionRunner",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "4fd7a076-4088-4d7a-aba4-895bbb3c2fde",
@@ -1193,8 +1061,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/issues",
     "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "552c11a2-7403-4eb0-b97b-e58616b4cb57",
@@ -1202,8 +1069,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/issues/new",
     "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "529795c9-430f-46a9-910c-a659ad645528",
@@ -1211,8 +1077,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/pulls",
     "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "6a42e433-7d0b-4473-84d9-0788a021a3e8",
@@ -1220,8 +1085,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/find/master",
     "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "bb039863-d8c2-4f67-9d61-6dea29aa5c6a",
@@ -1229,8 +1093,7 @@
     "Title": "GitHubSubscriptionManager",
     "Description": "https://github.com/maraf/GitHubSubscriptionManager",
     "Text": "https://github.com/maraf/GitHubSubscriptionManager",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "2c8d407f-035b-46f2-a6ca-d945582cccd5",
@@ -1238,8 +1101,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/GitHubSubscriptionManager/issues",
     "Text": "https://github.com/maraf/GitHubSubscriptionManager/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a8fdbeb3-ce98-41db-80c4-b28ef599141b",
@@ -1247,8 +1109,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/GitHubSubscriptionManager/issues/new",
     "Text": "https://github.com/maraf/GitHubSubscriptionManager/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a3231cbf-1ed1-4a28-a301-540ee18e24ff",
@@ -1256,8 +1117,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/GitHubSubscriptionManager/pulls",
     "Text": "https://github.com/maraf/GitHubSubscriptionManager/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a41e57bd-176f-4d0b-b8ba-c279c73acfd5",
@@ -1265,8 +1125,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/GitHubSubscriptionManager/find/master",
     "Text": "https://github.com/maraf/GitHubSubscriptionManager/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "db679353-aa64-4d57-a456-f8e00729bac2",
@@ -1274,8 +1133,7 @@
     "Title": "hello-github-actions",
     "Description": "https://github.com/maraf/hello-github-actions",
     "Text": "https://github.com/maraf/hello-github-actions",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "2b740bc7-7e06-4069-b090-186fe45b38c9",
@@ -1283,8 +1141,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/hello-github-actions/issues",
     "Text": "https://github.com/maraf/hello-github-actions/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "4783221d-43e2-42bf-88c8-ed420aa49e55",
@@ -1292,8 +1149,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/hello-github-actions/issues/new",
     "Text": "https://github.com/maraf/hello-github-actions/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9076ec80-0752-4dae-b351-ed39879aaa2d",
@@ -1301,8 +1157,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/hello-github-actions/pulls",
     "Text": "https://github.com/maraf/hello-github-actions/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "5659cc60-2412-4d09-a059-3679af20ef76",
@@ -1310,8 +1165,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/hello-github-actions/find/master",
     "Text": "https://github.com/maraf/hello-github-actions/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "06395a1c-052f-479f-ae62-ce1e9a18dd97",
@@ -1319,8 +1173,7 @@
     "Title": "HybridMobileBlazorBindingsTest",
     "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest",
     "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "edf02f61-7b8a-4285-8400-f72ee364c9f4",
@@ -1328,8 +1181,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues",
     "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a6025473-8eaf-4a39-be8d-565f63e65fe3",
@@ -1337,8 +1189,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues/new",
     "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "27c943df-e622-4c7e-885e-8a185afa389d",
@@ -1346,8 +1197,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/pulls",
     "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e37a9004-9fdf-4682-a2f3-ff9fedbd988e",
@@ -1355,8 +1205,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/find/master",
     "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "4c1a5206-6bd1-4f01-ad35-4452205f7594",
@@ -1364,8 +1213,7 @@
     "Title": "ImagePreviewer",
     "Description": "https://github.com/maraf/ImagePreviewer",
     "Text": "https://github.com/maraf/ImagePreviewer",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "86e5e4b8-c944-43b8-a392-6047bc8cab72",
@@ -1373,8 +1221,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/ImagePreviewer/issues",
     "Text": "https://github.com/maraf/ImagePreviewer/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "73cb56f5-4690-4123-92a2-6a799cebcd4a",
@@ -1382,8 +1229,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/ImagePreviewer/issues/new",
     "Text": "https://github.com/maraf/ImagePreviewer/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "30f9b352-95b6-4cf4-b318-e65bd15ad582",
@@ -1391,8 +1237,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/ImagePreviewer/pulls",
     "Text": "https://github.com/maraf/ImagePreviewer/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "91e14871-e27c-4b5b-9351-339f8209318a",
@@ -1400,8 +1245,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/ImagePreviewer/find/master",
     "Text": "https://github.com/maraf/ImagePreviewer/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "b16bc552-8ee9-414a-ae48-1926b2e9936d",
@@ -1409,8 +1253,7 @@
     "Title": "ImageViewer",
     "Description": "https://github.com/maraf/ImageViewer",
     "Text": "https://github.com/maraf/ImageViewer",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "1706f41a-3b23-4a8c-bf91-b109c37e80d7",
@@ -1418,8 +1261,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/ImageViewer/issues",
     "Text": "https://github.com/maraf/ImageViewer/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "cf679352-80ef-4f2d-b17c-8778dda14e91",
@@ -1427,8 +1269,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/ImageViewer/issues/new",
     "Text": "https://github.com/maraf/ImageViewer/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "667dd9c2-5e4e-4a1e-960f-d77899ea0c03",
@@ -1436,8 +1277,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/ImageViewer/pulls",
     "Text": "https://github.com/maraf/ImageViewer/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "edb200df-572a-4b64-82b7-942143865e36",
@@ -1445,8 +1285,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/ImageViewer/find/master",
     "Text": "https://github.com/maraf/ImageViewer/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "82afee7f-6665-4f65-951f-e824accc814d",
@@ -1454,8 +1293,7 @@
     "Title": "JokeStore",
     "Description": "https://github.com/maraf/JokeStore",
     "Text": "https://github.com/maraf/JokeStore",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "e5508d65-65f4-43c9-b71b-615d9cb79d87",
@@ -1463,8 +1301,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/JokeStore/issues",
     "Text": "https://github.com/maraf/JokeStore/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "971440a9-c17e-44c5-82ce-e46c40da153c",
@@ -1472,8 +1309,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/JokeStore/issues/new",
     "Text": "https://github.com/maraf/JokeStore/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "78f1db5f-ae4b-4a89-aa93-b961e6ebd2a8",
@@ -1481,8 +1317,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/JokeStore/pulls",
     "Text": "https://github.com/maraf/JokeStore/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "10ebb15d-54cd-4060-8f05-8f8c39654248",
@@ -1490,8 +1325,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/JokeStore/find/master",
     "Text": "https://github.com/maraf/JokeStore/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "4581da35-7edb-4c12-898d-7ed07c32fec2",
@@ -1499,8 +1333,7 @@
     "Title": "kb",
     "Description": "https://github.com/maraf/kb",
     "Text": "https://github.com/maraf/kb",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "40eb3508-4e22-41a9-b729-c88badf39c75",
@@ -1508,8 +1341,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/kb/pulls",
     "Text": "https://github.com/maraf/kb/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "79fdd744-81ac-4766-a1a2-3cc20628a759",
@@ -1517,8 +1349,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/kb/find/master",
     "Text": "https://github.com/maraf/kb/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "7b0b9749-877a-4ad5-9aba-f1f34199d845",
@@ -1526,8 +1357,7 @@
     "Title": "LinkExtractor",
     "Description": "https://github.com/maraf/LinkExtractor",
     "Text": "https://github.com/maraf/LinkExtractor",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "6fadad13-0e6e-498f-ae76-4ef82f52152e",
@@ -1535,8 +1365,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/LinkExtractor/issues",
     "Text": "https://github.com/maraf/LinkExtractor/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "77e9205c-08b3-4f6d-9965-556c27600ea8",
@@ -1544,8 +1373,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/LinkExtractor/issues/new",
     "Text": "https://github.com/maraf/LinkExtractor/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "cd9e3f0c-2df8-44cc-be35-eba95fbce213",
@@ -1553,8 +1381,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/LinkExtractor/pulls",
     "Text": "https://github.com/maraf/LinkExtractor/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "aef75f5b-262e-417c-98cb-c9d5b9f00879",
@@ -1562,8 +1389,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/LinkExtractor/find/master",
     "Text": "https://github.com/maraf/LinkExtractor/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e54e6052-d091-4f2d-a487-6cae01050d9a",
@@ -1571,8 +1397,7 @@
     "Title": "MediaLibrary",
     "Description": "https://github.com/maraf/MediaLibrary",
     "Text": "https://github.com/maraf/MediaLibrary",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "98d82203-0d8f-486e-a5a5-5aab1732ad19",
@@ -1580,8 +1405,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/MediaLibrary/issues",
     "Text": "https://github.com/maraf/MediaLibrary/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "96c88c36-8c03-4700-b6d9-c15d3d99e219",
@@ -1589,8 +1413,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/MediaLibrary/issues/new",
     "Text": "https://github.com/maraf/MediaLibrary/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f8358631-91a0-45ab-b465-1ea48a606c34",
@@ -1598,8 +1421,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/MediaLibrary/pulls",
     "Text": "https://github.com/maraf/MediaLibrary/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ebc0520b-ad48-41fa-87a0-72975e00a128",
@@ -1607,8 +1429,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/MediaLibrary/find/master",
     "Text": "https://github.com/maraf/MediaLibrary/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f87e7bd8-6c00-4348-86c9-562683072578",
@@ -1616,8 +1437,7 @@
     "Title": "Money",
     "Description": "https://github.com/maraf/Money",
     "Text": "https://github.com/maraf/Money",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "c79a1592-bc16-499c-bac6-da2eb8498ad7",
@@ -1625,8 +1445,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Money/issues",
     "Text": "https://github.com/maraf/Money/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9e418694-52c4-41c7-bb45-abb9ed0da59e",
@@ -1634,8 +1453,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Money/issues/new",
     "Text": "https://github.com/maraf/Money/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f92d2e91-3e88-4664-afa2-bce3d8950e40",
@@ -1643,8 +1461,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Money/pulls",
     "Text": "https://github.com/maraf/Money/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "278bb83a-9010-4657-9c1c-05a9624d7f5f",
@@ -1652,8 +1469,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Money/find/master",
     "Text": "https://github.com/maraf/Money/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ab183ffa-2059-463d-9cbe-16c61deb93cf",
@@ -1661,8 +1477,7 @@
     "Title": "MonitorInputSwitcher",
     "Description": "https://github.com/maraf/MonitorInputSwitcher",
     "Text": "https://github.com/maraf/MonitorInputSwitcher",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "60d54043-2eb8-4b1e-b022-7fff8b9e50e6",
@@ -1670,8 +1485,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/MonitorInputSwitcher/issues",
     "Text": "https://github.com/maraf/MonitorInputSwitcher/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "a8626340-1ce8-4ddb-a558-fa21095ccf53",
@@ -1679,8 +1493,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/MonitorInputSwitcher/issues/new",
     "Text": "https://github.com/maraf/MonitorInputSwitcher/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "43706595-b824-469e-bf8b-dec5bf26c5d4",
@@ -1688,8 +1501,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/MonitorInputSwitcher/pulls",
     "Text": "https://github.com/maraf/MonitorInputSwitcher/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9bb82cd1-dd5b-4784-a3a6-28004b2f605a",
@@ -1697,8 +1509,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/MonitorInputSwitcher/find/main",
     "Text": "https://github.com/maraf/MonitorInputSwitcher/find/main",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "3e7ca836-2511-45e2-86d3-16e839329d14",
@@ -1706,8 +1517,7 @@
     "Title": "MultiBlazorServer",
     "Description": "https://github.com/maraf/MultiBlazorServer",
     "Text": "https://github.com/maraf/MultiBlazorServer",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "dc3872c8-16a9-45e6-9741-9616c318d21b",
@@ -1715,8 +1525,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/MultiBlazorServer/issues",
     "Text": "https://github.com/maraf/MultiBlazorServer/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "cb33b2ac-f356-4c2a-8e9f-36d5f4a0591d",
@@ -1724,8 +1533,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/MultiBlazorServer/issues/new",
     "Text": "https://github.com/maraf/MultiBlazorServer/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "12841590-268b-4104-99c9-0b2d9110c248",
@@ -1733,8 +1541,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/MultiBlazorServer/pulls",
     "Text": "https://github.com/maraf/MultiBlazorServer/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "065c6c83-157c-4167-b6de-d3173d4d80dc",
@@ -1742,8 +1549,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/MultiBlazorServer/find/master",
     "Text": "https://github.com/maraf/MultiBlazorServer/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "07d742a9-68d6-418d-989e-ebcca2298fe0",
@@ -1751,8 +1557,7 @@
     "Title": "OpenSpecialFolder",
     "Description": "https://github.com/maraf/OpenSpecialFolder",
     "Text": "https://github.com/maraf/OpenSpecialFolder",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "26c93924-c153-48bf-9fa0-096b735174ef",
@@ -1760,8 +1565,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/OpenSpecialFolder/issues",
     "Text": "https://github.com/maraf/OpenSpecialFolder/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "90c127a4-b965-480d-87dc-1228ef68c968",
@@ -1769,8 +1573,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/OpenSpecialFolder/issues/new",
     "Text": "https://github.com/maraf/OpenSpecialFolder/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "b8397635-ccaf-4408-8419-c419e7dfb588",
@@ -1778,8 +1581,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/OpenSpecialFolder/pulls",
     "Text": "https://github.com/maraf/OpenSpecialFolder/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f55e88aa-1782-489b-bfdb-a9ed578eab1e",
@@ -1787,8 +1589,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/OpenSpecialFolder/find/master",
     "Text": "https://github.com/maraf/OpenSpecialFolder/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "93008333-d5dd-464b-9b08-ea40dbc86cd6",
@@ -1796,8 +1597,7 @@
     "Title": "packages",
     "Description": "https://github.com/maraf/packages",
     "Text": "https://github.com/maraf/packages",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "7efc6aa6-5271-409c-8b81-d13c440cd21b",
@@ -1805,8 +1605,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/packages/issues",
     "Text": "https://github.com/maraf/packages/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e8e2ac19-48f9-4599-93b8-d3b336b45e6e",
@@ -1814,8 +1613,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/packages/issues/new",
     "Text": "https://github.com/maraf/packages/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "bfec3088-14e8-421d-8bae-da1c37e3afaa",
@@ -1823,8 +1621,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/packages/pulls",
     "Text": "https://github.com/maraf/packages/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f620121d-46ac-4d96-a99c-c6bd7d9a4369",
@@ -1832,8 +1629,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/packages/find/master",
     "Text": "https://github.com/maraf/packages/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "b0172da2-9ea9-40d9-9a89-802b4f57490e",
@@ -1841,8 +1637,7 @@
     "Title": "Pisqorks",
     "Description": "https://github.com/maraf/Pisqorks",
     "Text": "https://github.com/maraf/Pisqorks",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "eafa579a-b9fc-4c81-982f-d8111948a534",
@@ -1850,8 +1645,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Pisqorks/issues",
     "Text": "https://github.com/maraf/Pisqorks/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "62aa8062-8afd-461d-b0d5-2da00827a555",
@@ -1859,8 +1653,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Pisqorks/issues/new",
     "Text": "https://github.com/maraf/Pisqorks/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8623f0cd-1d28-40bb-9081-80add516655e",
@@ -1868,8 +1661,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Pisqorks/pulls",
     "Text": "https://github.com/maraf/Pisqorks/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "aeafa022-da57-43d4-8c62-cff6590ff7f8",
@@ -1877,8 +1669,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Pisqorks/find/master",
     "Text": "https://github.com/maraf/Pisqorks/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "81ca23f5-9018-473e-a3e0-23ebda2370ef",
@@ -1886,8 +1677,7 @@
     "Title": "PixelRoutine",
     "Description": "https://github.com/maraf/PixelRoutine",
     "Text": "https://github.com/maraf/PixelRoutine",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "aff9d9ca-998a-47b2-a069-8cd9c5a66ca9",
@@ -1895,8 +1685,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/PixelRoutine/issues",
     "Text": "https://github.com/maraf/PixelRoutine/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "bb16304b-48f1-4f80-b9df-ed43c745df00",
@@ -1904,8 +1693,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/PixelRoutine/issues/new",
     "Text": "https://github.com/maraf/PixelRoutine/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "4a9a0a7b-a99d-42f2-a749-0512ffd68519",
@@ -1913,8 +1701,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/PixelRoutine/pulls",
     "Text": "https://github.com/maraf/PixelRoutine/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "847f5a8b-50da-4a39-b93e-fadb06fb0d55",
@@ -1922,8 +1709,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/PixelRoutine/find/master",
     "Text": "https://github.com/maraf/PixelRoutine/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "20bbdbc8-9fee-4e26-a172-c8778e63639f",
@@ -1931,8 +1717,7 @@
     "Title": "Playground",
     "Description": "https://github.com/maraf/Playground",
     "Text": "https://github.com/maraf/Playground",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "8a686cdc-155f-4c46-9506-8184336a0990",
@@ -1940,8 +1725,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Playground/issues",
     "Text": "https://github.com/maraf/Playground/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "00d2879f-da8b-4487-be8d-2405f1db427a",
@@ -1949,8 +1733,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Playground/issues/new",
     "Text": "https://github.com/maraf/Playground/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e83d1670-c81b-4d7f-a498-80288dc1d950",
@@ -1958,8 +1741,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Playground/pulls",
     "Text": "https://github.com/maraf/Playground/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e3a1bdcc-2c11-4109-a7bd-83c6e37432f1",
@@ -1967,8 +1749,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Playground/find/master",
     "Text": "https://github.com/maraf/Playground/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "901d428f-7cf3-4f8e-94d6-9dc0d1e78c41",
@@ -1976,8 +1757,7 @@
     "Title": "PluginManager",
     "Description": "https://github.com/maraf/PluginManager",
     "Text": "https://github.com/maraf/PluginManager",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "ab5d88fd-d194-4622-941c-aa26a77535b5",
@@ -1985,8 +1765,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/PluginManager/issues",
     "Text": "https://github.com/maraf/PluginManager/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "57bca0a3-cb48-4b15-a164-fef778edfc63",
@@ -1994,8 +1773,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/PluginManager/issues/new",
     "Text": "https://github.com/maraf/PluginManager/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "59cc684a-2968-43c2-92da-c524dbd69a8b",
@@ -2003,8 +1781,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/PluginManager/pulls",
     "Text": "https://github.com/maraf/PluginManager/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "31cb62a4-f868-4e68-99ae-d133507e77bc",
@@ -2012,8 +1789,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/PluginManager/find/master",
     "Text": "https://github.com/maraf/PluginManager/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9b63c8d2-df8f-4533-96f9-d1d749805dbf",
@@ -2021,8 +1797,7 @@
     "Title": "runtime",
     "Description": "https://github.com/maraf/runtime",
     "Text": "https://github.com/maraf/runtime",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "2cc75f53-0346-4949-bb23-7c18868d3b52",
@@ -2030,8 +1805,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/runtime/pulls",
     "Text": "https://github.com/maraf/runtime/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "ad84d564-40ca-4263-9fb7-d32c21592fd6",
@@ -2039,8 +1813,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/runtime/find/main",
     "Text": "https://github.com/maraf/runtime/find/main",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "0562c8c2-a08d-4a22-ad4a-5aa516db8468",
@@ -2048,8 +1821,7 @@
     "Title": "sdk",
     "Description": "https://github.com/maraf/sdk",
     "Text": "https://github.com/maraf/sdk",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "3ef5c25a-da2d-4e1f-94e7-5af9cf6addc7",
@@ -2057,8 +1829,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/sdk/pulls",
     "Text": "https://github.com/maraf/sdk/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "eddff345-b3fd-428c-87c8-e8a242e5a083",
@@ -2066,8 +1837,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/sdk/find/main",
     "Text": "https://github.com/maraf/sdk/find/main",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "980b1690-e944-4e65-8b80-1232d5948ad2",
@@ -2075,8 +1845,7 @@
     "Title": "ServiceRunner",
     "Description": "https://github.com/maraf/ServiceRunner",
     "Text": "https://github.com/maraf/ServiceRunner",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "22ebcb77-75a9-46ce-b444-09abd5eff42a",
@@ -2084,8 +1853,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/ServiceRunner/issues",
     "Text": "https://github.com/maraf/ServiceRunner/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "c1e64ae4-4fff-4043-ab13-5ef17e07dde3",
@@ -2093,8 +1861,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/ServiceRunner/issues/new",
     "Text": "https://github.com/maraf/ServiceRunner/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "1dae4b24-84fd-4cca-9b58-fce232771af1",
@@ -2102,8 +1869,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/ServiceRunner/pulls",
     "Text": "https://github.com/maraf/ServiceRunner/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "2496a941-7fdb-4a20-8cf5-8d97b4b995ae",
@@ -2111,8 +1877,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/ServiceRunner/find/master",
     "Text": "https://github.com/maraf/ServiceRunner/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "e8589bb7-8ca9-42fc-b0bd-524301eab257",
@@ -2120,8 +1885,7 @@
     "Title": "SharpKit.ExtendedClr",
     "Description": "https://github.com/maraf/SharpKit.ExtendedClr",
     "Text": "https://github.com/maraf/SharpKit.ExtendedClr",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "6f4914ff-1f8f-4953-9523-cceb9373782b",
@@ -2129,8 +1893,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/SharpKit.ExtendedClr/issues",
     "Text": "https://github.com/maraf/SharpKit.ExtendedClr/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "843a3c31-32e7-44b5-b5d8-f6743eca6d16",
@@ -2138,8 +1901,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/SharpKit.ExtendedClr/issues/new",
     "Text": "https://github.com/maraf/SharpKit.ExtendedClr/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "13f08754-1816-4209-b803-a3533b8b371b",
@@ -2147,8 +1909,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/SharpKit.ExtendedClr/pulls",
     "Text": "https://github.com/maraf/SharpKit.ExtendedClr/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "15334416-869f-4437-a5b6-9ca9bd8efa96",
@@ -2156,8 +1917,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/SharpKit.ExtendedClr/find/master",
     "Text": "https://github.com/maraf/SharpKit.ExtendedClr/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "34d623bf-ae50-4a28-a095-404018088cca",
@@ -2165,8 +1925,7 @@
     "Title": "SharpKit.MsTest",
     "Description": "https://github.com/maraf/SharpKit.MsTest",
     "Text": "https://github.com/maraf/SharpKit.MsTest",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "7280be7f-345f-4e8a-a549-e11f0ea83814",
@@ -2174,8 +1933,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/SharpKit.MsTest/issues",
     "Text": "https://github.com/maraf/SharpKit.MsTest/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "14ccf60c-0a68-44ca-8dc0-fbc3bdbe1a59",
@@ -2183,8 +1941,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/SharpKit.MsTest/issues/new",
     "Text": "https://github.com/maraf/SharpKit.MsTest/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "2975fd11-b678-4e92-b0e8-302d39ae2b2c",
@@ -2192,8 +1949,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/SharpKit.MsTest/pulls",
     "Text": "https://github.com/maraf/SharpKit.MsTest/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "d9d3e6de-d0d4-4e5b-a461-538ac4c09c97",
@@ -2201,8 +1957,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/SharpKit.MsTest/find/master",
     "Text": "https://github.com/maraf/SharpKit.MsTest/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "4a631a8b-96be-492f-863e-7c71682ac379",
@@ -2210,8 +1965,7 @@
     "Title": "SharpKit.UnobtrusiveFeatures",
     "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures",
     "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "2b57856d-3ab5-4ad9-8c35-90bc65eb117a",
@@ -2219,8 +1973,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues",
     "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "8372562d-94ee-4451-9926-17edf708dab4",
@@ -2228,8 +1981,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues/new",
     "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "7365b36c-7a68-4a85-89e3-e1d577830ea8",
@@ -2237,8 +1989,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/pulls",
     "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "7678a1bf-fb84-4812-9e68-e32e7dd76f37",
@@ -2246,8 +1997,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/find/master",
     "Text": "https://github.com/maraf/SharpKit.UnobtrusiveFeatures/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "0b331e2a-52cc-400e-9ef7-49879580ba9d",
@@ -2255,8 +2005,7 @@
     "Title": "Snake20",
     "Description": "https://github.com/maraf/Snake20",
     "Text": "https://github.com/maraf/Snake20",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "428115b2-5b3e-456e-a1ab-ccd5c76a6d15",
@@ -2264,8 +2013,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/Snake20/issues",
     "Text": "https://github.com/maraf/Snake20/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f4808db7-fb07-46b7-bc34-8869a2b93037",
@@ -2273,8 +2021,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/Snake20/issues/new",
     "Text": "https://github.com/maraf/Snake20/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "5e87d4a6-b800-4493-bea3-fb2cb82d4bd9",
@@ -2282,8 +2029,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/Snake20/pulls",
     "Text": "https://github.com/maraf/Snake20/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "2a5335fe-014c-4a11-8db7-578c665c3674",
@@ -2291,8 +2037,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/Snake20/find/master",
     "Text": "https://github.com/maraf/Snake20/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "70ca31a6-076d-4afe-b918-e5f7451899ff",
@@ -2300,8 +2045,7 @@
     "Title": "snippets",
     "Description": "https://github.com/maraf/snippets",
     "Text": "https://github.com/maraf/snippets",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "681b84bc-b93f-484d-a19f-e9ea74946f49",
@@ -2309,8 +2053,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/snippets/issues",
     "Text": "https://github.com/maraf/snippets/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "65f2308a-3144-4a44-99f8-7c24ef89bb35",
@@ -2318,8 +2061,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/snippets/issues/new",
     "Text": "https://github.com/maraf/snippets/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "121c9f8a-4a90-4628-9c21-827c766a4040",
@@ -2327,8 +2069,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/snippets/pulls",
     "Text": "https://github.com/maraf/snippets/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "92969c9d-7522-443d-80a7-addb3513b4e7",
@@ -2336,8 +2077,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/snippets/find/master",
     "Text": "https://github.com/maraf/snippets/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "c9727f08-275f-45a7-845f-bb3787d8ea85",
@@ -2345,8 +2085,7 @@
     "Title": "StaticSiteCrawler",
     "Description": "https://github.com/maraf/StaticSiteCrawler",
     "Text": "https://github.com/maraf/StaticSiteCrawler",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "718b2a9f-dd1e-4eb3-92a6-d35348635b53",
@@ -2354,8 +2093,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/StaticSiteCrawler/issues",
     "Text": "https://github.com/maraf/StaticSiteCrawler/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "cd9fff03-92a8-4b29-bd01-db99b9369a9e",
@@ -2363,8 +2101,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/StaticSiteCrawler/issues/new",
     "Text": "https://github.com/maraf/StaticSiteCrawler/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "d85958d7-853c-4991-8e38-7029f7d94047",
@@ -2372,8 +2109,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/StaticSiteCrawler/pulls",
     "Text": "https://github.com/maraf/StaticSiteCrawler/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "666ba46f-0c0d-42a2-b84a-cf71ab6200a1",
@@ -2381,8 +2117,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/StaticSiteCrawler/find/master",
     "Text": "https://github.com/maraf/StaticSiteCrawler/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "77adadc5-1fbc-4da1-9c3a-3d49f286513c",
@@ -2390,8 +2125,7 @@
     "Title": "TaskReminder",
     "Description": "https://github.com/maraf/TaskReminder",
     "Text": "https://github.com/maraf/TaskReminder",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "875a6af9-1eb3-4c09-835d-70096a3185a3",
@@ -2399,8 +2133,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/TaskReminder/issues",
     "Text": "https://github.com/maraf/TaskReminder/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "78e91563-7160-4d93-a687-93a96d3436e1",
@@ -2408,8 +2141,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/TaskReminder/issues/new",
     "Text": "https://github.com/maraf/TaskReminder/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "bfebad8e-bf1d-4428-8ed8-27785ff054dc",
@@ -2417,8 +2149,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/TaskReminder/pulls",
     "Text": "https://github.com/maraf/TaskReminder/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "3ddb49e9-bbbb-4a56-ada2-87f06a8dbe8e",
@@ -2426,8 +2157,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/TaskReminder/find/master",
     "Text": "https://github.com/maraf/TaskReminder/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "cca13a53-edc5-42ad-be2f-c458ced861b7",
@@ -2435,8 +2165,7 @@
     "Title": "TelegramFileDownloader",
     "Description": "https://github.com/maraf/TelegramFileDownloader",
     "Text": "https://github.com/maraf/TelegramFileDownloader",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "1b6dfd31-4144-4deb-bbbd-38abe62ad006",
@@ -2444,8 +2173,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/TelegramFileDownloader/pulls",
     "Text": "https://github.com/maraf/TelegramFileDownloader/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "da8c0e58-0f53-4715-8a1d-d33d3af83885",
@@ -2453,8 +2181,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/TelegramFileDownloader/find/master",
     "Text": "https://github.com/maraf/TelegramFileDownloader/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "b8e2fe10-65b0-47b1-a09f-9f6e665df2b6",
@@ -2462,8 +2189,7 @@
     "Title": "TextBrowser",
     "Description": "https://github.com/maraf/TextBrowser",
     "Text": "https://github.com/maraf/TextBrowser",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "0ce31948-b721-464d-b46a-65e9001c241b",
@@ -2471,8 +2197,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/TextBrowser/issues",
     "Text": "https://github.com/maraf/TextBrowser/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "f55aedf0-189f-4087-822c-e2dbef00f237",
@@ -2480,8 +2205,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/TextBrowser/issues/new",
     "Text": "https://github.com/maraf/TextBrowser/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "800319a4-fc77-43b4-ba15-fd1ed3934cb2",
@@ -2489,8 +2213,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/TextBrowser/pulls",
     "Text": "https://github.com/maraf/TextBrowser/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "dfe8c6e0-61e2-4ae0-8d60-b55c3d65fb8b",
@@ -2498,8 +2221,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/TextBrowser/find/master",
     "Text": "https://github.com/maraf/TextBrowser/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "d77cb06b-5c97-4ba4-9b81-7c10215c3e52",
@@ -2507,8 +2229,7 @@
     "Title": "vocabularyapp",
     "Description": "https://github.com/maraf/vocabularyapp",
     "Text": "https://github.com/maraf/vocabularyapp",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "3810192f-126b-4709-8910-3a7369bad93e",
@@ -2516,8 +2237,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/vocabularyapp/issues",
     "Text": "https://github.com/maraf/vocabularyapp/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "03df6f79-57cf-41b2-85fd-00bae851b796",
@@ -2525,8 +2245,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/vocabularyapp/issues/new",
     "Text": "https://github.com/maraf/vocabularyapp/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "18134484-a797-4cc7-a988-13beea814522",
@@ -2534,8 +2253,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/vocabularyapp/pulls",
     "Text": "https://github.com/maraf/vocabularyapp/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "d7e81ce1-2d2a-46ff-b9a5-93f6e890290e",
@@ -2543,8 +2261,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/vocabularyapp/find/master",
     "Text": "https://github.com/maraf/vocabularyapp/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "fff815ad-56f6-4369-9dc1-50cff29b49c3",
@@ -2552,8 +2269,7 @@
     "Title": "WebCamImageCollector",
     "Description": "https://github.com/maraf/WebCamImageCollector",
     "Text": "https://github.com/maraf/WebCamImageCollector",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "0220706b-b719-4cfb-9ed0-df38cd758c96",
@@ -2561,8 +2277,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/WebCamImageCollector/issues",
     "Text": "https://github.com/maraf/WebCamImageCollector/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "383f03cc-6897-4c42-8880-c399d3dd141f",
@@ -2570,8 +2285,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/WebCamImageCollector/issues/new",
     "Text": "https://github.com/maraf/WebCamImageCollector/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "baff74c2-f9bb-4fb0-9e8c-490d85ec83cb",
@@ -2579,8 +2293,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/WebCamImageCollector/pulls",
     "Text": "https://github.com/maraf/WebCamImageCollector/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "7eb41593-3106-4190-b456-f511eb17eec3",
@@ -2588,8 +2301,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/WebCamImageCollector/find/master",
     "Text": "https://github.com/maraf/WebCamImageCollector/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "018b5a0e-3496-4935-a41e-0ad5a9423491",
@@ -2597,8 +2309,7 @@
     "Title": "WebDesk",
     "Description": "https://github.com/maraf/WebDesk",
     "Text": "https://github.com/maraf/WebDesk",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "bebfddd9-9b7b-40f5-9fb9-3b337cae66d7",
@@ -2606,8 +2317,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/WebDesk/pulls",
     "Text": "https://github.com/maraf/WebDesk/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "23ec48a4-bf6a-4757-921f-3afed07b6956",
@@ -2615,8 +2325,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/WebDesk/find/master",
     "Text": "https://github.com/maraf/WebDesk/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "c46e2a5d-9d40-4184-8455-9058461410c7",
@@ -2624,8 +2333,7 @@
     "Title": "website",
     "Description": "https://github.com/maraf/website",
     "Text": "https://github.com/maraf/website",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "4d7672b8-90b3-48a0-ad65-ca504cd6a0b0",
@@ -2633,8 +2341,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/website/pulls",
     "Text": "https://github.com/maraf/website/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "637fb5b8-3bc2-4fd2-8ad5-040088d02c0d",
@@ -2642,8 +2349,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/website/find/master",
     "Text": "https://github.com/maraf/website/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "9442e483-7879-4dcb-9ee4-cbbddee07b52",
@@ -2651,8 +2357,7 @@
     "Title": "WindowsDock",
     "Description": "https://github.com/maraf/WindowsDock",
     "Text": "https://github.com/maraf/WindowsDock",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "e084321b-bbbe-435d-b8c8-799e085ebc4f",
@@ -2660,8 +2365,7 @@
     "Title": "Issues",
     "Description": "https://github.com/maraf/WindowsDock/issues",
     "Text": "https://github.com/maraf/WindowsDock/issues",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "355865b2-0168-4248-b347-2baba8f82b07",
@@ -2669,8 +2373,7 @@
     "Title": "Issues - New",
     "Description": "https://github.com/maraf/WindowsDock/issues/new",
     "Text": "https://github.com/maraf/WindowsDock/issues/new",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "2be4d075-f8fc-45f0-83e7-0de36af54ecd",
@@ -2678,8 +2381,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/WindowsDock/pulls",
     "Text": "https://github.com/maraf/WindowsDock/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "caad75b2-d21a-40f9-836d-c5176775c763",
@@ -2687,8 +2389,7 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/WindowsDock/find/master",
     "Text": "https://github.com/maraf/WindowsDock/find/master",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "0c146590-4707-4ab5-8b88-e516954fe40a",
@@ -2696,8 +2397,7 @@
     "Title": "xharness",
     "Description": "https://github.com/maraf/xharness",
     "Text": "https://github.com/maraf/xharness",
-    "Priority": 100,
-    "IsFilled": true
+    "Priority": 100
   },
   {
     "Id": "34e0a1b5-bf69-49ca-9003-681dc1eff85e",
@@ -2705,8 +2405,7 @@
     "Title": "Pull requests",
     "Description": "https://github.com/maraf/xharness/pulls",
     "Text": "https://github.com/maraf/xharness/pulls",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
   },
   {
     "Id": "0364e2ff-478b-4f9b-833c-8fd62891c0f3",
@@ -2714,7 +2413,62 @@
     "Title": "Find file",
     "Description": "https://github.com/maraf/xharness/find/main",
     "Text": "https://github.com/maraf/xharness/find/main",
-    "Priority": 1000,
-    "IsFilled": true
+    "Priority": 1000
+  },
+  {
+    "Id": "da21b43e-ee9c-45df-9193-59f92939089a",
+    "ParentId": "284ae5a0-741f-4475-9044-1187b27cbdd0",
+    "Title": "neptuo",
+    "Description": "https://github.com/neptuo",
+    "Text": "https://github.com/neptuo",
+    "Priority": 100
+  },
+  {
+    "Id": "f55d069c-039b-4039-8056-b73df95c76dd",
+    "ParentId": "da21b43e-ee9c-45df-9193-59f92939089a",
+    "Title": "Recollections",
+    "Description": "https://github.com/neptuo/Recollections",
+    "Text": "https://github.com/neptuo/Recollections",
+    "Priority": 100
+  },
+  {
+    "Id": "883da925-e046-4139-88ab-5da159ce1999",
+    "ParentId": "f55d069c-039b-4039-8056-b73df95c76dd",
+    "Title": "Issues",
+    "Description": "https://github.com/neptuo/Recollections/issues",
+    "Text": "https://github.com/neptuo/Recollections/issues",
+    "Priority": 1000
+  },
+  {
+    "Id": "0329bd0b-ef3f-46aa-abd0-6d90db944e26",
+    "ParentId": "f55d069c-039b-4039-8056-b73df95c76dd",
+    "Title": "Issues - New",
+    "Description": "https://github.com/neptuo/Recollections/issues/new",
+    "Text": "https://github.com/neptuo/Recollections/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Id": "abec752d-ec16-4428-a3cf-a3a85575192d",
+    "ParentId": "f55d069c-039b-4039-8056-b73df95c76dd",
+    "Title": "Pull requests",
+    "Description": "https://github.com/neptuo/Recollections/pulls",
+    "Text": "https://github.com/neptuo/Recollections/pulls",
+    "Priority": 1000
+  },
+  {
+    "Id": "479ec212-39e6-4629-bb78-bd201d4f73c2",
+    "ParentId": "f55d069c-039b-4039-8056-b73df95c76dd",
+    "Title": "Find file",
+    "Description": "https://github.com/neptuo/Recollections/find/master",
+    "Text": "https://github.com/neptuo/Recollections/find/master",
+    "Priority": 1000
+  },
+  {
+    "Id": "b01e718d-546d-4dc9-9ce7-52a2c76b3c70",
+    "ParentId": null,
+    "Title": "Web Mooney",
+    "Description": "https://money.neptuo.com",
+    "Text": "https://money.neptuo.com",
+    "Priority": 1000
   }
 ]

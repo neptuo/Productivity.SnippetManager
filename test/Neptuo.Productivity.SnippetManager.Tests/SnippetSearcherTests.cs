@@ -20,7 +20,6 @@ public class SnippetSearcherTests
         public string Description { get; set; }
         public string Text { get; set; }
         public int Priority { get; set; }
-        public bool IsFilled { get; set; }
     }
 
     private SnippetProviderContext snippetContext;
@@ -49,7 +48,7 @@ public class SnippetSearcherTests
     }
 
     [Fact]
-    public void ContextReady() => Assert.Equal(302, snippetContext.Models.Count());
+    public void ContextReady() => Assert.Equal(309, snippetContext.Models.Count());
 
     private SnippetModel[] Search(SnippetModel? currentRoot, params string[] normalizedSearchText)
     {
