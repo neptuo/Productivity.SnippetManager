@@ -31,7 +31,15 @@ public class SnippetSearcher
 
         searchResult.Clear();
 
-        SearchTree(searchResult, currentRoot, normalizedSearchText, goInDepth: true);
+        bool goInDepth = true;
+        int fromIndex = 0;
+        if (normalizedSearchText.Count > 0 && normalizedSearchText[0] == "^")
+        {
+            goInDepth = false;
+            fromIndex = 1;
+        }
+
+        SearchTree(searchResult, currentRoot, normalizedSearchText, fromIndex, goInDepth);
 
         if (SupplyChildrenFromSelectedSnippets)
         {

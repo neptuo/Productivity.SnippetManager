@@ -111,4 +111,28 @@ public class SnippetSearcherTests
         var result = Search(null, "g", "mara", "aspnet");
         Assert.Single(result);
     }
+
+    [Fact]
+    public void NoParent_Money()
+    {
+        var result = Search(null, "money");
+        Assert.Collection(
+            result,
+            item => Assert.Equal("https://github.com/maraf/com.neptuo.money", item.Text),
+            item => Assert.Equal("https://github.com/maraf/com.neptuo.money.app", item.Text),
+            item => Assert.Equal("https://github.com/maraf/com.neptuo.money.app.beta", item.Text),
+            item => Assert.Equal("https://github.com/maraf/Money", item.Text),
+            item => Assert.Equal("https://money.neptuo.com", item.Text)
+        );
+    }
+
+    [Fact]
+    public void NoParent_Money_StartsWith()
+    {
+        var result = Search(null, "^", "money");
+        Assert.Collection(
+            result,
+            item => Assert.Equal("https://money.neptuo.com", item.Text)
+        );
+    }
 }
