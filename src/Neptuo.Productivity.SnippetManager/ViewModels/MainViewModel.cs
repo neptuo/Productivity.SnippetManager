@@ -67,18 +67,18 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private bool CanSelectExecute(SnippetModel snippet)
         {
-            if (Selected.Count == 0 || snippet.ParentId == null)
+            var parent = snippetTree.FindParent(snippet);
+
+            if (Selected.Count == 0 || parent == null)
                 return true;
 
-            SnippetModel? current = snippet;
-            while (current.ParentId != null)
+            var lastSelected = Selected.Last();
+            while (parent != null)
             {
-                if (Selected.Last().Id == current.ParentId)
+                if (lastSelected == parent)
                     return true;
 
-                current = snippetTree.FindById(current.ParentId.Value);
-                if (current == null)
-                    break;
+                parent = snippetTree.FindParent(parent);
             }
 
             return false;

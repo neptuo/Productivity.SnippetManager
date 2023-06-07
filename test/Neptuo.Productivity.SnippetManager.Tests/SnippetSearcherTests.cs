@@ -14,8 +14,6 @@ public class SnippetSearcherTests
 {
     public class JsonSnippetModel
     {
-        public string Id { get; set; }
-        public string ParentId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Text { get; set; }
@@ -33,17 +31,7 @@ public class SnippetSearcherTests
         var jsonModels = JsonSerializer.Deserialize<JsonSnippetModel[]>(File.ReadAllText("GitHubSnippets.json"));
         var idMapping = new Dictionary<string, Guid>();
 
-        var models = jsonModels.Select(m =>
-        {
-            Guid? parentId = null;
-            if (m.ParentId != null)
-                parentId = idMapping[m.ParentId];
-
-            var s = new SnippetModel(m.Title, m.Text, m.Description, m.Priority, parentId);
-            idMapping[m.Id] = s.Id;
-
-            return s;
-        }).ToList();
+        var models = jsonModels.Select(m => new SnippetModel(m.Title, m.Text, m.Description, m.Priority)).ToList();
         snippetContext.AddRange(models);
     }
 

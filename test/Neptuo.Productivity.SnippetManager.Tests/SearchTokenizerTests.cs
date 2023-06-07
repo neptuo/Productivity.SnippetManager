@@ -2,14 +2,11 @@ namespace Neptuo.Productivity.SnippetManager.Tests;
 
 public class SearchTokenizerTests
 {
-    public static IEnumerable<object[]> GetBasicData()
+    public static IEnumerable<object[]> GetBasicData() => new object[][]
     {
-        return new object[][]
-        {
-                new object[] { "Hello, World!", new string[] { "Hello,", "World!" } },
-                new object[] { "Hello, \"This is Sparta\" World!", new string[] { "Hello,", "This is Sparta", "World!" } }
-        };
-    }
+        new object[] { "Hello, World!", new string[] { "Hello,", "World!" } },
+        new object[] { "Hello, \"This is Sparta\" World!", new string[] { "Hello,", "This is Sparta", "World!" } }
+    };
 
     [Theory]
     [MemberData(nameof(GetBasicData))]

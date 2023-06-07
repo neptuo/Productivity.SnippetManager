@@ -6,7 +6,7 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public interface ISnippetTree
 {
-    SnippetModel? FindById(Guid id);
+    SnippetModel? FindParent(SnippetModel child);
     IEnumerable<SnippetModel> GetRoots();
     IEnumerable<SnippetModel> GetChildren(SnippetModel parent);
 

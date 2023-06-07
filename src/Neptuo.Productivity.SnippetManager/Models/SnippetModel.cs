@@ -14,24 +14,35 @@ namespace Neptuo.Productivity.SnippetManager.Models
     {
         private static string[] lineSeparators = new[] { Environment.NewLine, "\n" };
 
-        public Guid Id { get; } = Guid.NewGuid();
-        public Guid? ParentId { get; }
-
         public string Title { get; }
         public string? Description { get; }
         public string Text { get; }
 
         public int Priority { get; }
 
-        public bool IsFilled => true;
+        public bool IsShadow { get; }
+        public bool IsFilled { get; }
 
-        public SnippetModel(string title, string text, string? description = null, int priority = SnippetPriority.Normal, Guid? parentId = null)
+        public SnippetModel(string title, int priority = SnippetPriority.Normal)
         {
+            IsFilled = false;
+            IsShadow = true;
+
+            Title = title;
+            Text = string.Empty;
+            Priority = priority;
+
+            // TODO: This snippet is in fact unappliable
+        }
+
+        public SnippetModel(string title, string text, string? description = null, int priority = SnippetPriority.Normal)
+        {
+            IsFilled = true;
+
             Title = title;
             Text = text;
             Description = description;
             Priority = priority;
-            ParentId = parentId;
 
             if (description == null)
             {

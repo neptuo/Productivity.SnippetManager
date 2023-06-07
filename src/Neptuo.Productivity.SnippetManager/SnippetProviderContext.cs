@@ -2,7 +2,6 @@ using Neptuo.Collections.Generic;
 using Neptuo.Productivity.SnippetManager.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,51 +11,107 @@ using System.Windows.Controls.Primitives;
 
 namespace Neptuo.Productivity.SnippetManager
 {
+    [DebuggerDisplay("{Model.Title}")]
+    public record SnippetEntry(SnippetModel Model, string CurrentPath, SnippetModel? Parent)
+    {
+        public SnippetModel Model { get; set; } = Model;
+        public List<SnippetEntry> Children { get; } = new();
+    }
+
     public class SnippetProviderContext : ISnippetTree
     {
         private readonly List<SnippetModel> models = new();
-        private readonly Dictionary<Guid, (SnippetModel model, List<SnippetModel>? children)> byId = new();
+        private readonly List<SnippetEntry> root = new();
+        private readonly Dictionary<SnippetModel, SnippetEntry> byModel = new();
 
         public IEnumerable<SnippetModel> Models => models;
 
         public event Action? Changed;
 
+        private static string[] GetPath(SnippetModel snippet) => snippet.Title.Split(" - ");
+
         private void AddToTree(SnippetModel snippet)
         {
-            byId[snippet.Id] = (snippet, null);
+            string[] path = GetPath(snippet);
 
-            if (snippet.ParentId != null)
+            SnippetModel? parent = null;
+            List<SnippetEntry> children = root;
+            for (var i = 0; i < path.Length - 1; i++)
             {
-                var parent = byId[snippet.ParentId.Value];
-                if (parent.children == null)
-                    parent.children = new();
+                var segment = path[i];
 
-                parent.children.Add(snippet);
-                byId[snippet.ParentId.Value] = parent;
+                var segmentEntry = children.Find(s => s.CurrentPath == segment);
+                if (segmentEntry == null)
+                {
+                    var segmentModel = new SnippetModel(segment);
+                    children.Add(byModel[segmentModel] = segmentEntry = new(segmentModel, segment, parent));
+                }
+
+                parent = segmentEntry.Model;
+                children = segmentEntry.Children;
             }
+
+            string lastSegment = path[path.Length - 1];
+            var snippetEntry = children.Find(s => s.CurrentPath == lastSegment);
+            if (snippetEntry == null)
+            {
+                children.Add(snippetEntry = new(snippet, lastSegment, parent));
+            }
+            else
+            {
+                byModel.Remove(snippetEntry.Model);
+                models.Remove(snippetEntry.Model);
+                snippetEntry.Model = snippet;
+            }
+
+            byModel[snippet] = snippetEntry;
+            models.Add(snippet);
         }
 
         private void RemoveFromTree(SnippetModel snippet)
         {
-            byId.Remove(snippet.Id);
+            string[] path = GetPath(snippet);
 
-            if (snippet.ParentId != null)
+            if (byModel.TryGetValue(snippet, out var entry))
             {
-                var parent = byId[snippet.ParentId.Value];
-                parent.children!.Remove(snippet);
+                void RemoveSnippetEntry(SnippetEntry e)
+                {
+                    byModel.Remove(e.Model);
+                    models.Remove(e.Model);
+
+                    foreach (var child in e.Children)
+                        RemoveSnippetEntry(child);
+                }
+
+                RemoveSnippetEntry(entry);
+
+                while (entry.Parent != null)
+                {
+                    byModel.Remove(entry.Model);
+
+                    var parentEntry = byModel[entry.Parent];
+                    parentEntry.Children.Remove(entry);
+
+                    if (parentEntry.Children.Count > 0 || !parentEntry.Model.IsShadow)
+                        break;
+
+                    entry = parentEntry;
+                }
+            }
+            else
+            {
+                throw Ensure.Exception.InvalidOperation($"Snippet '{snippet.Title}' was not found in the tree");
             }
         }
 
         public virtual void Add(SnippetModel snippet)
         {
-            models.Add(snippet);
             AddToTree(snippet);
             Changed?.Invoke();
         }
 
         public virtual void AddRange(IEnumerable<SnippetModel> snippets)
         {
-            models.AddRange(snippets);
             foreach (var snippet in snippets)
                 AddToTree(snippet);
 
@@ -65,26 +120,25 @@ namespace Neptuo.Productivity.SnippetManager
 
         public virtual void Remove(SnippetModel snippet)
         {
-            models.Remove(snippet);
             RemoveFromTree(snippet);
             Changed?.Invoke();
         }
 
         public IEnumerable<SnippetModel> GetRoots() 
-            => models.Where(s => s.ParentId == null);
+            => root.Select(s => s.Model);
 
         public IEnumerable<SnippetModel> GetChildren(SnippetModel parent)
         {
-            if (byId.TryGetValue(parent.Id, out var entry))
-                return entry.children ?? Enumerable.Empty<SnippetModel>();
+            if (byModel.TryGetValue(parent, out var entry))
+                return entry.Children.Select(s => s.Model);
 
             return Enumerable.Empty<SnippetModel>();
         }
 
-        public SnippetModel? FindById(Guid id)
+        public SnippetModel? FindParent(SnippetModel child)
         {
-            if (byId.TryGetValue(id, out var entry))
-                return entry.model;
+            if (byModel.TryGetValue(child, out var entry))
+                return entry.Parent;
 
             return null;
         }
@@ -92,22 +146,19 @@ namespace Neptuo.Productivity.SnippetManager
         public IEnumerable<SnippetModel> GetAncestors(SnippetModel child, SnippetModel? lastAncestor = null)
         {
             var ancestors = new Stack<SnippetModel>();
-            if (child.ParentId != null)
+            if (byModel.TryGetValue(child, out var entry))
             {
-                SnippetModel? current = child;
-                while (lastAncestor?.Id != current.ParentId)
+                SnippetEntry? current = entry;
+                while (lastAncestor != current?.Model)
                 {
-                    if (current.ParentId == null)
+                    if (current.Parent == null)
                         break;
 
-                    current = FindById(current.ParentId.Value);
-                    if (current == null)
-                    {
-                        Debug.Assert(true, "Unreachable code");
+                    ancestors.Push(current.Model);
+                    if (current.Parent == null)
                         break;
-                    }
 
-                    ancestors.Push(current);
+                    current = byModel[current.Parent];
                 }
             }
 
