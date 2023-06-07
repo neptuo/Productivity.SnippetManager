@@ -39,7 +39,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
 
             var repositories = await github.Repository.GetAllForUser(configuration.UserName);
 
-            AddSnippetsForRepositories(context, repositories, parent.Id);
+            AddSnippetsForRepositories(context, repositories);
 
 #if !DEBUG
     throw new Exception("This was committed accidentallly!");
@@ -82,7 +82,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         Debug.WriteLine($"GitHub done");
     }
 
-    private static void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories, Guid parentId)
+    private static void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories)
     {
         List<SnippetModel> snippets = new List<SnippetModel>();
 
@@ -92,9 +92,8 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
             if (snippets.Count == 0)
             {
                 parent = new SnippetModel(
-                    title: repository.Owner.Login,
-                    text: repository.Owner.HtmlUrl,
-                    parentId: parentId
+                    title: $"Github - {repository.Owner.Login}",
+                    text: repository.Owner.HtmlUrl
                 );
                 context.Add(parent);
             }
@@ -105,53 +104,48 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
                 repository.HtmlUrl,
                 repository.Owner.Login,
                 repository.HasIssues,
-                repository.DefaultBranch,
-                parent!.Id
+                repository.DefaultBranch
             );
         }
 
         context.AddRange(snippets);
     }
 
-    private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch, Guid parentId)
+    private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
     {
-        var parent = new SnippetModel(
-            title: repository,
-            text: htmlUrl,
-            parentId: parentId
-        );
-        snippets.Add(parent);
+        var repositoryTitle = $"Github - {owner} - {repository}";
+
+        snippets.Add(new SnippetModel(
+            title: repositoryTitle,
+            text: htmlUrl
+        ));
 
         if (hasIssues)
         {
             snippets.Add(new SnippetModel(
-                title: $"Issues",
+                title: $"{repositoryTitle} - Issues",
                 text: $"{htmlUrl}/issues",
-                priority: SnippetPriority.Low,
-                parentId: parent.Id
+                priority: SnippetPriority.Low
             ));
             snippets.Add(new SnippetModel(
-                title: $"Issues - New",
+                title: $"{repositoryTitle} - Issues - New",
                 text: $"{htmlUrl}/issues/new",
-                priority: SnippetPriority.Low,
-                parentId: parent.Id
+                priority: SnippetPriority.Low
             ));
         }
 
         snippets.Add(new SnippetModel(
-            title: $"Pulls",
+            title: $"{repositoryTitle} - Pulls",
             text: $"{htmlUrl}/pulls",
-            priority: SnippetPriority.Low,
-            parentId: parent.Id
+            priority: SnippetPriority.Low
         ));
 
         if (defaultBranch != null)
         {
             snippets.Add(new SnippetModel(
-                title: $"Find file",
+                title: $"{repositoryTitle} - Find file",
                 text: $"{htmlUrl}/find/{defaultBranch}",
-                priority: SnippetPriority.Low,
-                parentId: parent.Id
+                priority: SnippetPriority.Low
             ));
         }
     }
