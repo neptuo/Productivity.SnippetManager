@@ -1,0 +1,1736 @@
+[
+  {
+    "Title": "GitHub",
+    "Description": "https://github.com",
+    "Text": "https://github.com",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf",
+    "Description": "https://github.com/maraf",
+    "Text": "https://github.com/maraf",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - aspnetcore",
+    "Description": "https://github.com/maraf/aspnetcore",
+    "Text": "https://github.com/maraf/aspnetcore",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - aspnetcore - Pulls",
+    "Description": "https://github.com/maraf/aspnetcore/pulls",
+    "Text": "https://github.com/maraf/aspnetcore/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - aspnetcore - Find file",
+    "Description": "https://github.com/maraf/aspnetcore/find/main",
+    "Text": "https://github.com/maraf/aspnetcore/find/main",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - blazor-analytics",
+    "Description": "https://github.com/maraf/blazor-analytics",
+    "Text": "https://github.com/maraf/blazor-analytics",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - blazor-analytics - Pulls",
+    "Description": "https://github.com/maraf/blazor-analytics/pulls",
+    "Text": "https://github.com/maraf/blazor-analytics/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - blazor-analytics - Find file",
+    "Description": "https://github.com/maraf/blazor-analytics/find/master",
+    "Text": "https://github.com/maraf/blazor-analytics/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Blazor.Docs",
+    "Description": "https://github.com/maraf/Blazor.Docs",
+    "Text": "https://github.com/maraf/Blazor.Docs",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Blazor.Docs - Pulls",
+    "Description": "https://github.com/maraf/Blazor.Docs/pulls",
+    "Text": "https://github.com/maraf/Blazor.Docs/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Blazor.Docs - Find file",
+    "Description": "https://github.com/maraf/Blazor.Docs/find/master",
+    "Text": "https://github.com/maraf/Blazor.Docs/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - certbot-arm",
+    "Description": "https://github.com/maraf/certbot-arm",
+    "Text": "https://github.com/maraf/certbot-arm",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - certbot-arm - Issues",
+    "Description": "https://github.com/maraf/certbot-arm/issues",
+    "Text": "https://github.com/maraf/certbot-arm/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - certbot-arm - Issues - New",
+    "Description": "https://github.com/maraf/certbot-arm/issues/new",
+    "Text": "https://github.com/maraf/certbot-arm/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - certbot-arm - Pulls",
+    "Description": "https://github.com/maraf/certbot-arm/pulls",
+    "Text": "https://github.com/maraf/certbot-arm/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - certbot-arm - Find file",
+    "Description": "https://github.com/maraf/certbot-arm/find/master",
+    "Text": "https://github.com/maraf/certbot-arm/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chat",
+    "Description": "https://github.com/maraf/Chat",
+    "Text": "https://github.com/maraf/Chat",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Chat - Issues",
+    "Description": "https://github.com/maraf/Chat/issues",
+    "Text": "https://github.com/maraf/Chat/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chat - Issues - New",
+    "Description": "https://github.com/maraf/Chat/issues/new",
+    "Text": "https://github.com/maraf/Chat/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chat - Pulls",
+    "Description": "https://github.com/maraf/Chat/pulls",
+    "Text": "https://github.com/maraf/Chat/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chat - Find file",
+    "Description": "https://github.com/maraf/Chat/find/master",
+    "Text": "https://github.com/maraf/Chat/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chicago",
+    "Description": "https://github.com/maraf/Chicago",
+    "Text": "https://github.com/maraf/Chicago",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Chicago - Issues",
+    "Description": "https://github.com/maraf/Chicago/issues",
+    "Text": "https://github.com/maraf/Chicago/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chicago - Issues - New",
+    "Description": "https://github.com/maraf/Chicago/issues/new",
+    "Text": "https://github.com/maraf/Chicago/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chicago - Pulls",
+    "Description": "https://github.com/maraf/Chicago/pulls",
+    "Text": "https://github.com/maraf/Chicago/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Chicago - Find file",
+    "Description": "https://github.com/maraf/Chicago/find/master",
+    "Text": "https://github.com/maraf/Chicago/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ChromiumUpdater",
+    "Description": "https://github.com/maraf/ChromiumUpdater",
+    "Text": "https://github.com/maraf/ChromiumUpdater",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - ChromiumUpdater - Issues",
+    "Description": "https://github.com/maraf/ChromiumUpdater/issues",
+    "Text": "https://github.com/maraf/ChromiumUpdater/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ChromiumUpdater - Issues - New",
+    "Description": "https://github.com/maraf/ChromiumUpdater/issues/new",
+    "Text": "https://github.com/maraf/ChromiumUpdater/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ChromiumUpdater - Pulls",
+    "Description": "https://github.com/maraf/ChromiumUpdater/pulls",
+    "Text": "https://github.com/maraf/ChromiumUpdater/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ChromiumUpdater - Find file",
+    "Description": "https://github.com/maraf/ChromiumUpdater/find/master",
+    "Text": "https://github.com/maraf/ChromiumUpdater/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.mara",
+    "Description": "https://github.com/maraf/com.neptuo.mara",
+    "Text": "https://github.com/maraf/com.neptuo.mara",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.mara - Pulls",
+    "Description": "https://github.com/maraf/com.neptuo.mara/pulls",
+    "Text": "https://github.com/maraf/com.neptuo.mara/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.mara - Find file",
+    "Description": "https://github.com/maraf/com.neptuo.mara/find/master",
+    "Text": "https://github.com/maraf/com.neptuo.mara/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money",
+    "Description": "https://github.com/maraf/com.neptuo.money",
+    "Text": "https://github.com/maraf/com.neptuo.money",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money - Issues",
+    "Description": "https://github.com/maraf/com.neptuo.money/issues",
+    "Text": "https://github.com/maraf/com.neptuo.money/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money - Issues - New",
+    "Description": "https://github.com/maraf/com.neptuo.money/issues/new",
+    "Text": "https://github.com/maraf/com.neptuo.money/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money - Pulls",
+    "Description": "https://github.com/maraf/com.neptuo.money/pulls",
+    "Text": "https://github.com/maraf/com.neptuo.money/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money - Find file",
+    "Description": "https://github.com/maraf/com.neptuo.money/find/master",
+    "Text": "https://github.com/maraf/com.neptuo.money/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money.app",
+    "Description": "https://github.com/maraf/com.neptuo.money.app",
+    "Text": "https://github.com/maraf/com.neptuo.money.app",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money.app - Pulls",
+    "Description": "https://github.com/maraf/com.neptuo.money.app/pulls",
+    "Text": "https://github.com/maraf/com.neptuo.money.app/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money.app - Find file",
+    "Description": "https://github.com/maraf/com.neptuo.money.app/find/master",
+    "Text": "https://github.com/maraf/com.neptuo.money.app/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money.app.beta",
+    "Description": "https://github.com/maraf/com.neptuo.money.app.beta",
+    "Text": "https://github.com/maraf/com.neptuo.money.app.beta",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money.app.beta - Pulls",
+    "Description": "https://github.com/maraf/com.neptuo.money.app.beta/pulls",
+    "Text": "https://github.com/maraf/com.neptuo.money.app.beta/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - com.neptuo.money.app.beta - Find file",
+    "Description": "https://github.com/maraf/com.neptuo.money.app.beta/find/master",
+    "Text": "https://github.com/maraf/com.neptuo.money.app.beta/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - CSharpToJavascriptComparison",
+    "Description": "https://github.com/maraf/CSharpToJavascriptComparison",
+    "Text": "https://github.com/maraf/CSharpToJavascriptComparison",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - CSharpToJavascriptComparison - Issues",
+    "Description": "https://github.com/maraf/CSharpToJavascriptComparison/issues",
+    "Text": "https://github.com/maraf/CSharpToJavascriptComparison/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - CSharpToJavascriptComparison - Issues - New",
+    "Description": "https://github.com/maraf/CSharpToJavascriptComparison/issues/new",
+    "Text": "https://github.com/maraf/CSharpToJavascriptComparison/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - CSharpToJavascriptComparison - Pulls",
+    "Description": "https://github.com/maraf/CSharpToJavascriptComparison/pulls",
+    "Text": "https://github.com/maraf/CSharpToJavascriptComparison/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - CSharpToJavascriptComparison - Find file",
+    "Description": "https://github.com/maraf/CSharpToJavascriptComparison/find/master",
+    "Text": "https://github.com/maraf/CSharpToJavascriptComparison/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.cestapanadorta",
+    "Description": "https://github.com/maraf/cz.cestapanadorta",
+    "Text": "https://github.com/maraf/cz.cestapanadorta",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - cz.cestapanadorta - Pulls",
+    "Description": "https://github.com/maraf/cz.cestapanadorta/pulls",
+    "Text": "https://github.com/maraf/cz.cestapanadorta/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.cestapanadorta - Find file",
+    "Description": "https://github.com/maraf/cz.cestapanadorta/find/master",
+    "Text": "https://github.com/maraf/cz.cestapanadorta/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.papayateam",
+    "Description": "https://github.com/maraf/cz.papayateam",
+    "Text": "https://github.com/maraf/cz.papayateam",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - cz.papayateam - Issues",
+    "Description": "https://github.com/maraf/cz.papayateam/issues",
+    "Text": "https://github.com/maraf/cz.papayateam/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.papayateam - Issues - New",
+    "Description": "https://github.com/maraf/cz.papayateam/issues/new",
+    "Text": "https://github.com/maraf/cz.papayateam/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.papayateam - Pulls",
+    "Description": "https://github.com/maraf/cz.papayateam/pulls",
+    "Text": "https://github.com/maraf/cz.papayateam/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.papayateam - Find file",
+    "Description": "https://github.com/maraf/cz.papayateam/find/gh-pages",
+    "Text": "https://github.com/maraf/cz.papayateam/find/gh-pages",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.pernate",
+    "Description": "https://github.com/maraf/cz.pernate",
+    "Text": "https://github.com/maraf/cz.pernate",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - cz.pernate - Issues",
+    "Description": "https://github.com/maraf/cz.pernate/issues",
+    "Text": "https://github.com/maraf/cz.pernate/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.pernate - Issues - New",
+    "Description": "https://github.com/maraf/cz.pernate/issues/new",
+    "Text": "https://github.com/maraf/cz.pernate/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.pernate - Pulls",
+    "Description": "https://github.com/maraf/cz.pernate/pulls",
+    "Text": "https://github.com/maraf/cz.pernate/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - cz.pernate - Find file",
+    "Description": "https://github.com/maraf/cz.pernate/find/master",
+    "Text": "https://github.com/maraf/cz.pernate/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Desktop-TaskPanel",
+    "Description": "https://github.com/maraf/Desktop-TaskPanel",
+    "Text": "https://github.com/maraf/Desktop-TaskPanel",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Desktop-TaskPanel - Issues",
+    "Description": "https://github.com/maraf/Desktop-TaskPanel/issues",
+    "Text": "https://github.com/maraf/Desktop-TaskPanel/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Desktop-TaskPanel - Issues - New",
+    "Description": "https://github.com/maraf/Desktop-TaskPanel/issues/new",
+    "Text": "https://github.com/maraf/Desktop-TaskPanel/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Desktop-TaskPanel - Pulls",
+    "Description": "https://github.com/maraf/Desktop-TaskPanel/pulls",
+    "Text": "https://github.com/maraf/Desktop-TaskPanel/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Desktop-TaskPanel - Find file",
+    "Description": "https://github.com/maraf/Desktop-TaskPanel/find/master",
+    "Text": "https://github.com/maraf/Desktop-TaskPanel/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-react",
+    "Description": "https://github.com/maraf/dotnet-wasm-react",
+    "Text": "https://github.com/maraf/dotnet-wasm-react",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-react - Issues",
+    "Description": "https://github.com/maraf/dotnet-wasm-react/issues",
+    "Text": "https://github.com/maraf/dotnet-wasm-react/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-react - Issues - New",
+    "Description": "https://github.com/maraf/dotnet-wasm-react/issues/new",
+    "Text": "https://github.com/maraf/dotnet-wasm-react/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-react - Pulls",
+    "Description": "https://github.com/maraf/dotnet-wasm-react/pulls",
+    "Text": "https://github.com/maraf/dotnet-wasm-react/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-react - Find file",
+    "Description": "https://github.com/maraf/dotnet-wasm-react/find/main",
+    "Text": "https://github.com/maraf/dotnet-wasm-react/find/main",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-todo-mvc",
+    "Description": "https://github.com/maraf/dotnet-wasm-todo-mvc",
+    "Text": "https://github.com/maraf/dotnet-wasm-todo-mvc",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-todo-mvc - Pulls",
+    "Description": "https://github.com/maraf/dotnet-wasm-todo-mvc/pulls",
+    "Text": "https://github.com/maraf/dotnet-wasm-todo-mvc/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - dotnet-wasm-todo-mvc - Find file",
+    "Description": "https://github.com/maraf/dotnet-wasm-todo-mvc/find/main",
+    "Text": "https://github.com/maraf/dotnet-wasm-todo-mvc/find/main",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Earbook",
+    "Description": "https://github.com/maraf/Earbook",
+    "Text": "https://github.com/maraf/Earbook",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Earbook - Pulls",
+    "Description": "https://github.com/maraf/Earbook/pulls",
+    "Text": "https://github.com/maraf/Earbook/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Earbook - Find file",
+    "Description": "https://github.com/maraf/Earbook/find/master",
+    "Text": "https://github.com/maraf/Earbook/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FbmDesktop",
+    "Description": "https://github.com/maraf/FbmDesktop",
+    "Text": "https://github.com/maraf/FbmDesktop",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - FbmDesktop - Issues",
+    "Description": "https://github.com/maraf/FbmDesktop/issues",
+    "Text": "https://github.com/maraf/FbmDesktop/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FbmDesktop - Issues - New",
+    "Description": "https://github.com/maraf/FbmDesktop/issues/new",
+    "Text": "https://github.com/maraf/FbmDesktop/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FbmDesktop - Pulls",
+    "Description": "https://github.com/maraf/FbmDesktop/pulls",
+    "Text": "https://github.com/maraf/FbmDesktop/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FbmDesktop - Find file",
+    "Description": "https://github.com/maraf/FbmDesktop/find/master",
+    "Text": "https://github.com/maraf/FbmDesktop/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileBackuper",
+    "Description": "https://github.com/maraf/FileBackuper",
+    "Text": "https://github.com/maraf/FileBackuper",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - FileBackuper - Issues",
+    "Description": "https://github.com/maraf/FileBackuper/issues",
+    "Text": "https://github.com/maraf/FileBackuper/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileBackuper - Issues - New",
+    "Description": "https://github.com/maraf/FileBackuper/issues/new",
+    "Text": "https://github.com/maraf/FileBackuper/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileBackuper - Pulls",
+    "Description": "https://github.com/maraf/FileBackuper/pulls",
+    "Text": "https://github.com/maraf/FileBackuper/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileBackuper - Find file",
+    "Description": "https://github.com/maraf/FileBackuper/find/master",
+    "Text": "https://github.com/maraf/FileBackuper/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileUpload",
+    "Description": "https://github.com/maraf/FileUpload",
+    "Text": "https://github.com/maraf/FileUpload",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - FileUpload - Issues",
+    "Description": "https://github.com/maraf/FileUpload/issues",
+    "Text": "https://github.com/maraf/FileUpload/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileUpload - Issues - New",
+    "Description": "https://github.com/maraf/FileUpload/issues/new",
+    "Text": "https://github.com/maraf/FileUpload/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileUpload - Pulls",
+    "Description": "https://github.com/maraf/FileUpload/pulls",
+    "Text": "https://github.com/maraf/FileUpload/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - FileUpload - Find file",
+    "Description": "https://github.com/maraf/FileUpload/find/master",
+    "Text": "https://github.com/maraf/FileUpload/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - G810Playground",
+    "Description": "https://github.com/maraf/G810Playground",
+    "Text": "https://github.com/maraf/G810Playground",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - G810Playground - Issues",
+    "Description": "https://github.com/maraf/G810Playground/issues",
+    "Text": "https://github.com/maraf/G810Playground/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - G810Playground - Issues - New",
+    "Description": "https://github.com/maraf/G810Playground/issues/new",
+    "Text": "https://github.com/maraf/G810Playground/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - G810Playground - Pulls",
+    "Description": "https://github.com/maraf/G810Playground/pulls",
+    "Text": "https://github.com/maraf/G810Playground/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - G810Playground - Find file",
+    "Description": "https://github.com/maraf/G810Playground/find/master",
+    "Text": "https://github.com/maraf/G810Playground/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions",
+    "Description": "https://github.com/maraf/GitExtensions",
+    "Text": "https://github.com/maraf/GitExtensions",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions - Pulls",
+    "Description": "https://github.com/maraf/GitExtensions/pulls",
+    "Text": "https://github.com/maraf/GitExtensions/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions - Find file",
+    "Description": "https://github.com/maraf/GitExtensions/find/master",
+    "Text": "https://github.com/maraf/GitExtensions/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.BundleBackuper",
+    "Description": "https://github.com/maraf/GitExtensions.BundleBackuper",
+    "Text": "https://github.com/maraf/GitExtensions.BundleBackuper",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.BundleBackuper - Issues",
+    "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/issues",
+    "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.BundleBackuper - Issues - New",
+    "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/issues/new",
+    "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.BundleBackuper - Pulls",
+    "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/pulls",
+    "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.BundleBackuper - Find file",
+    "Description": "https://github.com/maraf/GitExtensions.BundleBackuper/find/master",
+    "Text": "https://github.com/maraf/GitExtensions.BundleBackuper/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.EmptyPlugin",
+    "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin",
+    "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.EmptyPlugin - Issues",
+    "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues",
+    "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.EmptyPlugin - Issues - New",
+    "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues/new",
+    "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.EmptyPlugin - Pulls",
+    "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/pulls",
+    "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.EmptyPlugin - Find file",
+    "Description": "https://github.com/maraf/GitExtensions.EmptyPlugin/find/master",
+    "Text": "https://github.com/maraf/GitExtensions.EmptyPlugin/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.extensibility",
+    "Description": "https://github.com/maraf/gitextensions.extensibility",
+    "Text": "https://github.com/maraf/gitextensions.extensibility",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.extensibility - Pulls",
+    "Description": "https://github.com/maraf/gitextensions.extensibility/pulls",
+    "Text": "https://github.com/maraf/gitextensions.extensibility/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.extensibility - Find file",
+    "Description": "https://github.com/maraf/gitextensions.extensibility/find/master",
+    "Text": "https://github.com/maraf/gitextensions.extensibility/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.pluginmanager",
+    "Description": "https://github.com/maraf/gitextensions.pluginmanager",
+    "Text": "https://github.com/maraf/gitextensions.pluginmanager",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.pluginmanager - Pulls",
+    "Description": "https://github.com/maraf/gitextensions.pluginmanager/pulls",
+    "Text": "https://github.com/maraf/gitextensions.pluginmanager/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.pluginmanager - Find file",
+    "Description": "https://github.com/maraf/gitextensions.pluginmanager/find/master",
+    "Text": "https://github.com/maraf/gitextensions.pluginmanager/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.plugintemplate",
+    "Description": "https://github.com/maraf/gitextensions.plugintemplate",
+    "Text": "https://github.com/maraf/gitextensions.plugintemplate",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.plugintemplate - Pulls",
+    "Description": "https://github.com/maraf/gitextensions.plugintemplate/pulls",
+    "Text": "https://github.com/maraf/gitextensions.plugintemplate/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - gitextensions.plugintemplate - Find file",
+    "Description": "https://github.com/maraf/gitextensions.plugintemplate/find/master",
+    "Text": "https://github.com/maraf/gitextensions.plugintemplate/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.SolutionRunner",
+    "Description": "https://github.com/maraf/GitExtensions.SolutionRunner",
+    "Text": "https://github.com/maraf/GitExtensions.SolutionRunner",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.SolutionRunner - Issues",
+    "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/issues",
+    "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.SolutionRunner - Issues - New",
+    "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/issues/new",
+    "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.SolutionRunner - Pulls",
+    "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/pulls",
+    "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitExtensions.SolutionRunner - Find file",
+    "Description": "https://github.com/maraf/GitExtensions.SolutionRunner/find/master",
+    "Text": "https://github.com/maraf/GitExtensions.SolutionRunner/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitHubSubscriptionManager",
+    "Description": "https://github.com/maraf/GitHubSubscriptionManager",
+    "Text": "https://github.com/maraf/GitHubSubscriptionManager",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - GitHubSubscriptionManager - Issues",
+    "Description": "https://github.com/maraf/GitHubSubscriptionManager/issues",
+    "Text": "https://github.com/maraf/GitHubSubscriptionManager/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitHubSubscriptionManager - Issues - New",
+    "Description": "https://github.com/maraf/GitHubSubscriptionManager/issues/new",
+    "Text": "https://github.com/maraf/GitHubSubscriptionManager/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitHubSubscriptionManager - Pulls",
+    "Description": "https://github.com/maraf/GitHubSubscriptionManager/pulls",
+    "Text": "https://github.com/maraf/GitHubSubscriptionManager/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - GitHubSubscriptionManager - Find file",
+    "Description": "https://github.com/maraf/GitHubSubscriptionManager/find/master",
+    "Text": "https://github.com/maraf/GitHubSubscriptionManager/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - hello-github-actions",
+    "Description": "https://github.com/maraf/hello-github-actions",
+    "Text": "https://github.com/maraf/hello-github-actions",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - hello-github-actions - Issues",
+    "Description": "https://github.com/maraf/hello-github-actions/issues",
+    "Text": "https://github.com/maraf/hello-github-actions/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - hello-github-actions - Issues - New",
+    "Description": "https://github.com/maraf/hello-github-actions/issues/new",
+    "Text": "https://github.com/maraf/hello-github-actions/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - hello-github-actions - Pulls",
+    "Description": "https://github.com/maraf/hello-github-actions/pulls",
+    "Text": "https://github.com/maraf/hello-github-actions/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - hello-github-actions - Find file",
+    "Description": "https://github.com/maraf/hello-github-actions/find/master",
+    "Text": "https://github.com/maraf/hello-github-actions/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - HybridMobileBlazorBindingsTest",
+    "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest",
+    "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - HybridMobileBlazorBindingsTest - Issues",
+    "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues",
+    "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - HybridMobileBlazorBindingsTest - Issues - New",
+    "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues/new",
+    "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - HybridMobileBlazorBindingsTest - Pulls",
+    "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/pulls",
+    "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - HybridMobileBlazorBindingsTest - Find file",
+    "Description": "https://github.com/maraf/HybridMobileBlazorBindingsTest/find/master",
+    "Text": "https://github.com/maraf/HybridMobileBlazorBindingsTest/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImagePreviewer",
+    "Description": "https://github.com/maraf/ImagePreviewer",
+    "Text": "https://github.com/maraf/ImagePreviewer",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - ImagePreviewer - Issues",
+    "Description": "https://github.com/maraf/ImagePreviewer/issues",
+    "Text": "https://github.com/maraf/ImagePreviewer/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImagePreviewer - Issues - New",
+    "Description": "https://github.com/maraf/ImagePreviewer/issues/new",
+    "Text": "https://github.com/maraf/ImagePreviewer/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImagePreviewer - Pulls",
+    "Description": "https://github.com/maraf/ImagePreviewer/pulls",
+    "Text": "https://github.com/maraf/ImagePreviewer/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImagePreviewer - Find file",
+    "Description": "https://github.com/maraf/ImagePreviewer/find/master",
+    "Text": "https://github.com/maraf/ImagePreviewer/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImageViewer",
+    "Description": "https://github.com/maraf/ImageViewer",
+    "Text": "https://github.com/maraf/ImageViewer",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - ImageViewer - Issues",
+    "Description": "https://github.com/maraf/ImageViewer/issues",
+    "Text": "https://github.com/maraf/ImageViewer/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImageViewer - Issues - New",
+    "Description": "https://github.com/maraf/ImageViewer/issues/new",
+    "Text": "https://github.com/maraf/ImageViewer/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImageViewer - Pulls",
+    "Description": "https://github.com/maraf/ImageViewer/pulls",
+    "Text": "https://github.com/maraf/ImageViewer/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ImageViewer - Find file",
+    "Description": "https://github.com/maraf/ImageViewer/find/master",
+    "Text": "https://github.com/maraf/ImageViewer/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - JokeStore",
+    "Description": "https://github.com/maraf/JokeStore",
+    "Text": "https://github.com/maraf/JokeStore",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - JokeStore - Issues",
+    "Description": "https://github.com/maraf/JokeStore/issues",
+    "Text": "https://github.com/maraf/JokeStore/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - JokeStore - Issues - New",
+    "Description": "https://github.com/maraf/JokeStore/issues/new",
+    "Text": "https://github.com/maraf/JokeStore/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - JokeStore - Pulls",
+    "Description": "https://github.com/maraf/JokeStore/pulls",
+    "Text": "https://github.com/maraf/JokeStore/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - JokeStore - Find file",
+    "Description": "https://github.com/maraf/JokeStore/find/master",
+    "Text": "https://github.com/maraf/JokeStore/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - kb",
+    "Description": "https://github.com/maraf/kb",
+    "Text": "https://github.com/maraf/kb",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - kb - Pulls",
+    "Description": "https://github.com/maraf/kb/pulls",
+    "Text": "https://github.com/maraf/kb/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - kb - Find file",
+    "Description": "https://github.com/maraf/kb/find/master",
+    "Text": "https://github.com/maraf/kb/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - LinkExtractor",
+    "Description": "https://github.com/maraf/LinkExtractor",
+    "Text": "https://github.com/maraf/LinkExtractor",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - LinkExtractor - Issues",
+    "Description": "https://github.com/maraf/LinkExtractor/issues",
+    "Text": "https://github.com/maraf/LinkExtractor/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - LinkExtractor - Issues - New",
+    "Description": "https://github.com/maraf/LinkExtractor/issues/new",
+    "Text": "https://github.com/maraf/LinkExtractor/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - LinkExtractor - Pulls",
+    "Description": "https://github.com/maraf/LinkExtractor/pulls",
+    "Text": "https://github.com/maraf/LinkExtractor/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - LinkExtractor - Find file",
+    "Description": "https://github.com/maraf/LinkExtractor/find/master",
+    "Text": "https://github.com/maraf/LinkExtractor/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MediaLibrary",
+    "Description": "https://github.com/maraf/MediaLibrary",
+    "Text": "https://github.com/maraf/MediaLibrary",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - MediaLibrary - Issues",
+    "Description": "https://github.com/maraf/MediaLibrary/issues",
+    "Text": "https://github.com/maraf/MediaLibrary/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MediaLibrary - Issues - New",
+    "Description": "https://github.com/maraf/MediaLibrary/issues/new",
+    "Text": "https://github.com/maraf/MediaLibrary/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MediaLibrary - Pulls",
+    "Description": "https://github.com/maraf/MediaLibrary/pulls",
+    "Text": "https://github.com/maraf/MediaLibrary/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MediaLibrary - Find file",
+    "Description": "https://github.com/maraf/MediaLibrary/find/master",
+    "Text": "https://github.com/maraf/MediaLibrary/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Money",
+    "Description": "https://github.com/maraf/Money",
+    "Text": "https://github.com/maraf/Money",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Money - Issues",
+    "Description": "https://github.com/maraf/Money/issues",
+    "Text": "https://github.com/maraf/Money/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Money - Issues - New",
+    "Description": "https://github.com/maraf/Money/issues/new",
+    "Text": "https://github.com/maraf/Money/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Money - Pulls",
+    "Description": "https://github.com/maraf/Money/pulls",
+    "Text": "https://github.com/maraf/Money/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Money - Find file",
+    "Description": "https://github.com/maraf/Money/find/master",
+    "Text": "https://github.com/maraf/Money/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MonitorInputSwitcher",
+    "Description": "https://github.com/maraf/MonitorInputSwitcher",
+    "Text": "https://github.com/maraf/MonitorInputSwitcher",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - MonitorInputSwitcher - Issues",
+    "Description": "https://github.com/maraf/MonitorInputSwitcher/issues",
+    "Text": "https://github.com/maraf/MonitorInputSwitcher/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MonitorInputSwitcher - Issues - New",
+    "Description": "https://github.com/maraf/MonitorInputSwitcher/issues/new",
+    "Text": "https://github.com/maraf/MonitorInputSwitcher/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MonitorInputSwitcher - Pulls",
+    "Description": "https://github.com/maraf/MonitorInputSwitcher/pulls",
+    "Text": "https://github.com/maraf/MonitorInputSwitcher/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MonitorInputSwitcher - Find file",
+    "Description": "https://github.com/maraf/MonitorInputSwitcher/find/main",
+    "Text": "https://github.com/maraf/MonitorInputSwitcher/find/main",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MultiBlazorServer",
+    "Description": "https://github.com/maraf/MultiBlazorServer",
+    "Text": "https://github.com/maraf/MultiBlazorServer",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - MultiBlazorServer - Issues",
+    "Description": "https://github.com/maraf/MultiBlazorServer/issues",
+    "Text": "https://github.com/maraf/MultiBlazorServer/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MultiBlazorServer - Issues - New",
+    "Description": "https://github.com/maraf/MultiBlazorServer/issues/new",
+    "Text": "https://github.com/maraf/MultiBlazorServer/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MultiBlazorServer - Pulls",
+    "Description": "https://github.com/maraf/MultiBlazorServer/pulls",
+    "Text": "https://github.com/maraf/MultiBlazorServer/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - MultiBlazorServer - Find file",
+    "Description": "https://github.com/maraf/MultiBlazorServer/find/master",
+    "Text": "https://github.com/maraf/MultiBlazorServer/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - OpenSpecialFolder",
+    "Description": "https://github.com/maraf/OpenSpecialFolder",
+    "Text": "https://github.com/maraf/OpenSpecialFolder",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - OpenSpecialFolder - Issues",
+    "Description": "https://github.com/maraf/OpenSpecialFolder/issues",
+    "Text": "https://github.com/maraf/OpenSpecialFolder/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - OpenSpecialFolder - Issues - New",
+    "Description": "https://github.com/maraf/OpenSpecialFolder/issues/new",
+    "Text": "https://github.com/maraf/OpenSpecialFolder/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - OpenSpecialFolder - Pulls",
+    "Description": "https://github.com/maraf/OpenSpecialFolder/pulls",
+    "Text": "https://github.com/maraf/OpenSpecialFolder/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - OpenSpecialFolder - Find file",
+    "Description": "https://github.com/maraf/OpenSpecialFolder/find/master",
+    "Text": "https://github.com/maraf/OpenSpecialFolder/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - packages",
+    "Description": "https://github.com/maraf/packages",
+    "Text": "https://github.com/maraf/packages",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - packages - Issues",
+    "Description": "https://github.com/maraf/packages/issues",
+    "Text": "https://github.com/maraf/packages/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - packages - Issues - New",
+    "Description": "https://github.com/maraf/packages/issues/new",
+    "Text": "https://github.com/maraf/packages/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - packages - Pulls",
+    "Description": "https://github.com/maraf/packages/pulls",
+    "Text": "https://github.com/maraf/packages/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - packages - Find file",
+    "Description": "https://github.com/maraf/packages/find/master",
+    "Text": "https://github.com/maraf/packages/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Pisqorks",
+    "Description": "https://github.com/maraf/Pisqorks",
+    "Text": "https://github.com/maraf/Pisqorks",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Pisqorks - Issues",
+    "Description": "https://github.com/maraf/Pisqorks/issues",
+    "Text": "https://github.com/maraf/Pisqorks/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Pisqorks - Issues - New",
+    "Description": "https://github.com/maraf/Pisqorks/issues/new",
+    "Text": "https://github.com/maraf/Pisqorks/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Pisqorks - Pulls",
+    "Description": "https://github.com/maraf/Pisqorks/pulls",
+    "Text": "https://github.com/maraf/Pisqorks/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Pisqorks - Find file",
+    "Description": "https://github.com/maraf/Pisqorks/find/master",
+    "Text": "https://github.com/maraf/Pisqorks/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PixelRoutine",
+    "Description": "https://github.com/maraf/PixelRoutine",
+    "Text": "https://github.com/maraf/PixelRoutine",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - PixelRoutine - Issues",
+    "Description": "https://github.com/maraf/PixelRoutine/issues",
+    "Text": "https://github.com/maraf/PixelRoutine/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PixelRoutine - Issues - New",
+    "Description": "https://github.com/maraf/PixelRoutine/issues/new",
+    "Text": "https://github.com/maraf/PixelRoutine/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PixelRoutine - Pulls",
+    "Description": "https://github.com/maraf/PixelRoutine/pulls",
+    "Text": "https://github.com/maraf/PixelRoutine/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PixelRoutine - Find file",
+    "Description": "https://github.com/maraf/PixelRoutine/find/master",
+    "Text": "https://github.com/maraf/PixelRoutine/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Playground",
+    "Description": "https://github.com/maraf/Playground",
+    "Text": "https://github.com/maraf/Playground",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Playground - Issues",
+    "Description": "https://github.com/maraf/Playground/issues",
+    "Text": "https://github.com/maraf/Playground/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Playground - Issues - New",
+    "Description": "https://github.com/maraf/Playground/issues/new",
+    "Text": "https://github.com/maraf/Playground/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Playground - Pulls",
+    "Description": "https://github.com/maraf/Playground/pulls",
+    "Text": "https://github.com/maraf/Playground/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Playground - Find file",
+    "Description": "https://github.com/maraf/Playground/find/master",
+    "Text": "https://github.com/maraf/Playground/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PluginManager",
+    "Description": "https://github.com/maraf/PluginManager",
+    "Text": "https://github.com/maraf/PluginManager",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - PluginManager - Issues",
+    "Description": "https://github.com/maraf/PluginManager/issues",
+    "Text": "https://github.com/maraf/PluginManager/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PluginManager - Issues - New",
+    "Description": "https://github.com/maraf/PluginManager/issues/new",
+    "Text": "https://github.com/maraf/PluginManager/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PluginManager - Pulls",
+    "Description": "https://github.com/maraf/PluginManager/pulls",
+    "Text": "https://github.com/maraf/PluginManager/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - PluginManager - Find file",
+    "Description": "https://github.com/maraf/PluginManager/find/master",
+    "Text": "https://github.com/maraf/PluginManager/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - runtime",
+    "Description": "https://github.com/maraf/runtime",
+    "Text": "https://github.com/maraf/runtime",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - runtime - Pulls",
+    "Description": "https://github.com/maraf/runtime/pulls",
+    "Text": "https://github.com/maraf/runtime/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - runtime - Find file",
+    "Description": "https://github.com/maraf/runtime/find/main",
+    "Text": "https://github.com/maraf/runtime/find/main",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - sdk",
+    "Description": "https://github.com/maraf/sdk",
+    "Text": "https://github.com/maraf/sdk",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - sdk - Pulls",
+    "Description": "https://github.com/maraf/sdk/pulls",
+    "Text": "https://github.com/maraf/sdk/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - sdk - Find file",
+    "Description": "https://github.com/maraf/sdk/find/main",
+    "Text": "https://github.com/maraf/sdk/find/main",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ServiceRunner",
+    "Description": "https://github.com/maraf/ServiceRunner",
+    "Text": "https://github.com/maraf/ServiceRunner",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - ServiceRunner - Issues",
+    "Description": "https://github.com/maraf/ServiceRunner/issues",
+    "Text": "https://github.com/maraf/ServiceRunner/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ServiceRunner - Issues - New",
+    "Description": "https://github.com/maraf/ServiceRunner/issues/new",
+    "Text": "https://github.com/maraf/ServiceRunner/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ServiceRunner - Pulls",
+    "Description": "https://github.com/maraf/ServiceRunner/pulls",
+    "Text": "https://github.com/maraf/ServiceRunner/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - ServiceRunner - Find file",
+    "Description": "https://github.com/maraf/ServiceRunner/find/master",
+    "Text": "https://github.com/maraf/ServiceRunner/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.ExtendedClr",
+    "Description": "https://github.com/maraf/SharpKit.ExtendedClr",
+    "Text": "https://github.com/maraf/SharpKit.ExtendedClr",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.ExtendedClr - Issues",
+    "Description": "https://github.com/maraf/SharpKit.ExtendedClr/issues",
+    "Text": "https://github.com/maraf/SharpKit.ExtendedClr/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.ExtendedClr - Issues - New",
+    "Description": "https://github.com/maraf/SharpKit.ExtendedClr/issues/new",
+    "Text": "https://github.com/maraf/SharpKit.ExtendedClr/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.ExtendedClr - Pulls",
+    "Description": "https://github.com/maraf/SharpKit.ExtendedClr/pulls",
+    "Text": "https://github.com/maraf/SharpKit.ExtendedClr/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.ExtendedClr - Find file",
+    "Description": "https://github.com/maraf/SharpKit.ExtendedClr/find/master",
+    "Text": "https://github.com/maraf/SharpKit.ExtendedClr/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.MsTest",
+    "Description": "https://github.com/maraf/SharpKit.MsTest",
+    "Text": "https://github.com/maraf/SharpKit.MsTest",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.MsTest - Issues",
+    "Description": "https://github.com/maraf/SharpKit.MsTest/issues",
+    "Text": "https://github.com/maraf/SharpKit.MsTest/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.MsTest - Issues - New",
+    "Description": "https://github.com/maraf/SharpKit.MsTest/issues/new",
+    "Text": "https://github.com/maraf/SharpKit.MsTest/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.MsTest - Pulls",
+    "Description": "https://github.com/maraf/SharpKit.MsTest/pulls",
+    "Text": "https://github.com/maraf/SharpKit.MsTest/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - SharpKit.MsTest - Find file",
+    "Description": "https://github.com/maraf/SharpKit.MsTest/find/master",
+    "Text": "https://github.com/maraf/SharpKit.MsTest/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Snake20",
+    "Description": "https://github.com/maraf/Snake20",
+    "Text": "https://github.com/maraf/Snake20",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - Snake20 - Issues",
+    "Description": "https://github.com/maraf/Snake20/issues",
+    "Text": "https://github.com/maraf/Snake20/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Snake20 - Issues - New",
+    "Description": "https://github.com/maraf/Snake20/issues/new",
+    "Text": "https://github.com/maraf/Snake20/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Snake20 - Pulls",
+    "Description": "https://github.com/maraf/Snake20/pulls",
+    "Text": "https://github.com/maraf/Snake20/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - Snake20 - Find file",
+    "Description": "https://github.com/maraf/Snake20/find/master",
+    "Text": "https://github.com/maraf/Snake20/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - snippets",
+    "Description": "https://github.com/maraf/snippets",
+    "Text": "https://github.com/maraf/snippets",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - snippets - Issues",
+    "Description": "https://github.com/maraf/snippets/issues",
+    "Text": "https://github.com/maraf/snippets/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - snippets - Issues - New",
+    "Description": "https://github.com/maraf/snippets/issues/new",
+    "Text": "https://github.com/maraf/snippets/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - snippets - Pulls",
+    "Description": "https://github.com/maraf/snippets/pulls",
+    "Text": "https://github.com/maraf/snippets/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - snippets - Find file",
+    "Description": "https://github.com/maraf/snippets/find/master",
+    "Text": "https://github.com/maraf/snippets/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - StaticSiteCrawler",
+    "Description": "https://github.com/maraf/StaticSiteCrawler",
+    "Text": "https://github.com/maraf/StaticSiteCrawler",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - StaticSiteCrawler - Issues",
+    "Description": "https://github.com/maraf/StaticSiteCrawler/issues",
+    "Text": "https://github.com/maraf/StaticSiteCrawler/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - StaticSiteCrawler - Issues - New",
+    "Description": "https://github.com/maraf/StaticSiteCrawler/issues/new",
+    "Text": "https://github.com/maraf/StaticSiteCrawler/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - StaticSiteCrawler - Pulls",
+    "Description": "https://github.com/maraf/StaticSiteCrawler/pulls",
+    "Text": "https://github.com/maraf/StaticSiteCrawler/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - StaticSiteCrawler - Find file",
+    "Description": "https://github.com/maraf/StaticSiteCrawler/find/master",
+    "Text": "https://github.com/maraf/StaticSiteCrawler/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - TelegramFileDownloader",
+    "Description": "https://github.com/maraf/TelegramFileDownloader",
+    "Text": "https://github.com/maraf/TelegramFileDownloader",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - TelegramFileDownloader - Pulls",
+    "Description": "https://github.com/maraf/TelegramFileDownloader/pulls",
+    "Text": "https://github.com/maraf/TelegramFileDownloader/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - TelegramFileDownloader - Find file",
+    "Description": "https://github.com/maraf/TelegramFileDownloader/find/master",
+    "Text": "https://github.com/maraf/TelegramFileDownloader/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - TextBrowser",
+    "Description": "https://github.com/maraf/TextBrowser",
+    "Text": "https://github.com/maraf/TextBrowser",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - TextBrowser - Issues",
+    "Description": "https://github.com/maraf/TextBrowser/issues",
+    "Text": "https://github.com/maraf/TextBrowser/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - TextBrowser - Issues - New",
+    "Description": "https://github.com/maraf/TextBrowser/issues/new",
+    "Text": "https://github.com/maraf/TextBrowser/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - TextBrowser - Pulls",
+    "Description": "https://github.com/maraf/TextBrowser/pulls",
+    "Text": "https://github.com/maraf/TextBrowser/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - TextBrowser - Find file",
+    "Description": "https://github.com/maraf/TextBrowser/find/master",
+    "Text": "https://github.com/maraf/TextBrowser/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - vocabularyapp",
+    "Description": "https://github.com/maraf/vocabularyapp",
+    "Text": "https://github.com/maraf/vocabularyapp",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - vocabularyapp - Issues",
+    "Description": "https://github.com/maraf/vocabularyapp/issues",
+    "Text": "https://github.com/maraf/vocabularyapp/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - vocabularyapp - Issues - New",
+    "Description": "https://github.com/maraf/vocabularyapp/issues/new",
+    "Text": "https://github.com/maraf/vocabularyapp/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - vocabularyapp - Pulls",
+    "Description": "https://github.com/maraf/vocabularyapp/pulls",
+    "Text": "https://github.com/maraf/vocabularyapp/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - vocabularyapp - Find file",
+    "Description": "https://github.com/maraf/vocabularyapp/find/master",
+    "Text": "https://github.com/maraf/vocabularyapp/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WebCamImageCollector",
+    "Description": "https://github.com/maraf/WebCamImageCollector",
+    "Text": "https://github.com/maraf/WebCamImageCollector",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - WebCamImageCollector - Issues",
+    "Description": "https://github.com/maraf/WebCamImageCollector/issues",
+    "Text": "https://github.com/maraf/WebCamImageCollector/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WebCamImageCollector - Issues - New",
+    "Description": "https://github.com/maraf/WebCamImageCollector/issues/new",
+    "Text": "https://github.com/maraf/WebCamImageCollector/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WebCamImageCollector - Pulls",
+    "Description": "https://github.com/maraf/WebCamImageCollector/pulls",
+    "Text": "https://github.com/maraf/WebCamImageCollector/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WebCamImageCollector - Find file",
+    "Description": "https://github.com/maraf/WebCamImageCollector/find/master",
+    "Text": "https://github.com/maraf/WebCamImageCollector/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WebDesk",
+    "Description": "https://github.com/maraf/WebDesk",
+    "Text": "https://github.com/maraf/WebDesk",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - WebDesk - Pulls",
+    "Description": "https://github.com/maraf/WebDesk/pulls",
+    "Text": "https://github.com/maraf/WebDesk/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WebDesk - Find file",
+    "Description": "https://github.com/maraf/WebDesk/find/master",
+    "Text": "https://github.com/maraf/WebDesk/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - website",
+    "Description": "https://github.com/maraf/website",
+    "Text": "https://github.com/maraf/website",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - website - Pulls",
+    "Description": "https://github.com/maraf/website/pulls",
+    "Text": "https://github.com/maraf/website/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - website - Find file",
+    "Description": "https://github.com/maraf/website/find/master",
+    "Text": "https://github.com/maraf/website/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WindowsDock",
+    "Description": "https://github.com/maraf/WindowsDock",
+    "Text": "https://github.com/maraf/WindowsDock",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - WindowsDock - Issues",
+    "Description": "https://github.com/maraf/WindowsDock/issues",
+    "Text": "https://github.com/maraf/WindowsDock/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WindowsDock - Issues - New",
+    "Description": "https://github.com/maraf/WindowsDock/issues/new",
+    "Text": "https://github.com/maraf/WindowsDock/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WindowsDock - Pulls",
+    "Description": "https://github.com/maraf/WindowsDock/pulls",
+    "Text": "https://github.com/maraf/WindowsDock/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - WindowsDock - Find file",
+    "Description": "https://github.com/maraf/WindowsDock/find/master",
+    "Text": "https://github.com/maraf/WindowsDock/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - xharness",
+    "Description": "https://github.com/maraf/xharness",
+    "Text": "https://github.com/maraf/xharness",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - maraf - xharness - Pulls",
+    "Description": "https://github.com/maraf/xharness/pulls",
+    "Text": "https://github.com/maraf/xharness/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - maraf - xharness - Find file",
+    "Description": "https://github.com/maraf/xharness/find/main",
+    "Text": "https://github.com/maraf/xharness/find/main",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - neptuo",
+    "Description": "https://github.com/neptuo",
+    "Text": "https://github.com/neptuo",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - neptuo - Recollections",
+    "Description": "https://github.com/neptuo/Recollections",
+    "Text": "https://github.com/neptuo/Recollections",
+    "Priority": 100
+  },
+  {
+    "Title": "GitHub - neptuo - Recollections - Issues",
+    "Description": "https://github.com/neptuo/Recollections/issues",
+    "Text": "https://github.com/neptuo/Recollections/issues",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - neptuo - Recollections - Issues - New",
+    "Description": "https://github.com/neptuo/Recollections/issues/new",
+    "Text": "https://github.com/neptuo/Recollections/issues/new",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - neptuo - Recollections - Pulls",
+    "Description": "https://github.com/neptuo/Recollections/pulls",
+    "Text": "https://github.com/neptuo/Recollections/pulls",
+    "Priority": 1000
+  },
+  {
+    "Title": "GitHub - neptuo - Recollections - Find file",
+    "Description": "https://github.com/neptuo/Recollections/find/master",
+    "Text": "https://github.com/neptuo/Recollections/find/master",
+    "Priority": 1000
+  },
+  {
+    "Title": "Web Money",
+    "Description": "https://money.neptuo.com",
+    "Text": "https://money.neptuo.com",
+    "Priority": 1000
+  }
+]

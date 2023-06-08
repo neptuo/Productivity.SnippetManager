@@ -1,4 +1,5 @@
-﻿using Neptuo.Productivity.SnippetManager.Models;
+﻿using Neptuo.Observables.Commands;
+using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
@@ -100,6 +101,9 @@ namespace Neptuo.Productivity.SnippetManager.Views
 
             if (e.Key == Key.Tab)
             {
+                if (UseSelectedSnippet(ViewModel.Select))
+                    SearchText.Text = string.Empty;
+
                 e.Handled = true;
             }
 
@@ -115,19 +119,24 @@ namespace Neptuo.Productivity.SnippetManager.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (String.IsNullOrEmpty(SearchText.Text))
-                    Close();
-                else
+                if (!String.IsNullOrEmpty(SearchText.Text))
                     SearchText.Text = string.Empty;
+                else if (ViewModel.UnSelectLast.CanExecute())
+                    ViewModel.UnSelectLast.Execute();
+                else
+                    Close();
 
                 e.Handled = true;
+            }
+            else if (e.Key == Key.Back)
+            {
+                if (String.IsNullOrEmpty(SearchText.Text) && ViewModel.UnSelectLast.CanExecute())
+                    ViewModel.UnSelectLast.Execute();
             }
 
             // Lastly, if non of the hot keys was pressed. Try to focus search box.
             if (!e.Handled && !SearchText.IsFocused)
-            {
                 SearchText.Focus();
-            }
         }
 
         private bool IsCtrlKeyPressed()
@@ -136,10 +145,15 @@ namespace Neptuo.Productivity.SnippetManager.Views
         private void ListView_Click(object sender, MouseButtonEventArgs e)
             => UseSelectedSnippet(ViewModel.Apply);
 
-        private void UseSelectedSnippet(UseSnippetCommand command)
+        private bool UseSelectedSnippet(Command<SnippetModel> command)
         {
             if (ListView.SelectedItem is SnippetModel snippet && command.CanExecute(snippet))
+            {
                 command.Execute(snippet);
+                return true;
+            }
+
+            return false;
         }
 
         private void SearchText_TextChanged(object sender, TextChangedEventArgs e)
@@ -193,7 +207,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
             }
         }
 
-        private Screen GetTargetScreen() 
+        private Screen GetTargetScreen()
             => Screen.FromHandle(stickPoint?.WindowHandle ?? Win32.GetForegroundWindow());
 
         private void StickToCaret()
