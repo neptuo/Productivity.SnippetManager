@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Neptuo.Observables" Version="2.1.1" />
+		<PackageReference Include="Neptuo.Observables" />
 	</ItemGroup>
 
 </Project>

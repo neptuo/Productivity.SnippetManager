@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <FrameworkPackageVersion>9.0.0</FrameworkPackageVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Neptuo.Windows.Converters" Version="1.0.0" />
+    <PackageVersion Include="Neptuo.Windows.HotKeys" Version="2.0.0" />
+    <PackageVersion Include="Neptuo.Windows.Threading" Version="1.0.1" />
+    <PackageVersion Include="Neptuo.Observables" Version="2.1.1" />
+    <PackageVersion Include="Octokit" Version="4.0.4" />
+  </ItemGroup>
+</Project>
