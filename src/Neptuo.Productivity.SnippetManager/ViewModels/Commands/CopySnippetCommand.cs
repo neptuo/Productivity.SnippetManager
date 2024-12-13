@@ -17,7 +17,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels.Commands
         public CopySnippetCommand(IClipboardService clipboard) 
             => this.clipboard = clipboard;
 
-        public override void Execute(IAppliableSnippetModel parameter)
+        public override void Execute(SnippetModel parameter)
             => clipboard.SetText(parameter.Text);
     }
 }
