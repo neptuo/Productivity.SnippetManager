@@ -1,9 +1,13 @@
 <Project>
 
-	<PropertyGroup>
-		<Nullable>enable</Nullable>
-		<RootNamespace>Neptuo.Productivity.SnippetManager</RootNamespace>
-		<NoWarn>NU1701</NoWarn>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Neptuo.Productivity.SnippetManager</RootNamespace>
+    <NoWarn>NU1701</NoWarn>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
 
 </Project>
