@@ -151,7 +151,7 @@ namespace Neptuo.Productivity.SnippetManager
                 SnippetEntry? current = entry;
                 while (lastAncestor != current?.Model)
                 {
-                    if (current.Parent == null)
+                    if (current?.Parent == null)
                         break;
 
                     ancestors.Push(current.Model);
