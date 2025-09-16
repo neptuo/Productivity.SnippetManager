@@ -31,7 +31,7 @@ public class SnippetSearcherTests
         var jsonModels = JsonSerializer.Deserialize<JsonSnippetModel[]>(File.ReadAllText("GitHubSnippets.json"));
         var idMapping = new Dictionary<string, Guid>();
 
-        var models = jsonModels.Select(m => new SnippetModel(m.Title, m.Text, m.Description, m.Priority)).ToList();
+        var models = jsonModels!.Select(m => new SnippetModel(m.Title, m.Text, m.Description, m.Priority)).ToList();
         snippetContext.AddRange(models);
     }
 
