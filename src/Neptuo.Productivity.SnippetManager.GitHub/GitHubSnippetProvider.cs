@@ -92,7 +92,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
             if (snippets.Count == 0)
             {
                 parent = new SnippetModel(
-                    title: $"Github - {repository.Owner.Login}",
+                    title: $"GitHub - {repository.Owner.Login}",
                     text: repository.Owner.HtmlUrl
                 );
                 context.Add(parent);
@@ -113,7 +113,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
 
     private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
     {
-        var repositoryTitle = $"Github - {owner} - {repository}";
+        var repositoryTitle = $"GitHub - {owner} - {repository}";
 
         snippets.Add(new SnippetModel(
             title: repositoryTitle,
