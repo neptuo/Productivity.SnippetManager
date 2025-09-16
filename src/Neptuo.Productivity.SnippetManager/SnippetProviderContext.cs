@@ -28,7 +28,8 @@ namespace Neptuo.Productivity.SnippetManager
 
         public event Action? Changed;
 
-        private static string[] GetPath(SnippetModel snippet) => snippet.Title.Split(" - ");
+        private static string PathSeparator = " - ";
+        private static string[] GetPath(SnippetModel snippet) => snippet.Title.Split(PathSeparator);
 
         private void AddToTree(SnippetModel snippet)
         {
@@ -43,7 +44,7 @@ namespace Neptuo.Productivity.SnippetManager
                 var segmentEntry = children.Find(s => s.CurrentPath == segment);
                 if (segmentEntry == null)
                 {
-                    var segmentModel = new SnippetModel(segment);
+                    var segmentModel = new SnippetModel(String.Join(PathSeparator, path[0..(i + 1)]));
                     children.Add(byModel[segmentModel] = segmentEntry = new(segmentModel, segment, parent));
                 }
 
