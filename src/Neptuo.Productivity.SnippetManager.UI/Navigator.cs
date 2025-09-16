@@ -52,7 +52,7 @@ public class Navigator : IClipboardService, ISendTextService
     private void OnModelsChanged()
     {
         if (main != null)
-            DispatcherHelper.Run(main.Dispatcher, () => main.Search());
+            DispatcherHelper.Run(main.Dispatcher, () => main?.Search());
     }
 
     private MainWindow? main;
