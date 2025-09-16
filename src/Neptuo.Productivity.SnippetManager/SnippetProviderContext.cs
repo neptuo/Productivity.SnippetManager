@@ -149,16 +149,19 @@ namespace Neptuo.Productivity.SnippetManager
             if (byModel.TryGetValue(child, out var entry))
             {
                 SnippetEntry? current = entry;
-                while (lastAncestor != current?.Model)
+                if (current?.Parent != null)
                 {
-                    if (current?.Parent == null)
-                        break;
-
-                    ancestors.Push(current.Model);
-                    if (current.Parent == null)
-                        break;
-
+                    // We need to navigate to parent of the 'child'.
+                    // The 'child' should never be added.
                     current = byModel[current.Parent];
+                    while (lastAncestor != current.Model)
+                    {
+                        ancestors.Push(current.Model);
+                        if (current.Parent == null)
+                            break;
+
+                        current = byModel[current.Parent];
+                    }
                 }
             }
 
