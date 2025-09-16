@@ -28,11 +28,13 @@ internal class ViewModelLocator
                     new CopySnippetCommand(InteropService.Instance)
                 );
 
-                MainViewModel.Selected.Add(new SnippetModel("Selected grandparent", "Selected grandparent"));
-                MainViewModel.Selected.Add(new SnippetModel("Selected parent", "Selected parent"));
+                var gitHub = tree.GetRoots().First(s => s.Title == "GitHub");
+                mainViewModel.Selected.Add(gitHub);
+                mainViewModel.Selected.Add(tree.GetChildren(gitHub).First());
 
-
-                MainViewModel.IsInitializing = false;
+                mainViewModel.Snippets.AddRange(tree.GetRoots());
+                mainViewModel.Search("");
+                mainViewModel.IsInitializing = false;
             }
 
             return mainViewModel;
@@ -67,6 +69,8 @@ internal class ViewModelLocator
         );
         Add("Maps", "https://maps.google.com");
         Add("GitHub - dotnet - runtime", "https://github.com/dotnet/runtime");
+        Add("GitHub - dotnet - aspnetcore", "https://github.com/dotnet/aspnetcore");
+        Add("GitHub - dotnet - sdk", "https://github.com/dotnet/sdk");
         Add("Money", "https://app.money.neptuo.com");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
         return ctx;
