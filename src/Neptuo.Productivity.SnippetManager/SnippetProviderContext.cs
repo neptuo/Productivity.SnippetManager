@@ -11,7 +11,7 @@ using System.Windows.Controls.Primitives;
 
 namespace Neptuo.Productivity.SnippetManager
 {
-    [DebuggerDisplay("{Model.Title}")]
+    [DebuggerDisplay("Entry {Model.Title}")]
     public record SnippetEntry(SnippetModel Model, string CurrentPath, SnippetModel? Parent)
     {
         public SnippetModel Model { get; set; } = Model;
