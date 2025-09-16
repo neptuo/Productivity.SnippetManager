@@ -221,4 +221,257 @@ public class SnippetTreeTests
             }
         );
     }
+
+    [Fact]
+    public void GetAncestors_ReturnsEmptyForRoot()
+    {
+        var tree = GetTree();
+        var root = tree.GetRoots().First();
+
+        var ancestors = tree.GetAncestors(root);
+
+        Assert.Empty(ancestors);
+    }
+
+    [Fact]
+    public void GetAncestors_ReturnsEmptyForNonExistentSnippet()
+    {
+        var tree = GetTree();
+        var nonExistent = new SnippetModel("Non-existent", "Non-existent");
+
+        var ancestors = tree.GetAncestors(nonExistent);
+
+        Assert.Empty(ancestors);
+    }
+
+    [Fact]
+    public void GetAncestors_ReturnsSingleAncestorForSecondLevelSnippet()
+    {
+        SnippetModel? aa = null;
+
+        var tree = GetTree(capture =>
+        {
+            aa = capture("A - A - A");
+        });
+
+        var ancestors = tree.GetAncestors(aa!).ToList();
+
+        Assert.Collection(
+            ancestors,
+            a1 =>
+            {
+                Assert.Equal("A", a1.Title);
+                Assert.True(a1.IsShadow);
+            },
+            a2 =>
+            {
+                Assert.Equal("A", a2.Title);
+                Assert.True(a2.IsShadow);
+            }
+        );
+    }
+
+    [Fact]
+    public void GetAncestors_ReturnsAllAncestorsFromFarthestToClosest()
+    {
+        SnippetModel? aba = null;
+
+        var tree = GetTree(capture =>
+        {
+            aba = capture("A - B - A");
+        });
+
+        var ancestors = tree.GetAncestors(aba!).ToList();
+
+        Assert.Collection(
+            ancestors,
+            a1 =>
+            {
+                Assert.Equal("A", a1.Title);
+                Assert.True(a1.IsShadow);
+            },
+            b2 =>
+            {
+                Assert.Equal("B", b2.Title);
+                Assert.True(b2.IsShadow);
+            }
+        );
+    }
+
+    [Fact]
+    public void GetAncestors_WithLastAncestor_StopsAtSpecifiedAncestor()
+    {
+        SnippetModel? aba = null;
+        SnippetModel? a = null;
+        SnippetModel? b = null;
+
+        var tree = GetTree(capture =>
+        {
+            aba = capture("A - B - A");
+        });
+
+        // Get references to the shadow ancestors
+        var roots = tree.GetRoots();
+        a = roots.First(r => r.Title == "A");
+        b = tree.GetChildren(a).First(c => c.Title == "B");
+
+        // Test stopping at the intermediate ancestor 'B'
+        // Since 'B' is the immediate parent, when we call GetAncestors(aba, b),
+        // the first ancestor we encounter is 'B' itself, so the loop condition
+        // (lastAncestor != current.Model) becomes false immediately, returning empty
+        var ancestors = tree.GetAncestors(aba!, b).ToList();
+
+        Assert.Empty(ancestors);
+    }
+
+    [Fact]
+    public void GetAncestors_WithLastAncestorAsRoot_ReturnsEmpty()
+    {
+        SnippetModel? aba = null;
+        SnippetModel? a = null;
+
+        var tree = GetTree(capture =>
+        {
+            aba = capture("A - B - A");
+        });
+
+        // Get reference to the root ancestor 'A'
+        var roots = tree.GetRoots();
+        a = roots.First(r => r.Title == "A");
+
+        // Test stopping at the root ancestor 'A'
+        // This should return the intermediate ancestor 'B' since it stops BEFORE 'A'
+        var ancestors = tree.GetAncestors(aba!, a).ToList();
+
+        Assert.Collection(
+            ancestors,
+            b1 =>
+            {
+                Assert.Equal("B", b1.Title);
+                Assert.True(b1.IsShadow);
+            }
+        );
+    }
+
+    [Fact]
+    public void GetAncestors_WithLastAncestorAsImmediateParent_ReturnsEmpty()
+    {
+        SnippetModel? aba = null;
+        SnippetModel? b = null;
+
+        var tree = GetTree(capture =>
+        {
+            aba = capture("A - B - A");
+        });
+
+        // Get reference to the immediate parent 'B'
+        var roots = tree.GetRoots();
+        var a = roots.First(r => r.Title == "A");
+        b = tree.GetChildren(a).First(c => c.Title == "B");
+
+        // Test stopping at the immediate parent 'B'
+        // Since B is the immediate parent, the loop should not execute at all
+        var ancestors = tree.GetAncestors(aba!, b).ToList();
+
+        Assert.Empty(ancestors);
+    }
+
+    [Fact]
+    public void GetAncestors_WithLastAncestorNotInPath_ReturnsAllAncestors()
+    {
+        SnippetModel? aba = null;
+        SnippetModel? c = null;
+
+        var tree = GetTree(capture =>
+        {
+            aba = capture("A - B - A");
+        });
+
+        // Get reference to a different shadow ancestor 'C' that's not in the path
+        var roots = tree.GetRoots();
+        var a = roots.First(r => r.Title == "A");
+        c = tree.GetChildren(a).First(ch => ch.Title == "C");
+
+        // Test with lastAncestor that's not in the path - should return all ancestors
+        var ancestors = tree.GetAncestors(aba!, c).ToList();
+
+        Assert.Collection(
+            ancestors,
+            a1 =>
+            {
+                Assert.Equal("A", a1.Title);
+                Assert.True(a1.IsShadow);
+            },
+            b2 =>
+            {
+                Assert.Equal("B", b2.Title);
+                Assert.True(b2.IsShadow);
+            }
+        );
+    }
+
+    [Fact]
+    public void GetAncestors_ForDeepNestedSnippet_ReturnsAllAncestorsInCorrectOrder()
+    {
+        var tree = GetTree();
+        
+        // Add a deeper nested snippet that doesn't conflict with existing paths
+        var deepSnippet = new SnippetModel("A - D - E - F - G", "A - D - E - F - G");
+        tree.Add(deepSnippet);
+
+        var ancestors = tree.GetAncestors(deepSnippet).ToList();
+
+        Assert.Equal(4, ancestors.Count);
+        Assert.Collection(
+            ancestors,
+            a1 =>
+            {
+                Assert.Equal("A", a1.Title);
+                Assert.True(a1.IsShadow);
+            },
+            d2 =>
+            {
+                Assert.Equal("D", d2.Title);
+                Assert.True(d2.IsShadow);
+            },
+            e3 =>
+            {
+                Assert.Equal("E", e3.Title);
+                Assert.True(e3.IsShadow);
+            },
+            f4 =>
+            {
+                Assert.Equal("F", f4.Title);
+                Assert.True(f4.IsShadow);
+            }
+        );
+    }
+
+    [Fact]
+    public void GetAncestors_WithNullLastAncestor_ReturnsAllAncestors()
+    {
+        SnippetModel? aba = null;
+
+        var tree = GetTree(capture =>
+        {
+            aba = capture("A - B - A");
+        });
+
+        // Test explicitly passing null as lastAncestor (should be same as not passing it)
+        var ancestors = tree.GetAncestors(aba!, null).ToList();
+
+        Assert.Collection(
+            ancestors,
+            a1 =>
+            {
+                Assert.Equal("A", a1.Title);
+                Assert.True(a1.IsShadow);
+            },
+            b2 =>
+            {
+                Assert.Equal("B", b2.Title);
+                Assert.True(b2.IsShadow);
+            }
+        );
+    }
 }
