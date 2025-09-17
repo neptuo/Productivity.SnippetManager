@@ -13,6 +13,7 @@ namespace Neptuo.Productivity.SnippetManager
         public string? UserName { get; set; }
         public string? AccessToken { get; set; }
         public List<string>? ExtraRepositories { get; set; }
+        public bool IncludeStars { get; set; } = true;
 
         public static new GitHubConfiguration Example => new()
         {
@@ -23,7 +24,7 @@ namespace Neptuo.Productivity.SnippetManager
 
         public bool Equals(GitHubConfiguration? other)
         {
-            return base.Equals(other) && UserName == other.UserName && AccessToken == other.AccessToken && EqualsExtraRepositories(other);
+            return base.Equals(other) && UserName == other.UserName && AccessToken == other.AccessToken && IncludeStars == other.IncludeStars && EqualsExtraRepositories(other);
         }
 
         private bool EqualsExtraRepositories(GitHubConfiguration other)
