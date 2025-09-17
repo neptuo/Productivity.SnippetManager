@@ -31,7 +31,16 @@ namespace Neptuo.Productivity.SnippetManager.Views
         public MainViewModel ViewModel
         {
             get => (MainViewModel)DataContext;
-            set => DataContext = value;
+            set
+            {
+                if (ViewModel != null)
+                    ViewModel.SearchCompleted -= SelectFirstSnippet;
+
+                DataContext = value;
+
+                if (ViewModel != null)
+                    ViewModel.SearchCompleted += SelectFirstSnippet;
+            }
         }
 
         public MainWindow()
@@ -160,10 +169,7 @@ namespace Neptuo.Productivity.SnippetManager.Views
             => Search();
 
         public void Search()
-        {
-            ViewModel.Search(SearchText.Text);
-            SelectFirstSnippet();
-        }
+            => ViewModel.Search(SearchText.Text);
 
         private void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
