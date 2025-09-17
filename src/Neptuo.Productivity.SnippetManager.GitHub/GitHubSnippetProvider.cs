@@ -79,6 +79,23 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
 
                 context.AddRange(snippets);
             }
+
+            if (configuration.IncludeStars)
+            {
+                var starredRepositories = await github.Activity.Starring.GetAllForUser(configuration.UserName);
+                if (starredRepositories.Count > 0)
+                {
+                    // Create a separate section for starred repos
+                    var starredParent = new SnippetModel(
+                        title: $"GitHub - Stars",
+                        text: $"https://github.com/{configuration.UserName}?tab=stars"
+                    );
+                    context.Add(starredParent);
+
+                    // Add snippets for starred repositories
+                    AddSnippetsForRepositories(context, starredRepositories, starredParent.Title);
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -88,14 +105,14 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         Debug.WriteLine($"GitHub done");
     }
 
-    private void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories)
+    private void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories, string? title = null)
     {
         List<SnippetModel> snippets = new List<SnippetModel>();
 
         SnippetModel? parent = null;
         foreach (var repository in repositories)
         {
-            if (snippets.Count == 0)
+            if (title == null && snippets.Count == 0)
             {
                 parent = new SnippetModel(
                     title: $"GitHub - {repository.Owner.Login}",
@@ -110,16 +127,19 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
                 repository.HtmlUrl,
                 repository.Owner.Login,
                 repository.HasIssues,
-                repository.DefaultBranch
+                repository.DefaultBranch,
+                title
             );
         }
 
         context.AddRange(snippets);
     }
 
-    private void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
+    private void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch, string? title = null)
     {
-        var repositoryTitle = $"GitHub - {owner} - {repository}";
+        var repositoryTitle = title != null 
+            ? $"{title} - {repository}"
+            : $"GitHub - {owner} - {repository}";
 
         snippets.Add(new SnippetModel(
             title: repositoryTitle,

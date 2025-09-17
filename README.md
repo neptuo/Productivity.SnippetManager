@@ -28,6 +28,7 @@ The configuration is expected to be at `~/SnippetManager.json` (user home). If y
     "UserName": "jon",
     "AccessToken": "doe",
     "ExtraRepositories": [],
+    "IncludeStars": true,
     "Enabled": true
   },
   "Xml": {
