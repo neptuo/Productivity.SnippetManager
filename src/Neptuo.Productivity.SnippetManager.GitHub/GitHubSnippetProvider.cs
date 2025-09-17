@@ -154,5 +154,11 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
                 priority: SnippetPriority.Low
             ));
         }
+
+        snippets.Add(new SnippetModel(
+            title: $"{repositoryTitle} - Code search",
+            text: $"https://github.com/search?q=repo:{owner}/{repository}&type=code",
+            priority: SnippetPriority.Low
+        ));
     }
 }
