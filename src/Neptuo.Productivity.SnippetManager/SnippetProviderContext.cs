@@ -28,23 +28,18 @@ namespace Neptuo.Productivity.SnippetManager
 
         public event Action? Changed;
 
-        private static string PathSeparator = " - ";
-        private static string[] GetPath(SnippetModel snippet) => snippet.Title.Split(PathSeparator);
-
         private void AddToTree(SnippetModel snippet)
         {
-            string[] path = GetPath(snippet);
-
             SnippetModel? parent = null;
             List<SnippetEntry> children = root;
-            for (var i = 0; i < path.Length - 1; i++)
+            for (var i = 0; i < snippet.Path.Length - 1; i++)
             {
-                var segment = path[i];
+                var segment = snippet.Path[i];
 
                 var segmentEntry = children.Find(s => s.CurrentPath == segment);
                 if (segmentEntry == null)
                 {
-                    var segmentModel = new SnippetModel(String.Join(PathSeparator, path[0..(i + 1)]));
+                    var segmentModel = new SnippetModel(String.Join(SnippetModel.PathSeparator, snippet.Path[0..(i + 1)]));
                     children.Add(byModel[segmentModel] = segmentEntry = new(segmentModel, segment, parent));
                 }
 
@@ -52,7 +47,7 @@ namespace Neptuo.Productivity.SnippetManager
                 children = segmentEntry.Children;
             }
 
-            string lastSegment = path[path.Length - 1];
+            string lastSegment = snippet.Path[snippet.Path.Length - 1];
             var snippetEntry = children.Find(s => s.CurrentPath == lastSegment);
             if (snippetEntry == null)
             {
@@ -71,8 +66,6 @@ namespace Neptuo.Productivity.SnippetManager
 
         private void RemoveFromTree(SnippetModel snippet)
         {
-            string[] path = GetPath(snippet);
-
             if (byModel.TryGetValue(snippet, out var entry))
             {
                 void RemoveSnippetEntry(SnippetEntry e)

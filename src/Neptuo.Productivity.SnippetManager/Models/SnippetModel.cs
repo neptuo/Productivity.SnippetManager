@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 namespace Neptuo.Productivity.SnippetManager.Models
 {
     [DebuggerDisplay("Snippet {Title}")]
-    public class SnippetModel : IAppliableSnippetModel
+    public sealed class SnippetModel : IAppliableSnippetModel
     {
+        public static string PathSeparator = " - ";
         private static string[] lineSeparators = new[] { Environment.NewLine, "\n" };
+
+        public string[] Path { get; }
 
         public string Title { get; }
         public string? Description { get; }
@@ -33,6 +36,8 @@ namespace Neptuo.Productivity.SnippetManager.Models
             Priority = priority;
 
             // TODO: This snippet is in fact unappliable
+
+            Path = Title.Split(PathSeparator);
         }
 
         public SnippetModel(string title, string text, string? description = null, int priority = SnippetPriority.Normal)
@@ -50,6 +55,8 @@ namespace Neptuo.Productivity.SnippetManager.Models
                 Debug.Assert(lines.Length > 0);
                 Description = lines[0] + (lines.Length > 1 ? "..." : string.Empty);
             }
+
+            Path = Title.Split(PathSeparator);
         }
     }
 }

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Neptuo.Productivity.SnippetManager.Views.Controls"
         xmlns:converters="clr-namespace:Neptuo.Windows.Converters;assembly=Neptuo.Windows.Converters"
+        xmlns:models="clr-namespace:Neptuo.Productivity.SnippetManager.Models;assembly=Neptuo.Productivity.SnippetManager"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:system="clr-namespace:System;assembly=netstandard"
@@ -12,7 +13,8 @@
         PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
     <Window.Resources>
         <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="Visible" FalseValue="Collapsed" />
-        <controls:StringConverter x:Key="RaquoPrefixConverter" Prefix="» " />
+        <controls:StringJoinMultiConverter x:Key="SnippetPathJoinConverter" Separator="{x:Static models:SnippetModel.PathSeparator}" />
+        <controls:ArrayLastItemConverter x:Key="ArrayLastItemConverter" />
         <system:Double x:Key="BreadcrumbsFontSize">10</system:Double>
     </Window.Resources>
     <Border Style="{StaticResource WindowBorderStyle}" Background="{StaticResource BackgroundBrush}" Padding="4" BorderThickness="1" CornerRadius="4">
@@ -34,7 +36,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Title, Converter={StaticResource RaquoPrefixConverter}}" FontSize="{StaticResource BreadcrumbsFontSize}" Margin="4,0,0,0" />
+                                    <TextBlock Text="»" FontSize="{StaticResource BreadcrumbsFontSize}" Margin="4,0,0,0" />
+                                    <TextBlock Text="{Binding Path, Converter={StaticResource ArrayLastItemConverter}}" FontSize="{StaticResource BreadcrumbsFontSize}" Margin="4,0,0,0" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -54,7 +57,14 @@
                         <Border Padding="4">
                             <Grid>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Title}" />
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource SnippetPathJoinConverter}">
+                                                <Binding Path="Path" />
+                                                <Binding Path="DataContext.Selected.Count" RelativeSource="{RelativeSource AncestorType=ListView}" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                     <TextBlock Text="{Binding Description}" FontSize="11" Opacity=".3" />
                                 </StackPanel>
 
