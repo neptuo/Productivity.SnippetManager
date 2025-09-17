@@ -37,33 +37,11 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
             if (configuration.AccessToken != null)
                 github.Credentials = new Credentials(configuration.AccessToken);
 
-            var repositories = await github.Repository.GetAllForUser(configuration.UserName);
-
-            AddSnippetsForRepositories(context, repositories);
-
-            var organizations = await github.Organization.GetAllForUser(configuration.UserName);
-            var organizationTasks = new Task[organizations.Count];
-            for (int i = 0; i < organizations.Count; i++)
-            {
-                var organization = organizations[i];
-                organizationTasks[i] = Task.Run(async () =>
-                {
-                    try
-                    {
-                        Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
-                        var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
-                        Debug.WriteLine($"GitHub snippets downloaded for '{organization.Login}'");
-                        AddSnippetsForRepositories(context, orgRepositories);
-                        Debug.WriteLine($"GitHub snippets added for '{organization.Login}'");
-                    }
-                    catch (ForbiddenException)
-                    {
-                        Debug.WriteLine($"GitHub forbidden acces to organization '{organization.Login}'");
-                    }
-                });
-            }
-
-            await Task.WhenAll(organizationTasks);
+            await Task.WhenAll(
+                AddUserRepositoriesAsync(context, github),
+                AddOrganizationsRepositoriesAsync(context, github),
+                AddStarredRepositoriesAsync(context, github)
+            );
 
             if (configuration.ExtraRepositories != null)
             {
@@ -79,23 +57,6 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
 
                 context.AddRange(snippets);
             }
-
-            if (configuration.IncludeStars)
-            {
-                var starredRepositories = await github.Activity.Starring.GetAllForUser(configuration.UserName);
-                if (starredRepositories.Count > 0)
-                {
-                    // Create a separate section for starred repos
-                    var starredParent = new SnippetModel(
-                        title: $"GitHub - Stars",
-                        text: $"https://github.com/{configuration.UserName}?tab=stars"
-                    );
-                    context.Add(starredParent);
-
-                    // Add snippets for starred repositories
-                    AddSnippetsForRepositories(context, starredRepositories, starredParent.Title);
-                }
-            }
         }
         catch (Exception ex)
         {
@@ -103,6 +64,59 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         }
 
         Debug.WriteLine($"GitHub done");
+    }
+
+    private async Task AddStarredRepositoriesAsync(SnippetProviderContext context, GitHubClient github)
+    {
+        if (configuration.IncludeStars)
+        {
+            var starredRepositories = await github.Activity.Starring.GetAllForUser(configuration.UserName);
+            if (starredRepositories.Count > 0)
+            {
+                // Create a separate section for starred repos
+                var starredParent = new SnippetModel(
+                    title: $"GitHub - Stars",
+                    text: $"https://github.com/{configuration.UserName}?tab=stars"
+                );
+                context.Add(starredParent);
+
+                // Add snippets for starred repositories
+                AddSnippetsForRepositories(context, starredRepositories, starredParent.Title);
+            }
+        }
+    }
+
+    private async Task AddOrganizationsRepositoriesAsync(SnippetProviderContext context, GitHubClient github)
+    {
+        var organizations = await github.Organization.GetAllForUser(configuration.UserName);
+        var organizationTasks = new Task[organizations.Count];
+        for (int i = 0; i < organizations.Count; i++)
+        {
+            var organization = organizations[i];
+            organizationTasks[i] = Task.Run(async () =>
+            {
+                try
+                {
+                    Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
+                    var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
+                    Debug.WriteLine($"GitHub snippets downloaded for '{organization.Login}'");
+                    AddSnippetsForRepositories(context, orgRepositories);
+                    Debug.WriteLine($"GitHub snippets added for '{organization.Login}'");
+                }
+                catch (ForbiddenException)
+                {
+                    Debug.WriteLine($"GitHub forbidden acces to organization '{organization.Login}'");
+                }
+            });
+        }
+
+        await Task.WhenAll(organizationTasks);
+    }
+
+    private async Task AddUserRepositoriesAsync(SnippetProviderContext context, GitHubClient github)
+    {
+        var repositories = await github.Repository.GetAllForUser(configuration.UserName);
+        AddSnippetsForRepositories(context, repositories);
     }
 
     private void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories, string? title = null)
