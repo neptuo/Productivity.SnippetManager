@@ -27,7 +27,6 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class Navigator : IClipboardService, ISendTextService
 {
-    private readonly ObservableCollection<SnippetModel> allSnippets;
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
     private bool isSnippetProviderInitialized = false;
@@ -46,15 +45,14 @@ public class Navigator : IClipboardService, ISendTextService
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
         this.getExampleConfiguration = getExampleConfiguration;
-        this.allSnippets = new();
-        this.snippetProviderContext = new(allSnippets);
+        this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
     }
 
     private void OnModelsChanged()
     {
         if (main != null)
-            DispatcherHelper.Run(main.Dispatcher, () => main.Search());
+            DispatcherHelper.Run(main.Dispatcher, () => main?.Search());
     }
 
     private MainWindow? main;
@@ -65,7 +63,7 @@ public class Navigator : IClipboardService, ISendTextService
         {
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
-            main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
+            main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this), new CopySnippetCommand(this));
             UpdateWindowStickPointToCaret(main, stickToActiveCaret);
 
             _ = UpdateSnippetsAsync(main.ViewModel);

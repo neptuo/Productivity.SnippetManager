@@ -16,7 +16,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels.Commands
         public ApplySnippetCommand(ISendTextService sendText) 
             => this.sendText = sendText;
 
-        public override void Execute(IAppliableSnippetModel parameter)
+        public override void Execute(SnippetModel parameter)
             => sendText.Send(parameter.Text);
     }
 }

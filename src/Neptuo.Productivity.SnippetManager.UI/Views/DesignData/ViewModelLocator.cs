@@ -20,25 +20,33 @@ internal class ViewModelLocator
         {
             if (mainViewModel == null)
             {
+                var tree = LoadSnippets();
+
                 mainViewModel = new MainViewModel(
-                    new ObservableCollection<SnippetModel>(), 
+                    tree, 
                     new ApplySnippetCommand(InteropService.Instance), 
                     new CopySnippetCommand(InteropService.Instance)
                 );
 
-                LoadSnippets();
+                var gitHub = tree.GetRoots().First(s => s.Title == "GitHub");
+                mainViewModel.Selected.Add(gitHub);
+                mainViewModel.Selected.Add(tree.GetChildren(gitHub).First());
 
-                MainViewModel.IsInitializing = false;
+                mainViewModel.Snippets.AddRange(tree.GetRoots());
+                mainViewModel.Search("");
+                mainViewModel.IsInitializing = false;
             }
 
             return mainViewModel;
         }
     }
 
-    private static void LoadSnippets()
+    private static ISnippetTree LoadSnippets()
     {
+        SnippetProviderContext ctx = new SnippetProviderContext();
+
         void Add(string title, string text, string? description = null)
-            => MainViewModel.Snippets.Add(new SnippetModel(title, text, description, SnippetPriority.High));
+            => ctx.Add(new SnippetModel(title, text, description, SnippetPriority.High));
 
         Add(
             "C# class",
@@ -61,7 +69,10 @@ internal class ViewModelLocator
         );
         Add("Maps", "https://maps.google.com");
         Add("GitHub - dotnet - runtime", "https://github.com/dotnet/runtime");
+        Add("GitHub - dotnet - aspnetcore", "https://github.com/dotnet/aspnetcore");
+        Add("GitHub - dotnet - sdk", "https://github.com/dotnet/sdk");
         Add("Money", "https://app.money.neptuo.com");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
+        return ctx;
     }
 }
