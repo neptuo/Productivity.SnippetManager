@@ -29,8 +29,7 @@ public class Navigator : IClipboardService, ISendTextService
 {
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
-    private bool isSnippetProviderInitialized = false;
-    private Task? snippetProviderInitializeTask;
+    private Task snippetProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
     private readonly Func<string> getXmlSnippetsPath;
@@ -47,6 +46,8 @@ public class Navigator : IClipboardService, ISendTextService
         this.getExampleConfiguration = getExampleConfiguration;
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
+
+        snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
     }
 
     private void OnModelsChanged()
@@ -105,21 +106,16 @@ public class Navigator : IClipboardService, ISendTextService
 
     private async Task UpdateSnippetsAsync(MainViewModel viewModel)
     {
-        if (!isSnippetProviderInitialized)
+        if (!snippetProviderInitializeTask.IsCompleted)
         {
-            if (snippetProviderInitializeTask == null)
-                snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
-            else
-                main?.Search();
+            // To show up to date currently available snippets
+            main?.Search();
 
             await snippetProviderInitializeTask;
-            snippetProviderInitializeTask = null;
-            isSnippetProviderInitialized = true;
 
-            // Main lost focus and is closed.
+            // Main lost focus and is closed
             if (main == null)
                 return;
-
         }
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
@@ -127,6 +123,8 @@ public class Navigator : IClipboardService, ISendTextService
         if (main != null)
         {
             main.Search();
+
+            // Hide initialization after update completes
             main.ViewModel.IsInitializing = false;
         }
     }
