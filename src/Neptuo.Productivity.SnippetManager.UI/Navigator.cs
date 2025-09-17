@@ -231,20 +231,34 @@ public class Navigator : IClipboardService, ISendTextService
             Clipboard.SetText(text);
 
             await Task.Delay(100);
+            
+            if (isCtrlDown)
+                await WaitForCtrlReleaseAsync();
 
             SendKeys.SendWait("+{INSERT}");
 
             if (isCtrlDown)
-            {
-                await Task.Delay(100);
                 SendKeys.SendWait("{ENTER}");
-            }
 
             await Task.Delay(100);
         }
         finally
         {
             scope.Restore();
+        }
+    }
+
+    private async Task WaitForCtrlReleaseAsync()
+    {
+        // Wait for Ctrl key release with timeout
+        int timeout = 5000; // 5 seconds timeout
+        int stepDelay = 50;
+        int elapsed = 0;
+
+        while ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && elapsed < timeout)
+        {
+            await Task.Delay(stepDelay);
+            elapsed += stepDelay;
         }
     }
 
