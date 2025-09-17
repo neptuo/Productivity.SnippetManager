@@ -46,6 +46,8 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             }
         }
 
+        public event Action SearchCompleted = () => { };
+
         public MainViewModel(ISnippetTree snippetTree, ApplySnippetCommand apply, CopySnippetCommand copy)
         {
             this.snippetTree = snippetTree;
@@ -63,6 +65,7 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
             var normalizedSearchText = SearchTokenizer.Tokenize(searchText?.ToLowerInvariant());
             var searchResult = searcher.Search(normalizedSearchText, Selected.LastOrDefault());
             Snippets.AddRange(searchResult);
+            SearchCompleted.Invoke();
         }
 
         private bool CanSelectExecute(SnippetModel snippet)
