@@ -7,6 +7,6 @@
     <PackageVersion Include="Neptuo.Windows.HotKeys" Version="2.0.0" />
     <PackageVersion Include="Neptuo.Windows.Threading" Version="1.0.1" />
     <PackageVersion Include="Neptuo.Observables" Version="2.1.1" />
-    <PackageVersion Include="Octokit" Version="4.0.4" />
+    <PackageVersion Include="Octokit" Version="14.0.0" />
   </ItemGroup>
 </Project>
