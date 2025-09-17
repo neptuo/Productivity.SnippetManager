@@ -88,7 +88,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         Debug.WriteLine($"GitHub done");
     }
 
-    private static void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories)
+    private void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories)
     {
         List<SnippetModel> snippets = new List<SnippetModel>();
 
@@ -117,7 +117,7 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         context.AddRange(snippets);
     }
 
-    private static void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
+    private void AddSnippetsForRepository(ICollection<SnippetModel> snippets, string repository, string htmlUrl, string owner, bool hasIssues, string? defaultBranch)
     {
         var repositoryTitle = $"GitHub - {owner} - {repository}";
 
@@ -158,6 +158,12 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
         snippets.Add(new SnippetModel(
             title: $"{repositoryTitle} - Code search",
             text: $"https://github.com/search?q=repo:{owner}/{repository}&type=code",
+            priority: SnippetPriority.Low
+        ));
+
+        snippets.Add(new SnippetModel(
+            title: $"{repositoryTitle} - My activity",
+            text: $"{htmlUrl}/activity?actor={configuration.UserName}",
             priority: SnippetPriority.Low
         ));
     }
