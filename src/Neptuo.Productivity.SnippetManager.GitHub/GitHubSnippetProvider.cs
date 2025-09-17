@@ -41,42 +41,48 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
 
             AddSnippetsForRepositories(context, repositories);
 
-#if !DEBUG
-    throw new Exception("This was committed accidentallly!");
-#endif
-            //var organizations = await github.Organization.GetAllForUser(configuration.UserName);
-            //foreach (var organization in organizations)
-            //{
-            //    try
-            //    {
-            //        Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
-            //        var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
-            //        Debug.WriteLine($"GitHub snippets downloaded");
-            //        AddSnippetsForRepositories(context, orgRepositories);
-            //        Debug.WriteLine($"GitHub snippets added");
-            //    }
-            //    catch (ForbiddenException)
-            //    { }
-            //}
+            var organizations = await github.Organization.GetAllForUser(configuration.UserName);
+            var organizationTasks = new Task[organizations.Count];
+            for (int i = 0; i < organizations.Count; i++)
+            {
+                var organization = organizations[i];
+                organizationTasks[i] = Task.Run(async () =>
+                {
+                    try
+                    {
+                        Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
+                        var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
+                        Debug.WriteLine($"GitHub snippets downloaded for '{organization.Login}'");
+                        AddSnippetsForRepositories(context, orgRepositories);
+                        Debug.WriteLine($"GitHub snippets added for '{organization.Login}'");
+                    }
+                    catch (ForbiddenException)
+                    {
+                        Debug.WriteLine($"GitHub forbidden acces to organization '{organization.Login}'");
+                    }
+                });
+            }
 
-            //if (configuration.ExtraRepositories != null)
-            //{
-            //    List<SnippetModel> snippets = new List<SnippetModel>();
-            //    foreach (var extraRepository in configuration.ExtraRepositories)
-            //    {
-            //        var names = extraRepository.Split("/");
-            //        if (names.Length == 1)
-            //            names = new[] { configuration.UserName, names[0] };
+            await Task.WhenAll(organizationTasks);
 
-            //        AddSnippetsForRepository(snippets, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], true, null);
-            //    }
+            if (configuration.ExtraRepositories != null)
+            {
+                List<SnippetModel> snippets = new List<SnippetModel>();
+                foreach (var extraRepository in configuration.ExtraRepositories)
+                {
+                    var names = extraRepository.Split("/");
+                    if (names.Length == 1)
+                        names = new[] { configuration.UserName, names[0] };
 
-            //    context.AddRange(snippets);
-            //}
+                    AddSnippetsForRepository(snippets, names[1], $"https://github.com/{names[0]}/{names[1]}", names[0], true, null);
+                }
+
+                context.AddRange(snippets);
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            Debug.WriteLine($"GitHub exception: {ex.ToString()}");
         }
 
         Debug.WriteLine($"GitHub done");
