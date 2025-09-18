@@ -9,6 +9,7 @@ public interface ISnippetTree
     SnippetModel? FindParent(SnippetModel child);
     IEnumerable<SnippetModel> GetRoots();
     IEnumerable<SnippetModel> GetChildren(SnippetModel parent);
+    bool HasChildren(SnippetModel parent);
 
     /// <summary>
     /// Returns enumeration of ancestors from farthest or closest.

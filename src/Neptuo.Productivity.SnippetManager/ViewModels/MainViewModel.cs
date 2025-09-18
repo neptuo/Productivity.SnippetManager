@@ -70,6 +70,10 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels
 
         private bool CanSelectExecute(SnippetModel snippet)
         {
+            var hasChildren = snippetTree.HasChildren(snippet);
+            if (!hasChildren)
+                return false;
+
             var parent = snippetTree.FindParent(snippet);
 
             if (Selected.Count == 0 || parent == null)

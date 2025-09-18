@@ -121,6 +121,14 @@ namespace Neptuo.Productivity.SnippetManager
         public IEnumerable<SnippetModel> GetRoots() 
             => root.Select(s => s.Model);
 
+        public bool HasChildren(SnippetModel parent)
+        {
+            if (byModel.TryGetValue(parent, out var entry))
+                return entry.Children.Count > 0;
+
+            return false;
+        }
+
         public IEnumerable<SnippetModel> GetChildren(SnippetModel parent)
         {
             if (byModel.TryGetValue(parent, out var entry))
