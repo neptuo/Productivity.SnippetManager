@@ -1,9 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<UseWPF>true</UseWPF>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Neptuo.Observables" />
 	</ItemGroup>
