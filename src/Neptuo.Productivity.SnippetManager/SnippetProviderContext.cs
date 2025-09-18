@@ -108,7 +108,7 @@ namespace Neptuo.Productivity.SnippetManager
             Changed?.Invoke();
         }
 
-        public IEnumerable<SnippetModel> GetRoots() 
+        public IEnumerable<SnippetModel> GetRoots()
             => root.Select(s => s.Model);
 
         public bool HasChildren(SnippetModel parent)

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<ItemGroup>
-		<PackageReference Include="Neptuo.Observables" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Neptuo.Observables" />
+  </ItemGroup>
 
 </Project>

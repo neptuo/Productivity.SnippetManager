@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<ItemGroup>
-		<ProjectReference Include="..\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Octokit" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Octokit" />
+  </ItemGroup>
 
 </Project>

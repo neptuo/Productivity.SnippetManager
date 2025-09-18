@@ -159,8 +159,8 @@ public class Navigator : IClipboardService, ISendTextService
                 File.WriteAllText(filePath, """
                     <?xml version="1.0" encoding="utf-8" ?>
                     <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-                    	<Snippet Title="Greet" Text="Hello, World!" />
-                    	<Snippet Title="Wheather Forecast" Priority="High">
+                      <Snippet Title="Greet" Text="Hello, World!" />
+                      <Snippet Title="Wheather Forecast" Priority="High">
                     <![CDATA[Prague 22,
                     London 18,
                     New York 25]]></Snippet>
