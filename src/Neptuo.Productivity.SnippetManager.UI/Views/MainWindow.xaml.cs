@@ -189,11 +189,11 @@ namespace Neptuo.Productivity.SnippetManager.Views
 
         private void OnDeactivated(object sender, EventArgs e)
         {
-            DispatcherHelper.Run(Dispatcher, () =>
-            {
-                if (!IsActive)
-                    Close();
-            }, 500);
+            //DispatcherHelper.Run(Dispatcher, () =>
+            //{
+            //    if (!IsActive)
+            //        Close();
+            //}, 500);
         }
 
         private bool isStickToBottom;

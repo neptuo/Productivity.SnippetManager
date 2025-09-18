@@ -9,7 +9,7 @@
         xmlns:system="clr-namespace:System;assembly=netstandard"
         xmlns:dd="clr-namespace:Neptuo.Productivity.SnippetManager.Views.DesignData" d:DataContext="{x:Static dd:ViewModelLocator.MainViewModel}"
         mc:Ignorable="d" Title="Snippets" Width="400" SizeToContent="Height"
-        ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Topmost="True" Background="Transparent"
+        ResizeMode="CanMinimize" WindowStyle="None" ShowInTaskbar="False" Topmost="True"
         PreviewMouseDown="OnPreviewMouseDown" MouseUp="OnMouseUp" PreviewKeyDown="OnPreviewKeyDown" Deactivated="OnDeactivated">
     <Window.Resources>
         <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="Visible" FalseValue="Collapsed" />
@@ -17,7 +17,7 @@
         <controls:ArrayLastItemConverter x:Key="ArrayLastItemConverter" />
         <system:Double x:Key="BreadcrumbsFontSize">10</system:Double>
     </Window.Resources>
-    <Border Style="{StaticResource WindowBorderStyle}" Background="{StaticResource BackgroundBrush}" Padding="4" BorderThickness="1" CornerRadius="4">
+    <Border Padding="4" BorderThickness="1" CornerRadius="4" Style="{StaticResource WindowBorderStyle}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -51,7 +51,7 @@
                 </Grid>
             </StackPanel>
             <ListView x:Name="ListView" ItemsSource="{Binding Snippets}" SelectedIndex="0" BorderThickness="0" MouseLeftButtonUp="ListView_Click" PreviewKeyDown="ListView_PreviewKeyDown"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" ItemContainerStyle="{StaticResource ListViewItemStyle}">
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="4">
