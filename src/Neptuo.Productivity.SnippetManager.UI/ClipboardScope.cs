@@ -49,7 +49,7 @@ public struct ClipboardScope(DataPackage? storedContent)
             }
             else
             {
-                // Don't this item in history
+                // Don't this item in history, because the change of clipboard shouldn't actually happen
                 Clipboard.SetContentWithOptions(storedContent, new ClipboardContentOptions() { IsAllowedInHistory = false });
             }
         }
