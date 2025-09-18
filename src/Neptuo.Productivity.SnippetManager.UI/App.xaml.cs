@@ -34,6 +34,8 @@ namespace Neptuo.Productivity.SnippetManager
             snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
             configurationRepository = new ConfigurationRepository(snippetProviders);
             hotkey = new Hotkey();
+
+            Win32.RegisterApplicationRestart("/restart", Win32.RestartRestrictions.None);
         }
 
         protected override void OnStartup(StartupEventArgs e)
