@@ -11,6 +11,7 @@
             
             <nc:BoolConverter x:Key="TrueToVisibleConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <nc:BoolConverter x:Key="ActiveBorderConverter" TrueValue="{StaticResource ActiveBrush}" FalseValue="{StaticResource InactiveBrush}" />
+            <nc:NumberCompareConverter x:Key="ZeroToCollapsedConverter" EdgeValue="0" EqualValue="Collapsed" GreaterValue="Visible" />
 
             <Style x:Key="FontIconStyle" TargetType="TextBlock">
                 <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
@@ -70,8 +71,8 @@
             </Style>
 
             <Style TargetType="TextBox">
-                <Setter Property="Padding" Value="2,6" />
-                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="4,6" />
+                <Setter Property="BorderThickness" Value="0,0,0,0" />
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="CaretBrush" Value="{DynamicResource ForegroundBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
@@ -107,7 +108,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ListViewItem">
-                            <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
+                            <Border x:Name="Border" CornerRadius="2" Padding="2" SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
                                 <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                             </Border>
                         </ControlTemplate>

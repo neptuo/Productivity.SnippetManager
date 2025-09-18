@@ -17,15 +17,16 @@
         <controls:ArrayLastItemConverter x:Key="ArrayLastItemConverter" />
         <system:Double x:Key="BreadcrumbsFontSize">10</system:Double>
     </Window.Resources>
-    <Border Style="{StaticResource WindowBorderStyle}" Background="{StaticResource BackgroundBrush}" Padding="4" BorderThickness="1" CornerRadius="4">
+    <Border Style="{StaticResource WindowBorderStyle}" Background="{StaticResource BackgroundBrush}" Padding="0" BorderThickness="1" CornerRadius="4">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="4,0,0,0">
+            <StackPanel Margin="4">
+                <StackPanel Orientation="Horizontal" Margin="6,0,0,2">
                     <TextBlock Text="Snippets" FontSize="{StaticResource BreadcrumbsFontSize}" />
                     <ItemsControl ItemsSource="{Binding Selected}">
                         <ItemsControl.ItemsPanel>
@@ -44,14 +45,17 @@
                     </ItemsControl>
                 </StackPanel>
                 <Grid>
-                    <TextBlock Text="&#xE721;" Style="{StaticResource FontIconStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" />
-                    <TextBlock Text="Search..." VerticalAlignment="Center" Margin="4,0,0,0" Visibility="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}" FontSize="14" Opacity=".5" />
+                    <TextBlock Text="&#xE721;" Style="{StaticResource FontIconStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <TextBlock Text="Search..." VerticalAlignment="Center" Margin="6,0,0,0" Visibility="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}" FontSize="14" Opacity=".5" />
                     <ProgressBar Height="3" Background="Transparent" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsIndeterminate="True" Visibility="{Binding IsInitializing, Converter={StaticResource TrueToVisibleConverter}}" />
                     <TextBox x:Name="SearchText" TextChanged="SearchText_TextChanged" FontSize="14" />
                 </Grid>
             </StackPanel>
+            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource ActiveBrush}" Grid.Row="1" 
+             Visibility="{Binding Snippets.Count, Converter={StaticResource ZeroToCollapsedConverter}}" />
             <ListView x:Name="ListView" ItemsSource="{Binding Snippets}" SelectedIndex="0" BorderThickness="0" MouseLeftButtonUp="ListView_Click" PreviewKeyDown="ListView_PreviewKeyDown"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" ItemContainerStyle="{StaticResource ListViewItemStyle}">
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="4" Grid.Row="2" ItemContainerStyle="{StaticResource ListViewItemStyle}"
+             Visibility="{Binding Snippets.Count, Converter={StaticResource ZeroToCollapsedConverter}}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="4">
