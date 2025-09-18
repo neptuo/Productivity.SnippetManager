@@ -1,11 +1,4 @@
-﻿using Neptuo.Collections.Generic;
-using Neptuo.Productivity.SnippetManager.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Neptuo.Productivity.SnippetManager.Models;
 using System.Xml.Serialization;
 
 namespace Neptuo.Productivity.SnippetManager;

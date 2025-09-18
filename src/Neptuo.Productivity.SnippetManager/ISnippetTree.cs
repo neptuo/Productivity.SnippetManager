@@ -1,6 +1,4 @@
 ﻿using Neptuo.Productivity.SnippetManager.Models;
-using System;
-using System.Collections.Generic;
 
 namespace Neptuo.Productivity.SnippetManager;
 

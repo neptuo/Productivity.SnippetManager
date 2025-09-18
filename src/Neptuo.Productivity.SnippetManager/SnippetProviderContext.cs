@@ -1,13 +1,5 @@
-using Neptuo.Collections.Generic;
 using Neptuo.Productivity.SnippetManager.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
 
 namespace Neptuo.Productivity.SnippetManager
 {
@@ -116,7 +108,7 @@ namespace Neptuo.Productivity.SnippetManager
             Changed?.Invoke();
         }
 
-        public IEnumerable<SnippetModel> GetRoots() 
+        public IEnumerable<SnippetModel> GetRoots()
             => root.Select(s => s.Model);
 
         public bool HasChildren(SnippetModel parent)

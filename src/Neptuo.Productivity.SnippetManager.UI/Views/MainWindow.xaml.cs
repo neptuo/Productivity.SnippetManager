@@ -1,25 +1,13 @@
 ﻿using Neptuo.Observables.Commands;
 using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels;
-using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
 using Neptuo.Windows.Threading;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace Neptuo.Productivity.SnippetManager.Views

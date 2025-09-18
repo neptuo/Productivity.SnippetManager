@@ -1,12 +1,5 @@
-﻿using Neptuo.Productivity.SnippetManager.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Printing;
-using System.Text;
+using Neptuo.Productivity.SnippetManager.Models;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager.Tests;
 
@@ -14,9 +7,9 @@ public class SnippetSearcherTests
 {
     public class JsonSnippetModel
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Text { get; set; }
+        public required string Title { get; set; }
+        public required string Description { get; set; }
+        public required string Text { get; set; }
         public int Priority { get; set; }
     }
 

@@ -1,22 +1,11 @@
-﻿using Neptuo.Observables.Collections;
-using Neptuo.Productivity.SnippetManager.Models;
-using Neptuo.Productivity.SnippetManager.Services;
+﻿using Neptuo.Productivity.SnippetManager.Services;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
 using Neptuo.Windows.Threading;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -170,8 +159,8 @@ public class Navigator : IClipboardService, ISendTextService
                 File.WriteAllText(filePath, """
                     <?xml version="1.0" encoding="utf-8" ?>
                     <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-                    	<Snippet Title="Greet" Text="Hello, World!" />
-                    	<Snippet Title="Wheather Forecast" Priority="High">
+                      <Snippet Title="Greet" Text="Hello, World!" />
+                      <Snippet Title="Wheather Forecast" Priority="High">
                     <![CDATA[Prague 22,
                     London 18,
                     New York 25]]></Snippet>

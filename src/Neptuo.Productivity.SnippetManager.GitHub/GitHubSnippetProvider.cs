@@ -1,15 +1,6 @@
-﻿using Neptuo.Collections.Generic;
-using Neptuo.Observables.Collections;
-using Neptuo.Productivity.SnippetManager.Models;
+﻿using Neptuo.Productivity.SnippetManager.Models;
 using Octokit;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
 
 namespace Neptuo.Productivity.SnippetManager;
 

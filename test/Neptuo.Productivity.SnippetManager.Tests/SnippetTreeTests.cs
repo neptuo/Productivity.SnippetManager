@@ -1,20 +1,13 @@
 ﻿using Neptuo.Productivity.SnippetManager.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace Neptuo.Productivity.SnippetManager.Tests;
 
 public class SnippetTreeTests
 {
-	public SnippetProviderContext GetTree(Action<Func<string, SnippetModel>>? capture = null)
-	{
+    public SnippetProviderContext GetTree(Action<Func<string, SnippetModel>>? capture = null)
+    {
         var all = new List<SnippetModel>();
-		var context = new SnippetProviderContext();
+        var context = new SnippetProviderContext();
 
         void Add(string text)
         {
@@ -24,46 +17,46 @@ public class SnippetTreeTests
         }
 
         Add("A - A - A");
-		Add("A - A - B");
-		Add("A - A - C");
-		Add("A - A - D");
-		Add("A - B - A");
-		Add("A - B - B");
-		Add("A - B - C");
-		Add("A - C - A");
-		Add("A - C - B");
+        Add("A - A - B");
+        Add("A - A - C");
+        Add("A - A - D");
+        Add("A - B - A");
+        Add("A - B - B");
+        Add("A - B - C");
+        Add("A - C - A");
+        Add("A - C - B");
 
         capture?.Invoke(title => all.Find(s => s.Title == title) ?? throw Ensure.Exception.InvalidOperation($"Snippet '{title}' not found"));
 
         return context;
     }
 
-	[Fact]
-	public void EnsureTree()
-	{
+    [Fact]
+    public void EnsureTree()
+    {
         var tree = GetTree();
-		var roots = tree.GetRoots();
-		Assert.Collection(
-			roots,
-			a1 =>
-			{
-				Assert.Equal("A", a1.Title);
-				Assert.True(a1.IsShadow);
-				Assert.Null(tree.FindParent(a1));
+        var roots = tree.GetRoots();
+        Assert.Collection(
+            roots,
+            a1 =>
+            {
+                Assert.Equal("A", a1.Title);
+                Assert.True(a1.IsShadow);
+                Assert.Null(tree.FindParent(a1));
 
-				Assert.Collection(
-					tree.GetChildren(a1),
+                Assert.Collection(
+                    tree.GetChildren(a1),
                     a2 =>
                     {
                         Assert.Equal("A - A", a2.Title);
                         Assert.True(a2.IsShadow);
-						Assert.Equal(a1, tree.FindParent(a2));
+                        Assert.Equal(a1, tree.FindParent(a2));
 
-						Assert.Collection(
-							tree.GetChildren(a2),
-							a3 =>
-							{
-								Assert.False(a3.IsShadow);
+                        Assert.Collection(
+                            tree.GetChildren(a2),
+                            a3 =>
+                            {
+                                Assert.False(a3.IsShadow);
                                 Assert.Equal("A - A - A", a3.Title);
                                 Assert.Equal(a2, tree.FindParent(a3));
                             },
@@ -139,8 +132,8 @@ public class SnippetTreeTests
                     }
                 );
             }
-		);
-	}
+        );
+    }
 
     [Fact]
     public void RemoveAllChildren_RemovesShadowParent()
@@ -414,7 +407,7 @@ public class SnippetTreeTests
     public void GetAncestors_ForDeepNestedSnippet_ReturnsAllAncestorsInCorrectOrder()
     {
         var tree = GetTree();
-        
+
         // Add a deeper nested snippet that doesn't conflict with existing paths
         var deepSnippet = new SnippetModel("A - D - E - F - G", "A - D - E - F - G");
         tree.Add(deepSnippet);
