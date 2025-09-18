@@ -13,7 +13,7 @@ public class ClipboardSnippetProvider : ISnippetProvider
 
     public async Task UpdateAsync(SnippetProviderContext context)
     {
-        var existing = context.Models.FirstOrDefault(m => m.Title == Title);
+        var existing = context.Models.SingleOrDefault(m => m.Title == Title);
         if (existing != null)
             context.Remove(existing);
 
@@ -22,15 +22,18 @@ public class ClipboardSnippetProvider : ISnippetProvider
             string text = Clipboard.GetText();
             if (!string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text))
                 context.Add(new SnippetModel(Title, text, priority: SnippetPriority.Most));
-        }
 
-        if (Clipboard2.IsHistoryEnabled())
-        {
-            var items = await Clipboard2.GetHistoryItemsAsync();
-            foreach (var item in items.Items)
+            if (Clipboard2.IsHistoryEnabled())
             {
-                string text = await item.Content.GetTextAsync();
-                context.Add(new SnippetModel($"{Title} - {text.Trim()}", text));
+                var items = await Clipboard2.GetHistoryItemsAsync();
+                foreach (var item in items.Items)
+                {
+                    string historyText = await item.Content.GetTextAsync();
+                    if (string.IsNullOrEmpty(historyText) || string.IsNullOrWhiteSpace(historyText))
+                        continue;
+
+                    context.Add(new SnippetModel($"{Title} - {historyText.Trim()}", historyText));
+                }
             }
         }
     }
