@@ -4,11 +4,14 @@ using Clipboard2 = Windows.ApplicationModel.DataTransfer.Clipboard;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class ClipboardSnippetProvider : TransientSnippetProvider
+public class ClipboardSnippetProvider : ISnippetProvider
 {
     private const string Title = "Text from Clipboard";
 
-    public override async Task UpdateAsync(SnippetProviderContext context)
+    public Task InitializeAsync(SnippetProviderContext context)
+        => Task.CompletedTask;
+
+    public async Task UpdateAsync(SnippetProviderContext context)
     {
         var existing = context.Models.FirstOrDefault(m => m.Title == Title);
         if (existing != null)
