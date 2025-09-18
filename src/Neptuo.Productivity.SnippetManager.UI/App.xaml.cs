@@ -35,7 +35,9 @@ namespace Neptuo.Productivity.SnippetManager
             configurationRepository = new ConfigurationRepository(snippetProviders);
             hotkey = new Hotkey();
 
+#if !DEBUG
             Win32.RegisterApplicationRestart("/restart", Win32.RestartRestrictions.None);
+#endif
         }
 
         protected override void OnStartup(StartupEventArgs e)
