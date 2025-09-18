@@ -3,16 +3,12 @@ using System.Xml.Serialization;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class XmlSnippetProvider : SingleInitializeSnippetProvider, IDisposable
+public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitializeSnippetProvider, IDisposable
 {
     private readonly List<SnippetModel> lastSnippets = new();
     private readonly List<SnippetModel> nextSnippets = new();
-    private readonly XmlConfiguration configuration;
     private Task? loadSnippetsTask = null;
     private FileSystemWatcher? watcher;
-
-    public XmlSnippetProvider(XmlConfiguration configuration)
-        => this.configuration = configuration;
 
     protected override Task InitializeOnceAsync(SnippetProviderContext context)
     {
