@@ -28,6 +28,7 @@ The configuration is expected to be at `~/SnippetManager.json` (user home). If y
     "UserName": "jon",
     "AccessToken": "doe",
     "ExtraRepositories": [],
+    "HighPriorityRepositories": [],
     "IncludeStars": true,
     "Enabled": true
   },
@@ -60,6 +61,8 @@ Enables a snippet containing a new guid everytime the snippet list opened. Enabl
 ### GitHub
 
 Enables snippets for URL of every repository you have on GitHub. Organizations requiring 2FA won't be included, but you can add extra repositories using `ExtraRepositories` array.
+If you want some repositories to be created as "high" priority, you can add them to `HighPriorityRepositories`. It requires a full name (owner/name).
+By default starred repositories are included as well, you can disable this behavior with `IncludeStars: false`.
 
 ### XML
 
@@ -68,8 +71,8 @@ Enables snippets you declare in XML syntax. The `FilePath` is a path to the root
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-	<Snippet Title="Google" Text="https://google.com" Priority="High" />
-	<Snippet Title="Long snippet">
+  <Snippet Title="Google" Text="https://google.com" Priority="High" />
+  <Snippet Title="Long snippet">
 <![CDATA[1
 2
 3

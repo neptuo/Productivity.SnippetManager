@@ -13,6 +13,7 @@ namespace Neptuo.Productivity.SnippetManager
         public string? UserName { get; set; }
         public string? AccessToken { get; set; }
         public List<string>? ExtraRepositories { get; set; }
+        public List<string>? HighPriorityRepositories { get; set; }
         public bool IncludeStars { get; set; } = true;
 
         public static new GitHubConfiguration Example => new()
@@ -22,17 +23,19 @@ namespace Neptuo.Productivity.SnippetManager
             ExtraRepositories = new List<string>(0)
         };
 
-        public bool Equals(GitHubConfiguration? other)
-        {
-            return base.Equals(other) && UserName == other.UserName && AccessToken == other.AccessToken && IncludeStars == other.IncludeStars && EqualsExtraRepositories(other);
-        }
+        public bool Equals(GitHubConfiguration? other) => base.Equals(other) 
+            && UserName == other.UserName 
+            && AccessToken == other.AccessToken 
+            && IncludeStars == other.IncludeStars
+            && ListEquals(ExtraRepositories, other.ExtraRepositories)
+            && ListEquals(HighPriorityRepositories, other.HighPriorityRepositories);
 
-        private bool EqualsExtraRepositories(GitHubConfiguration other)
+        private static bool ListEquals(List<string>? first, List<string>? second)
         {
-            if (ExtraRepositories != null && other.ExtraRepositories != null)
-                return !ExtraRepositories.Except(other.ExtraRepositories).Any() && !other.ExtraRepositories.Except(ExtraRepositories).Any();
+            if (first != null && second != null)
+                return !first.Except(second).Any() && !second.Except(first).Any();
 
-            if (ExtraRepositories == null && other.ExtraRepositories == null)
+            if (first == null && second == null)
                 return true;
 
             return false;
