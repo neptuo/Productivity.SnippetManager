@@ -1,13 +1,6 @@
-﻿using Neptuo.Observables.Collections;
-using Neptuo.Productivity.SnippetManager.Models;
+﻿using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager.Views.DesignData;
 

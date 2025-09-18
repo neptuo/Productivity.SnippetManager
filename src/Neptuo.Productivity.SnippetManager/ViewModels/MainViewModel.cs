@@ -3,19 +3,6 @@ using Neptuo.Observables.Collections;
 using Neptuo.Observables.Commands;
 using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Data;
-using System.Windows.Threading;
 
 namespace Neptuo.Productivity.SnippetManager.ViewModels
 {

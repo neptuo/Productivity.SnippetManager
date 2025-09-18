@@ -1,12 +1,5 @@
 ﻿using Neptuo.Productivity.SnippetManager.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Printing;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager.Tests;
 
