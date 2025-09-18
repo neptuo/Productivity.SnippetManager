@@ -3,19 +3,10 @@ using System.Diagnostics;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class SnippetSearcher
+public class SnippetSearcher(ISnippetTree snippetTree, int pageSize)
 {
     private const bool SupplyChildrenFromSelectedSnippets = false;
     private const bool SupplyNonRootSnippets = true;
-
-    private readonly ISnippetTree snippetTree;
-    private readonly int pageSize;
-
-    public SnippetSearcher(ISnippetTree snippetTree, int pageSize)
-    {
-        this.snippetTree = snippetTree;
-        this.pageSize = pageSize;
-    }
 
     public IEnumerable<SnippetModel> Search(IReadOnlyList<string> normalizedSearchText, SnippetModel? currentRoot)
     {

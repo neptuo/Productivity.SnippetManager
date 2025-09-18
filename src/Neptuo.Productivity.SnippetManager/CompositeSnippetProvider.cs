@@ -1,12 +1,7 @@
 ﻿namespace Neptuo.Productivity.SnippetManager;
 
-public class CompositeSnippetProvider : ISnippetProvider
+public class CompositeSnippetProvider(IEnumerable<ISnippetProvider> snippetProviders) : ISnippetProvider
 {
-    private readonly IEnumerable<ISnippetProvider> snippetProviders;
-
-    public CompositeSnippetProvider(IEnumerable<ISnippetProvider> snippetProviders) 
-        => this.snippetProviders = snippetProviders;
-
     public Task InitializeAsync(SnippetProviderContext context) 
         => Task.WhenAll(snippetProviders.Select(p => p.InitializeAsync(context)));
 

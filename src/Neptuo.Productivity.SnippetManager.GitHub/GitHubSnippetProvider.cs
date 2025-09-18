@@ -4,13 +4,8 @@ using System.Diagnostics;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class GitHubSnippetProvider : SingleInitializeSnippetProvider
+public class GitHubSnippetProvider(GitHubConfiguration configuration) : SingleInitializeSnippetProvider
 {
-    private readonly GitHubConfiguration configuration;
-
-    public GitHubSnippetProvider(GitHubConfiguration configuration)
-        => this.configuration = configuration;
-
     protected override async Task InitializeOnceAsync(SnippetProviderContext context)
     {
         try

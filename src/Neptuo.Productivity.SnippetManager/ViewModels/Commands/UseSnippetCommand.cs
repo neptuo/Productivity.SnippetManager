@@ -7,10 +7,5 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels.Commands
     {
         public override bool CanExecute(SnippetModel parameter) 
             => parameter.IsFilled;
-
-        public override void Execute(SnippetModel parameter)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
