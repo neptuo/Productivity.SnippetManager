@@ -12,7 +12,7 @@ using System.Windows.Controls.Primitives;
 namespace Neptuo.Productivity.SnippetManager
 {
     [DebuggerDisplay("Entry {Model.Title}")]
-    public record SnippetEntry(SnippetModel Model, string CurrentPath, SnippetModel? Parent)
+    public record SnippetEntry(SnippetModel Model, string CurrentPath, SnippetEntry? Parent)
     {
         public SnippetModel Model { get; set; } = Model;
         public List<SnippetEntry> Children { get; } = new();
@@ -30,7 +30,7 @@ namespace Neptuo.Productivity.SnippetManager
 
         private void AddToTree(SnippetModel snippet)
         {
-            SnippetModel? parent = null;
+            SnippetEntry? parent = null;
             List<SnippetEntry> children = root;
             for (var i = 0; i < snippet.Path.Length - 1; i++)
             {
@@ -43,7 +43,7 @@ namespace Neptuo.Productivity.SnippetManager
                     children.Add(byModel[segmentModel] = segmentEntry = new(segmentModel, segment, parent));
                 }
 
-                parent = segmentEntry.Model;
+                parent = segmentEntry;
                 children = segmentEntry.Children;
             }
 
@@ -83,13 +83,11 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     byModel.Remove(entry.Model);
 
-                    var parentEntry = byModel[entry.Parent];
-                    parentEntry.Children.Remove(entry);
-
-                    if (parentEntry.Children.Count > 0 || !parentEntry.Model.IsShadow)
+                    entry.Parent.Children.Remove(entry);
+                    if (entry.Parent.Children.Count > 0 || !entry.Parent.Model.IsShadow)
                         break;
 
-                    entry = parentEntry;
+                    entry = entry.Parent;
                 }
             }
             else
@@ -140,7 +138,7 @@ namespace Neptuo.Productivity.SnippetManager
         public SnippetModel? FindParent(SnippetModel child)
         {
             if (byModel.TryGetValue(child, out var entry))
-                return entry.Parent;
+                return entry.Parent?.Model;
 
             return null;
         }
@@ -155,14 +153,14 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     // We need to navigate to parent of the 'child'.
                     // The 'child' should never be added.
-                    current = byModel[current.Parent];
+                    current = current.Parent;
                     while (lastAncestor != current.Model)
                     {
                         ancestors.Push(current.Model);
                         if (current.Parent == null)
                             break;
 
-                        current = byModel[current.Parent];
+                        current = current.Parent;
                     }
                 }
             }
