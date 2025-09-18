@@ -474,4 +474,32 @@ public class SnippetTreeTests
             }
         );
     }
+
+    [Fact]
+    public void Test()
+    {
+        SnippetModel? aaa = null;
+
+        var tree = GetTree(capture =>
+        {
+            aaa = capture("A - A - A");
+        });
+
+        tree.Add(new("A - A", "A - A"));
+
+        var ancestors = tree.GetAncestors(aaa!).ToList();
+        Assert.Collection(
+            ancestors,
+            a1 =>
+            {
+                Assert.Equal("A", a1.Title);
+                Assert.True(a1.IsShadow);
+            },
+            a2 =>
+            {
+                Assert.Equal("A - A", a2.Title);
+                Assert.False(a2.IsShadow);
+            }
+        );
+    }
 }
