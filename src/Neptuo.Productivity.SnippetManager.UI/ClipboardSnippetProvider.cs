@@ -22,7 +22,7 @@ public class ClipboardSnippetProvider : TransientSnippetProvider
         }
 
         var items = await Clipboard2.GetHistoryItemsAsync();
-        foreach (var item in items.Items.OrderByDescending(i => i.Timestamp))
+        foreach (var item in items.Items)
         {
             string text = await item.Content.GetTextAsync();
             context.Add(new SnippetModel($"{Title} - {text.Trim()}", text));
