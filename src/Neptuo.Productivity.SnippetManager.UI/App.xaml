@@ -8,8 +8,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Views/Themes/Dark.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
+            <SolidColorBrush x:Key="AccentBrush">#4cc2ff</SolidColorBrush>
+
             <nc:BoolConverter x:Key="TrueToVisibleConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <nc:BoolConverter x:Key="TrueToAccentColorConverter" TrueValue="{StaticResource AccentBrush}" FalseValue="Transparent" />
             <nc:BoolConverter x:Key="ActiveBorderConverter" TrueValue="{StaticResource ActiveBrush}" FalseValue="{StaticResource InactiveBrush}" />
             <nc:NumberCompareConverter x:Key="ZeroToCollapsedConverter" EdgeValue="0" EqualValue="Collapsed" GreaterValue="Visible" />
 
@@ -108,8 +111,11 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ListViewItem">
-                            <Border x:Name="Border" CornerRadius="2" Padding="2" SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
-                                <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <Border x:Name="Border" CornerRadius="2" SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
+                                <Grid>
+                                    <Border Width="2" Height="20" CornerRadius="1" Background="{TemplateBinding IsSelected, Converter={StaticResource TrueToAccentColorConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <ContentPresenter Margin="4,2,2,2" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                </Grid>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
