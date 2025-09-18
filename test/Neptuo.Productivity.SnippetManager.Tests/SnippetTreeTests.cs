@@ -55,7 +55,7 @@ public class SnippetTreeTests
 					tree.GetChildren(a1),
                     a2 =>
                     {
-                        Assert.Equal("A", a2.Title);
+                        Assert.Equal("A - A", a2.Title);
                         Assert.True(a2.IsShadow);
 						Assert.Equal(a1, tree.FindParent(a2));
 
@@ -89,7 +89,7 @@ public class SnippetTreeTests
                     },
                     b2 =>
                     {
-                        Assert.Equal("B", b2.Title);
+                        Assert.Equal("A - B", b2.Title);
                         Assert.True(b2.IsShadow);
                         Assert.Equal(a1, tree.FindParent(b2));
 
@@ -117,7 +117,7 @@ public class SnippetTreeTests
                     },
                     c2 =>
                     {
-                        Assert.Equal("C", c2.Title);
+                        Assert.Equal("A - C", c2.Title);
                         Assert.True(c2.IsShadow);
                         Assert.Equal(a1, tree.FindParent(c2));
 
@@ -156,7 +156,7 @@ public class SnippetTreeTests
 
         tree.Remove(aca!);
 
-        var ac = tree.GetChildren(tree.GetRoots().Single(s => s.Title == "A")).Single(s => s.Title == "C");
+        var ac = tree.GetChildren(tree.GetRoots().Single(s => s.Title == "A")).Single(s => s.Title == "A - C");
         var acChildren = tree.GetChildren(ac);
 
         Assert.Collection(
@@ -206,7 +206,7 @@ public class SnippetTreeTests
             aChildren,
             a2 =>
             {
-                Assert.Equal("A", a2.Title);
+                Assert.Equal("A - A", a2.Title);
                 Assert.True(a2.IsShadow);
             },
             b2 =>
@@ -216,7 +216,7 @@ public class SnippetTreeTests
             },
             c2 =>
             {
-                Assert.Equal("C", c2.Title);
+                Assert.Equal("A - C", c2.Title);
                 Assert.True(c2.IsShadow);
             }
         );
@@ -247,14 +247,14 @@ public class SnippetTreeTests
     [Fact]
     public void GetAncestors_ReturnsSingleAncestorForSecondLevelSnippet()
     {
-        SnippetModel? aa = null;
+        SnippetModel? aaa = null;
 
         var tree = GetTree(capture =>
         {
-            aa = capture("A - A - A");
+            aaa = capture("A - A - A");
         });
 
-        var ancestors = tree.GetAncestors(aa!).ToList();
+        var ancestors = tree.GetAncestors(aaa!).ToList();
 
         Assert.Collection(
             ancestors,
@@ -265,7 +265,7 @@ public class SnippetTreeTests
             },
             a2 =>
             {
-                Assert.Equal("A", a2.Title);
+                Assert.Equal("A - A", a2.Title);
                 Assert.True(a2.IsShadow);
             }
         );
@@ -292,7 +292,7 @@ public class SnippetTreeTests
             },
             b2 =>
             {
-                Assert.Equal("B", b2.Title);
+                Assert.Equal("A - B", b2.Title);
                 Assert.True(b2.IsShadow);
             }
         );
@@ -313,7 +313,7 @@ public class SnippetTreeTests
         // Get references to the shadow ancestors
         var roots = tree.GetRoots();
         a = roots.First(r => r.Title == "A");
-        b = tree.GetChildren(a).First(c => c.Title == "B");
+        b = tree.GetChildren(a).First(c => c.Title == "A - B");
 
         // Test stopping at the intermediate ancestor 'B'
         // Since 'B' is the immediate parent, when we call GetAncestors(aba, b),
@@ -347,7 +347,7 @@ public class SnippetTreeTests
             ancestors,
             b1 =>
             {
-                Assert.Equal("B", b1.Title);
+                Assert.Equal("A - B", b1.Title);
                 Assert.True(b1.IsShadow);
             }
         );
@@ -367,7 +367,7 @@ public class SnippetTreeTests
         // Get reference to the immediate parent 'B'
         var roots = tree.GetRoots();
         var a = roots.First(r => r.Title == "A");
-        b = tree.GetChildren(a).First(c => c.Title == "B");
+        b = tree.GetChildren(a).First(c => c.Title == "A - B");
 
         // Test stopping at the immediate parent 'B'
         // Since B is the immediate parent, the loop should not execute at all
@@ -390,7 +390,7 @@ public class SnippetTreeTests
         // Get reference to a different shadow ancestor 'C' that's not in the path
         var roots = tree.GetRoots();
         var a = roots.First(r => r.Title == "A");
-        c = tree.GetChildren(a).First(ch => ch.Title == "C");
+        c = tree.GetChildren(a).First(ch => ch.Title == "A - C");
 
         // Test with lastAncestor that's not in the path - should return all ancestors
         var ancestors = tree.GetAncestors(aba!, c).ToList();
@@ -404,7 +404,7 @@ public class SnippetTreeTests
             },
             b2 =>
             {
-                Assert.Equal("B", b2.Title);
+                Assert.Equal("A - B", b2.Title);
                 Assert.True(b2.IsShadow);
             }
         );
@@ -431,17 +431,17 @@ public class SnippetTreeTests
             },
             d2 =>
             {
-                Assert.Equal("D", d2.Title);
+                Assert.Equal("A - D", d2.Title);
                 Assert.True(d2.IsShadow);
             },
             e3 =>
             {
-                Assert.Equal("E", e3.Title);
+                Assert.Equal("A - D - E", e3.Title);
                 Assert.True(e3.IsShadow);
             },
             f4 =>
             {
-                Assert.Equal("F", f4.Title);
+                Assert.Equal("A - D - E - F", f4.Title);
                 Assert.True(f4.IsShadow);
             }
         );
@@ -469,7 +469,7 @@ public class SnippetTreeTests
             },
             b2 =>
             {
-                Assert.Equal("B", b2.Title);
+                Assert.Equal("A - B", b2.Title);
                 Assert.True(b2.IsShadow);
             }
         );
