@@ -155,9 +155,14 @@ public class GitHubSnippetProvider : SingleInitializeSnippetProvider
             ? $"{title} - {repository}"
             : $"GitHub - {owner} - {repository}";
 
+        var priority = configuration.HighPriorityRepositories?.Contains($"{owner}/{repository}") ?? false
+            ? SnippetPriority.High
+            : SnippetPriority.Normal;
+
         snippets.Add(new SnippetModel(
             title: repositoryTitle,
-            text: htmlUrl
+            text: htmlUrl,
+            priority: priority
         ));
 
         if (hasIssues)
