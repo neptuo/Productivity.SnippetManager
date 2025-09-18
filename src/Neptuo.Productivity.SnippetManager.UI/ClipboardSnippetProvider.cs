@@ -24,11 +24,14 @@ public class ClipboardSnippetProvider : ISnippetProvider
                 context.Add(new SnippetModel(Title, text, priority: SnippetPriority.Most));
         }
 
-        var items = await Clipboard2.GetHistoryItemsAsync();
-        foreach (var item in items.Items)
+        if (Clipboard2.IsHistoryEnabled())
         {
-            string text = await item.Content.GetTextAsync();
-            context.Add(new SnippetModel($"{Title} - {text.Trim()}", text));
+            var items = await Clipboard2.GetHistoryItemsAsync();
+            foreach (var item in items.Items)
+            {
+                string text = await item.Content.GetTextAsync();
+                context.Add(new SnippetModel($"{Title} - {text.Trim()}", text));
+            }
         }
     }
 }
