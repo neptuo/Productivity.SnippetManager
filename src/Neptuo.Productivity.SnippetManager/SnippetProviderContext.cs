@@ -64,6 +64,7 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     byModel.Remove(e.Model);
                     models.Remove(e.Model);
+                    root.Remove(e);
 
                     foreach (var child in e.Children)
                         RemoveSnippetEntry(child);

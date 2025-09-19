@@ -1,70 +1,65 @@
-﻿using System.Collections.Specialized;
-using System.IO;
-using System.Windows.Forms;
+﻿using System.Diagnostics;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public struct ClipboardScope
+public class ClipboardScope
 {
-    private int format;
-    private object? data;
+    private DataPackage? storedContent;
 
-    public ClipboardScope()
-        => Store();
-
-    public void Store()
+    public static async Task<ClipboardScope> CreateAsync()
     {
-        if (Clipboard.ContainsText())
+        var result = new ClipboardScope();
+        await result.StoreAsync();
+        return result;
+    }
+
+    public async Task StoreAsync()
+    {
+        try
         {
-            format = 1;
-            data = Clipboard.GetText();
+            var dataPackageView = Clipboard.GetContent();
+            storedContent = new DataPackage();
+
+            // Store all available formats using the generic approach
+            foreach (var format in dataPackageView.AvailableFormats)
+            {
+                try
+                {
+                    var data = await dataPackageView.GetDataAsync(format);
+                    storedContent.SetData(format, data);
+                }
+                catch
+                {
+                    // Skip formats that can't be read
+                    Debug.Fail($"Failed to read format '{format}'.");
+                    continue;
+                }
+            }
         }
-        else if (Clipboard.ContainsAudio())
+        catch
         {
-            format = 2;
-            data = Clipboard.GetAudioStream();
-        }
-        else if (Clipboard.ContainsImage())
-        {
-            format = 3;
-            data = Clipboard.GetImage();
-        }
-        else if (Clipboard.ContainsFileDropList())
-        {
-            format = 4;
-            data = Clipboard.GetFileDropList();
-        }
-        else
-        {
-            format = 0;
+            storedContent = null;
         }
     }
 
     public void Restore()
     {
-        if (format == 0 || data == null)
+        try
         {
-            Clipboard.Clear();
-        }
-        else
-        {
-            switch (format)
+            if (storedContent == null)
             {
-                case 1:
-                    Clipboard.SetText((string)data);
-                    break;
-                case 2:
-                    Clipboard.SetAudio((Stream)data);
-                    break;
-                case 3:
-                    Clipboard.SetImage((Image)data);
-                    break;
-                case 4:
-                    Clipboard.SetFileDropList((StringCollection)data);
-                    break;
-                default:
-                    throw Ensure.Exception.NotSupported($"Not supported format '{format}'.");
+                Clipboard.Clear();
             }
+            else
+            {
+                // Don't this item in history, because the change of clipboard shouldn't actually happen
+                Clipboard.SetContentWithOptions(storedContent, new ClipboardContentOptions() { IsAllowedInHistory = false });
+            }
+        }
+        catch
+        {
+            try { Clipboard.Clear(); } catch { }
         }
     }
 }

@@ -1,16 +1,17 @@
-﻿using Neptuo.Productivity.SnippetManager.Services;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Input;
+using Neptuo.Productivity.SnippetManager.Services;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
 using Neptuo.Windows.Threading;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Input;
-using Clipboard = System.Windows.Forms.Clipboard;
+using Windows.ApplicationModel.DataTransfer;
 using MessageBox = System.Windows.MessageBox;
+using Clipboard = Windows.ApplicationModel.DataTransfer.Clipboard;
 
 namespace Neptuo.Productivity.SnippetManager;
 
@@ -208,14 +209,17 @@ public class Navigator : IClipboardService, ISendTextService
 
     async void ISendTextService.Send(string text)
     {
-        var scope = new ClipboardScope();
+        var scope = await ClipboardScope.CreateAsync();
         try
         {
             bool isCtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
             main?.Close();
 
-            Clipboard.SetText(text);
+            // Don't this item in history, because the change of clipboard shouldn't actually happen
+            var data = new DataPackage();
+            data.SetText(text);
+            Clipboard.SetContentWithOptions(data, new ClipboardContentOptions() { IsAllowedInHistory = false });
 
             await Task.Delay(100);
             
@@ -252,7 +256,10 @@ public class Navigator : IClipboardService, ISendTextService
     void IClipboardService.SetText(string text)
     {
         main?.Close();
-        Clipboard.SetText(text);
+
+        var data = new DataPackage();
+        data.SetText(text);
+        Clipboard.SetContent(data);
     }
 
     #endregion

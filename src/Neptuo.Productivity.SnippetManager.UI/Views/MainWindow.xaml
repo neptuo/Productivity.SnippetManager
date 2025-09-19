@@ -38,7 +38,8 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="»" FontSize="{StaticResource BreadcrumbsFontSize}" Margin="4,0,0,0" />
-                                    <TextBlock Text="{Binding Path, Converter={StaticResource ArrayLastItemConverter}}" FontSize="{StaticResource BreadcrumbsFontSize}" Margin="4,0,0,0" />
+                                    <!-- The height is set because title can be a multiline text -->
+                                    <TextBlock Text="{Binding Path, Converter={StaticResource ArrayLastItemConverter}}" FontSize="{StaticResource BreadcrumbsFontSize}" Margin="4,0,0,0" Height="13" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -62,7 +63,8 @@
                         <Border Padding="4">
                             <Grid>
                                 <StackPanel>
-                                    <TextBlock>
+                                    <!-- The height is set because title can be a multiline text -->
+                                    <TextBlock Height="16">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SnippetPathJoinConverter}">
                                                 <Binding Path="Path" />
