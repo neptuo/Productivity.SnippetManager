@@ -62,7 +62,8 @@
                         <Border Padding="4">
                             <Grid>
                                 <StackPanel>
-                                    <TextBlock>
+                                    <!-- The height is set because title can be a multiline text -->
+                                    <TextBlock Height="16">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SnippetPathJoinConverter}">
                                                 <Binding Path="Path" />
