@@ -1,15 +1,21 @@
-﻿using System.Collections.Specialized;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public struct ClipboardScope(DataPackage? storedContent)
+public class ClipboardScope
 {
+    private DataPackage? storedContent;
+
     public static async Task<ClipboardScope> CreateAsync()
     {
-        DataPackage? storedContent = null;
+        var result = new ClipboardScope();
+        await result.StoreAsync();
+        return result;
+    }
+
+    public async Task StoreAsync()
+    {
         try
         {
             var dataPackageView = Clipboard.GetContent();
@@ -35,8 +41,6 @@ public struct ClipboardScope(DataPackage? storedContent)
         {
             storedContent = null;
         }
-
-        return new ClipboardScope(storedContent);
     }
 
     public void Restore()
