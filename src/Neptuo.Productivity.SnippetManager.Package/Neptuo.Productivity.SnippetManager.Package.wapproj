@@ -65,6 +65,7 @@
     <AppInstallerUri>\\heap\Temp\SnippetManager</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <PackageCertificateThumbprint>E91A19A0E44C1DD0640117CBD55AAFA516E4D866</PackageCertificateThumbprint>
+    <AppxPackageDir>\\heap\Temp\SnippetManager</AppxPackageDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <AppxBundle>Always</AppxBundle>
