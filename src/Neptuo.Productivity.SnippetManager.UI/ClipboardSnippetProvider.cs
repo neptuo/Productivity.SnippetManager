@@ -17,23 +17,34 @@ public class ClipboardSnippetProvider : ISnippetProvider
         if (existing != null)
             context.Remove(existing);
 
+        bool hasRootSnippet = false;
         if (Clipboard.ContainsText())
         {
             string text = Clipboard.GetText();
             if (!string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text))
-                context.Add(new SnippetModel(Title, text, priority: SnippetPriority.Most));
-
-            if (Clipboard2.IsHistoryEnabled())
             {
-                var items = await Clipboard2.GetHistoryItemsAsync();
-                foreach (var item in items.Items)
-                {
-                    string historyText = await item.Content.GetTextAsync();
-                    if (string.IsNullOrEmpty(historyText) || string.IsNullOrWhiteSpace(historyText))
-                        continue;
+                context.Add(new SnippetModel(Title, text, priority: SnippetPriority.Most));
+                hasRootSnippet = true;
+            }
+        }
 
-                    context.Add(new SnippetModel($"{Title} - {historyText.Trim()}", historyText));
+        if (Clipboard2.IsHistoryEnabled())
+        {
+            var items = await Clipboard2.GetHistoryItemsAsync();
+            foreach (var item in items.Items)
+            {
+                if (!hasRootSnippet)
+                {
+                    context.Add(new(Title, priority: SnippetPriority.Most));
+                    hasRootSnippet = true;
                 }
+
+                string historyText = await item.Content.GetTextAsync();
+                if (string.IsNullOrEmpty(historyText) || string.IsNullOrWhiteSpace(historyText))
+                    continue;
+
+                string title = historyText.Trim().Replace(SnippetModel.PathSeparator, " ");
+                context.Add(new SnippetModel($"{Title} - {title}", historyText, priority: SnippetPriority.Low));
             }
         }
     }
