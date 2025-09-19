@@ -1,4 +1,4 @@
-﻿using Neptuo.Productivity.SnippetManager.Models;
+using Neptuo.Productivity.SnippetManager.Models;
 
 namespace Neptuo.Productivity.SnippetManager.Tests;
 
@@ -469,7 +469,7 @@ public class SnippetTreeTests
     }
 
     [Fact]
-    public void Test()
+    public void ParentReferenceUpdatesWhenShadowIsReplaced()
     {
         SnippetModel? aaa = null;
 
@@ -494,5 +494,17 @@ public class SnippetTreeTests
                 Assert.False(a2.IsShadow);
             }
         );
+    }
+
+    [Fact]
+    public void RemovingSnippetRemovesItFromRootsAsWell()
+    {
+        var tree = GetTree();
+
+        var x = new SnippetModel("X", "X");
+        tree.Add(x);
+        tree.Remove(x);
+
+        Assert.DoesNotContain(x, tree.GetRoots());
     }
 }
