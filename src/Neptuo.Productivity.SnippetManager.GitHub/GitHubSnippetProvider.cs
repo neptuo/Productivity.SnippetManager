@@ -1,4 +1,4 @@
-﻿using Neptuo.Productivity.SnippetManager.Models;
+using Neptuo.Productivity.SnippetManager.Models;
 using Octokit;
 using System.Diagnostics;
 
@@ -67,7 +67,7 @@ public class GitHubSnippetProvider(GitHubConfiguration configuration) : SingleIn
                 context.Add(starredParent);
 
                 // Add snippets for starred repositories
-                AddSnippetsForRepositories(context, starredRepositories, starredParent.Title);
+                AddSnippetsForRepositories(context, starredRepositories, title: starredParent.Title);
             }
         }
     }
@@ -86,7 +86,7 @@ public class GitHubSnippetProvider(GitHubConfiguration configuration) : SingleIn
                     Debug.WriteLine($"GitHub snippets for '{organization.Login}'");
                     var orgRepositories = await github.Repository.GetAllForOrg(organization.Login);
                     Debug.WriteLine($"GitHub snippets downloaded for '{organization.Login}'");
-                    AddSnippetsForRepositories(context, orgRepositories);
+                    AddSnippetsForRepositories(context, orgRepositories, codeSearchType: "org");
                     Debug.WriteLine($"GitHub snippets added for '{organization.Login}'");
                 }
                 catch (ForbiddenException)
@@ -102,23 +102,30 @@ public class GitHubSnippetProvider(GitHubConfiguration configuration) : SingleIn
     private async Task AddUserRepositoriesAsync(SnippetProviderContext context, GitHubClient github)
     {
         var repositories = await github.Repository.GetAllForUser(configuration.UserName);
-        AddSnippetsForRepositories(context, repositories);
+        AddSnippetsForRepositories(context, repositories, codeSearchType: "user");
     }
 
-    private void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories, string? title = null)
+    private void AddSnippetsForRepositories(SnippetProviderContext context, IReadOnlyList<Repository> repositories, string? title = null, string? codeSearchType = null)
     {
         List<SnippetModel> snippets = new List<SnippetModel>();
 
-        SnippetModel? parent = null;
         foreach (var repository in repositories)
         {
             if (title == null && snippets.Count == 0)
             {
-                parent = new SnippetModel(
+                context.Add(new SnippetModel(
                     title: $"GitHub - {repository.Owner.Login}",
                     text: repository.Owner.HtmlUrl
-                );
-                context.Add(parent);
+                ));
+
+                if (codeSearchType != null)
+                {
+                    context.Add(new SnippetModel(
+                        title: $"GitHub - {repository.Owner.Login} - Code search",
+                        text: $"https://github.com/search?q={codeSearchType}:{repository.Owner.Login}&type=code",
+                        priority: SnippetPriority.Low
+                    ));
+                }
             }
 
             AddSnippetsForRepository(
