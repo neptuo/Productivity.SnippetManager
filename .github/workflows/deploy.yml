@@ -117,7 +117,7 @@ jobs:
           $xml.AppInstaller.Uri = "https://apps.neptuo.com/snippetmanager/Neptuo.Productivity.SnippetManager.Package.appinstaller"
           
           # Update the MainBundle Uri to point to GitHub release
-          $bundleName = "Neptuo.Productivity.SnippetManager.Package_${{ steps.version.outputs.appx }}_${{ env.BUILD_PLATFORM }}_Release.msixbundle"
+          $bundleName = "Neptuo.Productivity.SnippetManager.Package_${{ steps.version.outputs.appx }}_${{ env.BUILD_PLATFORM }}.msixbundle"
           $xml.AppInstaller.MainBundle.Uri = "https://github.com/neptuo/Productivity.SnippetManager/releases/download/v${{ steps.version.outputs.number }}/$bundleName"
           
           $xml.Save($fullPath)
