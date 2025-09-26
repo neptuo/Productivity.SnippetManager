@@ -45,6 +45,29 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION_FILE_PATH }} -r win-${{ env.BUILD_PLATFORM }}
 
+    - name: Extract version from tag
+      id: version
+      run: |
+        $version = "0.0.0"  # Default version
+        if ($env:GITHUB_REF -like "refs/tags/v*") {
+          $version = $env:GITHUB_REF -replace "refs/tags/v", ""
+          Write-Host "Found tag version: $version"
+        } else {
+          Write-Host "No version tag found, using default: $version"
+        }
+        echo "number=$version" >> $env:GITHUB_OUTPUT
+        echo "appx=$version.0" >> $env:GITHUB_OUTPUT
+
+    - name: Update Version in manifest
+      working-directory: './src/Neptuo.Productivity.SnippetManager.Package'
+      run: |
+        $xmlFilePath = "Package.appxmanifest"
+        [xml]$xml = Get-Content $xmlFilePath
+        $newVersion = "${{ steps.version.outputs.appx }}"
+        $xml.Package.Identity.Version = $newVersion
+        $xml.Save($xmlFilePath)
+        Write-Output "Version updated to $newVersion in $xmlFilePath"
+
     - name: Build solution
       run: |
         msbuild ${{ env.SOLUTION_FILE_PATH }} `
