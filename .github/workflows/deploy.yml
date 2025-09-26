@@ -195,6 +195,7 @@ jobs:
       with:
         token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
         repository-name: neptuo/com.neptuo.apps
+        branch: gh-pages
         branch: main
         folder: ./deploy
         target-folder: snippetmanager
