@@ -102,6 +102,7 @@ jobs:
         name: app-installer-${{ env.BUILD_PLATFORM }}
         path: |
           ${{ env.APPX_PACKAGE_DIR }}/**/*.appinstaller
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.html
         retention-days: 30
 
     - name: Upload build logs
