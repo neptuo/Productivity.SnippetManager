@@ -1,0 +1,91 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allow manual trigger
+
+env:
+  SOLUTION_FILE_PATH: ./Neptuo.Productivity.SnippetManager.sln
+  BUILD_CONFIGURATION: Release
+  BUILD_PLATFORM: x86
+  APPX_PACKAGE_DIR: ${{ github.workspace }}/AppPackages
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+      
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_FILE_PATH }}
+
+    - name: Build solution
+      run: |
+        msbuild ${{ env.SOLUTION_FILE_PATH }} `
+          /p:Configuration=${{ env.BUILD_CONFIGURATION }} `
+          /p:Platform=${{ env.BUILD_PLATFORM }} `
+          /p:AppxBundlePlatforms=${{ env.BUILD_PLATFORM }} `
+          /p:AppxPackageDir=${{ env.APPX_PACKAGE_DIR }} `
+          /p:AppxBundle=Always `
+          /p:UapAppxPackageBuildMode=SideloadOnly `
+          /p:AppxPackageSigningEnabled=false
+
+    - name: List build output
+      run: |
+        Write-Host "Build output directory contents:"
+        Get-ChildItem -Recurse ${{ env.APPX_PACKAGE_DIR }} | Format-Table -AutoSize
+        
+    - name: Upload MSIX package artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: msix-package-${{ env.BUILD_PLATFORM }}
+        path: |
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.msix
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.msixbundle
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.appxupload
+        retention-days: 30
+
+    - name: Upload App Installer artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: app-installer-${{ env.BUILD_PLATFORM }}
+        path: |
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.appinstaller
+        retention-days: 30
+
+    - name: Upload build logs
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: build-logs
+        path: |
+          **/*.log
+          **/*.binlog
+        retention-days: 7
