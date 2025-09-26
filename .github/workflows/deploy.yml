@@ -3,6 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main ]
   workflow_dispatch: # Allow manual trigger
@@ -85,25 +86,88 @@ jobs:
         Write-Host "Build output directory contents:"
         Get-ChildItem -Recurse ${{ env.APPX_PACKAGE_DIR }} | Format-Table -AutoSize
         
-    - name: Upload MSIX package artifacts
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v2
+      with:
+        name: "v${{ steps.version.outputs.number }}"
+        tag_name: "v${{ steps.version.outputs.number }}"
+        draft: false
+        prerelease: false
+        files: |
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.msix
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.msixbundle
+          ${{ env.APPX_PACKAGE_DIR }}/**/*.appxupload
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update App Installer file
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        $appInstallerPath = "${{ env.APPX_PACKAGE_DIR }}"
+        $appInstallerFile = Get-ChildItem -Recurse -Path $appInstallerPath -Name "*.appinstaller" | Select-Object -First 1
+        
+        if ($appInstallerFile) {
+          $fullPath = Join-Path $appInstallerPath $appInstallerFile
+          [xml]$xml = Get-Content $fullPath
+          
+          # Update the Uri to point to GitHub Pages
+          $xml.AppInstaller.Uri = "https://apps.neptuo.com/snippetmanager/Neptuo.Productivity.SnippetManager.Package.appinstaller"
+          
+          # Update the MainBundle Uri to point to GitHub release
+          $bundleName = "Neptuo.Productivity.SnippetManager.Package_${{ steps.version.outputs.appx }}_${{ env.BUILD_PLATFORM }}_Release.msixbundle"
+          $xml.AppInstaller.MainBundle.Uri = "https://github.com/neptuo/Productivity.SnippetManager/releases/download/v${{ steps.version.outputs.number }}/$bundleName"
+          
+          $xml.Save($fullPath)
+          Write-Output "Updated App Installer file: $fullPath"
+          Write-Output "Bundle URL: $($xml.AppInstaller.MainBundle.Uri)"
+        } else {
+          Write-Error "App Installer file not found"
+          exit 1
+        }
+
+    - name: Prepare files for GitHub Pages
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        $deployDir = "${{ github.workspace }}/deploy"
+        New-Item -ItemType Directory -Path $deployDir -Force
+        
+        # Copy only .appinstaller and .html files
+        Get-ChildItem -Recurse -Path "${{ env.APPX_PACKAGE_DIR }}" -Include "*.appinstaller", "*.html" | ForEach-Object {
+          Copy-Item $_.FullName -Destination $deployDir
+          Write-Host "Copied: $($_.Name)"
+        }
+        
+        Write-Host "Files prepared for deployment:"
+        Get-ChildItem $deployDir | Format-Table -AutoSize
+
+    - name: Deploy to GitHub Pages
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+        repository-name: neptuo/com.neptuo.apps
+        branch: main
+        folder: ${{ github.workspace }}/deploy
+        target-folder: snippetmanager
+        clean: true
+        single-commit: true
+        commit-message: "Deploy Snippet Manager v${{ steps.version.outputs.number }}"
+
+    # Upload artifacts for development builds (non-tag pushes)
+    - name: Upload development build artifacts
+      if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
       uses: actions/upload-artifact@v4
       with:
-        name: msix-package-${{ env.BUILD_PLATFORM }}
+        name: dev-build-${{ env.BUILD_PLATFORM }}-${{ github.sha }}
         path: |
           ${{ env.APPX_PACKAGE_DIR }}/**/*.msix
           ${{ env.APPX_PACKAGE_DIR }}/**/*.msixbundle
           ${{ env.APPX_PACKAGE_DIR }}/**/*.appxupload
-        retention-days: 30
-
-    - name: Upload App Installer artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: app-installer-${{ env.BUILD_PLATFORM }}
-        path: |
           ${{ env.APPX_PACKAGE_DIR }}/**/*.appinstaller
           ${{ env.APPX_PACKAGE_DIR }}/**/*.html
-        retention-days: 30
+        retention-days: 7
 
     - name: Upload build logs
       uses: actions/upload-artifact@v4
