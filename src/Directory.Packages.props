@@ -8,5 +8,9 @@
     <PackageVersion Include="Neptuo.Windows.Threading" Version="1.0.1" />
     <PackageVersion Include="Neptuo.Observables" Version="2.1.1" />
     <PackageVersion Include="Octokit" Version="14.0.0" />
+    <PackageVersion Include="Avalonia" Version="11.3.13" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.13" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.13" />
+    <PackageVersion Include="SharpHook" Version="5.3.9" />
   </ItemGroup>
 </Project>
