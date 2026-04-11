@@ -31,9 +31,9 @@ public class Hotkey : IDisposable
         if (hook != null)
             return;
 
-        hook = new SimpleGlobalHook();
+        hook = new SimpleGlobalHook(GlobalHookType.Keyboard);
         hook.KeyPressed += OnKeyPressed;
-        Task.Run(() => hook.Run());
+        _ = hook.RunAsync();
     }
 
     private void OnKeyPressed(object? sender, KeyboardHookEventArgs e)
@@ -42,7 +42,7 @@ public class Hotkey : IDisposable
             return;
 
         var currentModifiers = e.RawEvent.Mask;
-        bool modifiersMatch = (currentModifiers & hotkey.Value.modifiers) == hotkey.Value.modifiers;
+        bool modifiersMatch = currentModifiers.HasAll(hotkey.Value.modifiers);
 
         if (modifiersMatch && e.Data.KeyCode == hotkey.Value.key)
         {
@@ -165,11 +165,11 @@ public class Hotkey : IDisposable
     {
         if (hotkey != null)
         {
-            hook ??= new SimpleGlobalHook();
+            hook ??= new SimpleGlobalHook(GlobalHookType.Keyboard);
             hook.KeyPressed += OnKeyPressed;
 
             if (!hook.IsRunning)
-                Task.Run(() => hook.Run());
+                _ = hook.RunAsync();
         }
     }
 

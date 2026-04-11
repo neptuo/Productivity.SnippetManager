@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Neptuo.Observables.Commands;
 using Neptuo.Productivity.SnippetManager.Models;
@@ -30,6 +31,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        AddHandler(KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel);
     }
 
     protected override void OnOpened(EventArgs e)
@@ -43,13 +45,10 @@ public partial class MainWindow : Window
         stickPoint = point;
     }
 
-    protected override void OnKeyDown(KeyEventArgs e)
+    private void OnPreviewKeyDown(object? sender, KeyEventArgs e)
     {
         if (ViewModel == null)
-        {
-            base.OnKeyDown(e);
             return;
-        }
 
         if (ListBox.ItemCount > 0)
         {
@@ -120,8 +119,6 @@ public partial class MainWindow : Window
 
         if (!e.Handled && !SearchText.IsFocused)
             SearchText.Focus();
-
-        base.OnKeyDown(e);
     }
 
     private bool UseSelectedSnippet(Command<SnippetModel> command)

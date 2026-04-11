@@ -22,6 +22,7 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly Func<string> getXmlSnippetsPath;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly ConfigurationRepository configurationRepository;
+    private int? lastExternalProcessId;
 
     public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
     {
@@ -47,6 +48,8 @@ public class Navigator : IClipboardService, ISendTextService
 
     public void OpenMain(bool stickToActiveCaret = true)
     {
+        RememberLastExternalApplication();
+
         if (main == null)
         {
             main = new MainWindow();
@@ -63,7 +66,9 @@ public class Navigator : IClipboardService, ISendTextService
             main.UpdatePosition();
         }
 
+        ActivateCurrentApplication();
         main.Show();
+        ActivateCurrentApplication();
         main.Activate();
         main.FocusSearchText();
     }
@@ -75,13 +80,17 @@ public class Navigator : IClipboardService, ISendTextService
 
     public void OpenHelp()
     {
+        RememberLastExternalApplication();
+
         if (help == null)
         {
             help = new HelpWindow(this);
             help.Closed += (sender, e) => { help = null; };
         }
 
+        ActivateCurrentApplication();
         help.Show();
+        ActivateCurrentApplication();
         help.Activate();
     }
 
@@ -180,54 +189,92 @@ public class Navigator : IClipboardService, ISendTextService
 
     async void ISendTextService.Send(string text)
     {
-        main?.Close();
-
         var clipboard = GetClipboard();
-        if (clipboard != null)
+        if (clipboard == null)
         {
-            // Store current clipboard
-            string? previousText = null;
+            Debug.WriteLine("Clipboard is unavailable; unable to apply the selected snippet.");
+            return;
+        }
+
+        string? previousText = null;
 #pragma warning disable CS0618 // GetTextAsync is deprecated in favor of TryGetTextAsync in Avalonia 11.3+
-            try { previousText = await clipboard.GetTextAsync(); }
-            catch { /* clipboard may be empty */ }
+        try { previousText = await clipboard.GetTextAsync(); }
+        catch (Exception ex) { Debug.WriteLine($"Unable to read the current clipboard text: {ex}"); }
 #pragma warning restore CS0618
 
-            // Set the snippet text
-            await clipboard.SetTextAsync(text);
+        await clipboard.SetTextAsync(text);
 
-            await Task.Delay(100);
-
-            // Simulate Cmd+V on macOS
-            SimulatePaste();
-
-            await Task.Delay(200);
-
-            // Restore previous clipboard content
-            if (previousText != null)
-            {
-                try { await clipboard.SetTextAsync(previousText); } catch { }
-            }
-        }
-    }
-
-    void IClipboardService.SetText(string text)
-    {
         main?.Close();
+        RestoreLastExternalApplication();
 
-        var clipboard = GetClipboard();
-        if (clipboard != null)
+        await Task.Delay(100);
+
+        SimulatePaste();
+
+        await Task.Delay(200);
+
+        if (previousText != null)
         {
-            _ = clipboard.SetTextAsync(text);
+            try { await clipboard.SetTextAsync(previousText); }
+            catch (Exception ex) { Debug.WriteLine($"Unable to restore the previous clipboard text: {ex}"); }
         }
     }
 
-    private static IClipboard? GetClipboard()
+    async void IClipboardService.SetText(string text)
     {
+        var clipboard = GetClipboard();
+        if (clipboard == null)
+        {
+            Debug.WriteLine("Clipboard is unavailable; unable to copy the selected snippet.");
+            return;
+        }
+
+        await clipboard.SetTextAsync(text);
+        main?.Close();
+    }
+
+    private void RememberLastExternalApplication()
+    {
+        if (!OperatingSystem.IsMacOS())
+            return;
+
+        int? processId = MacOSApplication.GetFrontmostApplicationProcessId();
+        if (processId.HasValue && processId.Value != Environment.ProcessId)
+            lastExternalProcessId = processId.Value;
+    }
+
+    private static void ActivateCurrentApplication()
+    {
+        if (OperatingSystem.IsMacOS())
+            MacOSApplication.ActivateCurrentProcess();
+    }
+
+    private void RestoreLastExternalApplication()
+    {
+        int? processId = lastExternalProcessId;
+        lastExternalProcessId = null;
+
+        if (OperatingSystem.IsMacOS() && processId.HasValue && processId.Value != Environment.ProcessId)
+            MacOSApplication.ActivateProcess(processId.Value);
+    }
+
+    private IClipboard? GetClipboard()
+    {
+        if (main != null && TopLevel.GetTopLevel(main) is { } mainTopLevel)
+            return mainTopLevel.Clipboard;
+
+        if (help != null && TopLevel.GetTopLevel(help) is { } helpTopLevel)
+            return helpTopLevel.Clipboard;
+
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var topLevel = desktop.MainWindow ?? TopLevel.GetTopLevel(desktop.Windows.FirstOrDefault());
-            return topLevel?.Clipboard;
+            if (desktop.MainWindow is { } mainWindow)
+                return TopLevel.GetTopLevel(mainWindow)?.Clipboard;
+
+            if (desktop.Windows.LastOrDefault() is { } window)
+                return TopLevel.GetTopLevel(window)?.Clipboard;
         }
+
         return null;
     }
 
@@ -235,23 +282,7 @@ public class Navigator : IClipboardService, ISendTextService
     {
         if (OperatingSystem.IsMacOS())
         {
-            // Use osascript to simulate Cmd+V on macOS
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "osascript",
-                    Arguments = "-e 'tell application \"System Events\" to keystroke \"v\" using command down'",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
-                });
-            }
-            catch
-            {
-                // Paste simulation failed; user can paste manually
-            }
+            MacOSApplication.SendPasteShortcut();
         }
         else if (OperatingSystem.IsLinux())
         {
