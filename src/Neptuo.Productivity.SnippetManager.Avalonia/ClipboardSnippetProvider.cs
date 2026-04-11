@@ -1,3 +1,7 @@
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input.Platform;
 using Neptuo.Productivity.SnippetManager.Models;
 
 namespace Neptuo.Productivity.SnippetManager;
@@ -9,21 +13,51 @@ namespace Neptuo.Productivity.SnippetManager;
 public class ClipboardSnippetProvider : ISnippetProvider
 {
     private const string Title = "Text from Clipboard";
+    private readonly Func<Task<string?>> getTextAsync;
+
+    public ClipboardSnippetProvider(Func<Task<string?>>? getTextAsync = null)
+    {
+        this.getTextAsync = getTextAsync ?? GetClipboardTextAsync;
+    }
 
     public Task InitializeAsync(SnippetProviderContext context)
         => Task.CompletedTask;
 
-    public Task UpdateAsync(SnippetProviderContext context)
+    public async Task UpdateAsync(SnippetProviderContext context)
     {
         var existing = context.Models.SingleOrDefault(m => m.Title == Title);
         if (existing != null)
             context.Remove(existing);
 
-        // Use the Avalonia clipboard service which is set up by the Navigator
-        // For now, we add the clipboard entry at the time we open the window
-        // The actual clipboard text is fetched at the time of use
-        context.Add(new SnippetModel(Title, priority: SnippetPriority.Most));
+        string? text = await getTextAsync();
+        if (string.IsNullOrWhiteSpace(text))
+            return;
 
-        return Task.CompletedTask;
+        context.Add(new SnippetModel(Title, text, priority: SnippetPriority.Most));
+    }
+
+    private static async Task<string?> GetClipboardTextAsync()
+    {
+        var clipboard = GetClipboard();
+        if (clipboard == null)
+            return null;
+
+#pragma warning disable CS0618 // GetTextAsync is deprecated in favor of TryGetTextAsync in Avalonia 11.3+
+        return await clipboard.GetTextAsync();
+#pragma warning restore CS0618
+    }
+
+    private static IClipboard? GetClipboard()
+    {
+        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
+            return null;
+
+        if (desktop.MainWindow is { } mainWindow)
+            return TopLevel.GetTopLevel(mainWindow)?.Clipboard;
+
+        if (desktop.Windows.LastOrDefault() is { } window)
+            return TopLevel.GetTopLevel(window)?.Clipboard;
+
+        return null;
     }
 }

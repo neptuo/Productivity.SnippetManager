@@ -50,6 +50,7 @@ public class Navigator : IClipboardService, ISendTextService
     {
         DiagnosticsLog.Info($"Navigator.OpenMain requested. Existing window: {main != null}. stickToActiveCaret={stickToActiveCaret}.");
         RememberLastExternalApplication();
+        bool shouldRefreshSnippets = false;
 
         if (main == null)
         {
@@ -58,8 +59,7 @@ public class Navigator : IClipboardService, ISendTextService
             main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this), new CopySnippetCommand(this));
             // On macOS, caret detection is not straightforward — center the window
             main.SetStickPoint(null);
-
-            _ = UpdateSnippetsAsync(main.ViewModel);
+            shouldRefreshSnippets = true;
         }
         else
         {
@@ -72,6 +72,10 @@ public class Navigator : IClipboardService, ISendTextService
         ActivateCurrentApplication();
         main.Activate();
         main.FocusSearchText();
+
+        if (shouldRefreshSnippets)
+            _ = UpdateSnippetsAsync(main.ViewModel);
+
         DiagnosticsLog.Info("Main window shown and focused.");
     }
 
