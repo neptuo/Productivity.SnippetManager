@@ -42,7 +42,12 @@ public class TrayIcon : IDisposable
         menu.Items.Add(new NativeMenuItemSeparator());
 
         var exitItem = new NativeMenuItem("Exit");
-        exitItem.Click += (_, _) => { navigator.CloseMain(); navigator.Shutdown(); };
+        exitItem.Click += (_, _) =>
+        {
+            DiagnosticsLog.Info("Tray Exit menu item clicked.");
+            navigator.CloseMain();
+            navigator.Shutdown();
+        };
         menu.Items.Add(exitItem);
 
         trayIcon = new TrayIconBase

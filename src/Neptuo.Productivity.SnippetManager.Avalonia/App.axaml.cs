@@ -14,11 +14,13 @@ public partial class App : Application
     private Configuration configuration = new();
     private ISnippetProvider provider = new CompositeSnippetProvider(Array.Empty<ISnippetProvider>());
     private Navigator navigator = null!;
-    private TrayIcon trayIcon = null!;
+    private TrayIcon? trayIcon;
     private ConfigurationWatcher? configurationWatcher;
     private Hotkey hotkey = null!;
     private readonly SnippetProviderCollection snippetProviders = new();
     private readonly ConfigurationRepository configurationRepository;
+    private bool isShuttingDown;
+    private bool areResourcesDisposed;
 
     public App()
     {
@@ -41,10 +43,15 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            desktop.Exit += (_, _) =>
+            {
+                DiagnosticsLog.Info("Avalonia desktop lifetime exit event received.");
+                DisposeResources();
+            };
 
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
-            navigator = CreateNavigator(() => desktop.Shutdown());
+            navigator = CreateNavigator(() => RequestShutdown(desktop));
 
             trayIcon = new TrayIcon(navigator, hotkey);
             hotkey.Bind(navigator, configuration.General?.HotKey);
@@ -62,6 +69,39 @@ public partial class App : Application
         GetXmlConfigurationPath,
         GetExampleConfiguration
     );
+
+    private void RequestShutdown(IClassicDesktopStyleApplicationLifetime desktop)
+    {
+        if (isShuttingDown)
+        {
+            DiagnosticsLog.Info("Ignoring a duplicate application shutdown request.");
+            return;
+        }
+
+        isShuttingDown = true;
+        DiagnosticsLog.Info("Application shutdown requested.");
+        DisposeResources();
+
+        if (!desktop.TryShutdown(0))
+            DiagnosticsLog.Error("Avalonia desktop lifetime rejected the shutdown request.");
+    }
+
+    private void DisposeResources()
+    {
+        if (areResourcesDisposed)
+            return;
+
+        areResourcesDisposed = true;
+        DiagnosticsLog.Info("Disposing application resources.");
+
+        configurationWatcher?.Dispose();
+        configurationWatcher = null;
+
+        trayIcon?.Dispose();
+        trayIcon = null;
+
+        hotkey.Dispose();
+    }
 
     private string GetXmlConfigurationPath()
         => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
@@ -114,7 +154,7 @@ public partial class App : Application
                 provider = snippetProviders.Create(configuration.Providers);
 
                 var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
-                navigator = CreateNavigator(() => desktop.Shutdown());
+                navigator = CreateNavigator(() => RequestShutdown(desktop));
 
                 if (configuration.General?.HotKey != oldHotKey)
                 {

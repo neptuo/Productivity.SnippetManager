@@ -178,7 +178,10 @@ public class Navigator : IClipboardService, ISendTextService
     }
 
     public void Shutdown()
-        => shutdown();
+    {
+        DiagnosticsLog.Info("Navigator shutdown requested.");
+        shutdown();
+    }
 
     #region Platform helpers
 
