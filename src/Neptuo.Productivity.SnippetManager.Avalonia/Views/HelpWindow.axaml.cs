@@ -23,4 +23,7 @@ public partial class HelpWindow : Window
 
     private void btnOpenConfiguration_Click(object? sender, RoutedEventArgs e)
         => navigator?.OpenConfiguration();
+
+    private void btnOpenLogs_Click(object? sender, RoutedEventArgs e)
+        => navigator?.OpenLogs();
 }

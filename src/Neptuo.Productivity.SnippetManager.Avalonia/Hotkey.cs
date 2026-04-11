@@ -12,16 +12,20 @@ public class Hotkey : IDisposable
 
     public void Bind(Navigator navigator, string? rawHotkey)
     {
+        DiagnosticsLog.Info($"Binding global hotkey. Configured value: '{rawHotkey ?? "Control+Shift+V (default)"}'.");
+
         var key = KeyCode.VcV;
         var modifiers = ModifierMask.Ctrl | ModifierMask.Shift;
         if (!string.IsNullOrEmpty(rawHotkey) && !TryParseHotKey(rawHotkey, out key, out modifiers))
         {
+            DiagnosticsLog.Error($"Unable to parse configured global hotkey '{rawHotkey}'.");
             navigator.Shutdown();
             return;
         }
 
         hotkey = (key, modifiers);
         openMainAction = () => navigator.OpenMain();
+        DiagnosticsLog.Info($"Global hotkey parsed to key={key}, modifiers={modifiers}.");
 
         StartHook();
     }
@@ -29,11 +33,14 @@ public class Hotkey : IDisposable
     private void StartHook()
     {
         if (hook != null)
+        {
+            DiagnosticsLog.Info("Skipping global hotkey hook start because a hook instance already exists.");
             return;
+        }
 
-        hook = new SimpleGlobalHook(GlobalHookType.Keyboard);
-        hook.KeyPressed += OnKeyPressed;
-        _ = hook.RunAsync();
+        hook = CreateHook();
+        DiagnosticsLog.Info("Starting global hotkey hook.");
+        StartHookAsync(hook);
     }
 
     private void OnKeyPressed(object? sender, KeyboardHookEventArgs e)
@@ -42,14 +49,31 @@ public class Hotkey : IDisposable
             return;
 
         var currentModifiers = e.RawEvent.Mask;
-        bool modifiersMatch = currentModifiers.HasAll(hotkey.Value.modifiers);
+        bool modifiersMatch = MatchesModifiers(currentModifiers, hotkey.Value.modifiers);
+        bool keyMatch = e.Data.KeyCode == hotkey.Value.key;
 
-        if (modifiersMatch && e.Data.KeyCode == hotkey.Value.key)
+        LogRelevantKeyEvent("pressed", e, keyMatch, modifiersMatch);
+
+        if (modifiersMatch && keyMatch)
         {
+            DiagnosticsLog.Info("Global hotkey matched. Suppressing event and dispatching the open-main action.");
             e.SuppressEvent = true;
-            Dispatcher.UIThread.InvokeAsync(openMainAction);
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                DiagnosticsLog.Info("Executing the global hotkey action on the UI thread.");
+                openMainAction();
+            });
         }
     }
+
+    private void OnKeyReleased(object? sender, KeyboardHookEventArgs e)
+        => LogRelevantKeyEvent("released", e, keyMatch: false, modifiersMatch: false);
+
+    private void OnHookEnabled(object? sender, HookEventArgs e)
+        => DiagnosticsLog.Info("Global hotkey hook enabled.");
+
+    private void OnHookDisabled(object? sender, HookEventArgs e)
+        => DiagnosticsLog.Info("Global hotkey hook disabled.");
 
     private bool TryParseHotKey(string rawHotkey, out KeyCode key, out ModifierMask modifiers)
     {
@@ -152,27 +176,94 @@ public class Hotkey : IDisposable
     {
         if (hook != null)
         {
+            DiagnosticsLog.Info("Disposing the global hotkey hook.");
+            hook.HookEnabled -= OnHookEnabled;
+            hook.HookDisabled -= OnHookDisabled;
             hook.KeyPressed -= OnKeyPressed;
+            hook.KeyReleased -= OnKeyReleased;
             hook.Dispose();
             hook = null;
         }
     }
 
     public void Pause()
-        => UnBind();
+    {
+        DiagnosticsLog.Info("Pausing the global hotkey hook.");
+        UnBind();
+    }
 
     public void Restore()
     {
         if (hotkey != null)
         {
-            hook ??= new SimpleGlobalHook(GlobalHookType.Keyboard);
-            hook.KeyPressed += OnKeyPressed;
+            DiagnosticsLog.Info("Restoring the global hotkey hook.");
+            hook ??= CreateHook();
 
             if (!hook.IsRunning)
-                _ = hook.RunAsync();
+            {
+                DiagnosticsLog.Info("Restarting the global hotkey hook.");
+                StartHookAsync(hook);
+            }
+            else
+            {
+                DiagnosticsLog.Info("The global hotkey hook is already running.");
+            }
         }
     }
 
     public void Dispose()
         => UnBind();
+
+    private SimpleGlobalHook CreateHook()
+    {
+        var createdHook = new SimpleGlobalHook(GlobalHookType.Keyboard);
+        createdHook.HookEnabled += OnHookEnabled;
+        createdHook.HookDisabled += OnHookDisabled;
+        createdHook.KeyPressed += OnKeyPressed;
+        createdHook.KeyReleased += OnKeyReleased;
+        return createdHook;
+    }
+
+    private static void StartHookAsync(SimpleGlobalHook hook)
+    {
+        Task runTask = hook.RunAsync();
+        _ = runTask.ContinueWith(
+            task => DiagnosticsLog.Error("The global hotkey hook terminated with an exception.", task.Exception),
+            TaskContinuationOptions.OnlyOnFaulted);
+    }
+
+    private void LogRelevantKeyEvent(string eventName, KeyboardHookEventArgs e, bool keyMatch, bool modifiersMatch)
+    {
+        if (hotkey == null)
+            return;
+
+        var currentModifiers = e.RawEvent.Mask;
+        if (!ShouldLogKeyEvent(e.Data.KeyCode, currentModifiers))
+            return;
+
+        DiagnosticsLog.Info(
+            $"Global hotkey key {eventName}: key={e.Data.KeyCode}, rawCode={e.Data.RawCode}, mask={currentModifiers}, " +
+            $"ctrl={currentModifiers.HasCtrl()}, shift={currentModifiers.HasShift()}, alt={currentModifiers.HasAlt()}, " +
+            $"meta={currentModifiers.HasMeta()}, keyMatch={keyMatch}, modifiersMatch={modifiersMatch}.");
+    }
+
+    private bool ShouldLogKeyEvent(KeyCode keyCode, ModifierMask currentModifiers)
+        => hotkey != null && (keyCode == hotkey.Value.key || currentModifiers != ModifierMask.None);
+
+    internal static bool MatchesModifiers(ModifierMask currentModifiers, ModifierMask expectedModifiers)
+    {
+        if (expectedModifiers.HasCtrl() && !currentModifiers.HasCtrl())
+            return false;
+
+        if (expectedModifiers.HasShift() && !currentModifiers.HasShift())
+            return false;
+
+        if (expectedModifiers.HasAlt() && !currentModifiers.HasAlt())
+            return false;
+
+        if (expectedModifiers.HasMeta() && !currentModifiers.HasMeta())
+            return false;
+
+        return true;
+    }
 }

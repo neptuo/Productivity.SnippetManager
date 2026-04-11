@@ -17,20 +17,27 @@ internal static class MacOSApplication
             """);
 
         if (int.TryParse(output, NumberStyles.Integer, CultureInfo.InvariantCulture, out int processId))
+        {
+            DiagnosticsLog.Info($"Resolved the frontmost macOS application PID to {processId}.");
             return processId;
+        }
 
-        Debug.WriteLine($"Unable to parse the frontmost macOS application PID from '{output}'.");
+        DiagnosticsLog.Error($"Unable to parse the frontmost macOS application PID from '{output}'.");
         return null;
     }
 
     public static void ActivateCurrentProcess()
-        => ActivateProcess(Environment.ProcessId);
+    {
+        DiagnosticsLog.Info($"Requesting activation for the current macOS process {Environment.ProcessId}.");
+        ActivateProcess(Environment.ProcessId);
+    }
 
     public static void ActivateProcess(int processId)
     {
         if (!OperatingSystem.IsMacOS() || processId <= 0)
             return;
 
+        DiagnosticsLog.Info($"Requesting macOS activation for process {processId}.");
         RunAppleScript($"""
             tell application "System Events"
                 set frontmost of first application process whose unix id is {processId} to true
@@ -43,6 +50,7 @@ internal static class MacOSApplication
         if (!OperatingSystem.IsMacOS())
             return;
 
+        DiagnosticsLog.Info("Sending macOS paste shortcut via AppleScript.");
         RunAppleScript("""
             tell application "System Events"
                 keystroke "v" using command down
@@ -74,7 +82,7 @@ internal static class MacOSApplication
 
             if (process.ExitCode != 0)
             {
-                Debug.WriteLine($"AppleScript exited with code {process.ExitCode}: {error}");
+                DiagnosticsLog.Error($"AppleScript exited with code {process.ExitCode}: {error}");
                 return null;
             }
 
@@ -82,7 +90,7 @@ internal static class MacOSApplication
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Unable to run AppleScript: {ex}");
+            DiagnosticsLog.Error("Unable to run AppleScript.", ex);
             return null;
         }
     }

@@ -11,11 +11,14 @@
                 <TextBlock Margin="0,8,0,0" Text="Global hotkey: Control+Shift+V" />
                 <TextBlock Margin="0,4,0,0" MaxWidth="460" TextWrapping="Wrap"
                            Text="On macOS, global hotkeys and automatic paste require Accessibility permission for the app or the terminal/IDE hosting it." />
+                <TextBlock Margin="0,4,0,0" MaxWidth="460" TextWrapping="Wrap"
+                           Text="Hotkey diagnostics are appended to a persistent log file. Use Open Logs after reproducing the issue." />
             </StackPanel>
 
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button Content="GitHub repository" x:Name="btnOpenGitHub" Click="btnOpenGitHub_Click" Margin="0" />
                 <Button Content="Open Configuration" x:Name="btnOpenConfiguration" Click="btnOpenConfiguration_Click" Margin="8,0,0,0" />
+                <Button Content="Open Logs" x:Name="btnOpenLogs" Click="btnOpenLogs_Click" Margin="8,0,0,0" />
             </StackPanel>
         </Grid>
     </StackPanel>

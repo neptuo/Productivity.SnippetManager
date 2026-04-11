@@ -48,6 +48,7 @@ public class Navigator : IClipboardService, ISendTextService
 
     public void OpenMain(bool stickToActiveCaret = true)
     {
+        DiagnosticsLog.Info($"Navigator.OpenMain requested. Existing window: {main != null}. stickToActiveCaret={stickToActiveCaret}.");
         RememberLastExternalApplication();
 
         if (main == null)
@@ -71,6 +72,7 @@ public class Navigator : IClipboardService, ISendTextService
         ActivateCurrentApplication();
         main.Activate();
         main.FocusSearchText();
+        DiagnosticsLog.Info("Main window shown and focused.");
     }
 
     public void CloseMain()
@@ -80,6 +82,7 @@ public class Navigator : IClipboardService, ISendTextService
 
     public void OpenHelp()
     {
+        DiagnosticsLog.Info("Opening the About window.");
         RememberLastExternalApplication();
 
         if (help == null)
@@ -157,6 +160,12 @@ public class Navigator : IClipboardService, ISendTextService
 
     public void OpenGitHub() => OpenUrl("https://github.com/neptuo/Productivity.SnippetManager");
 
+    public void OpenLogs()
+    {
+        DiagnosticsLog.Info("Opening the diagnostics log file.");
+        OpenFile(DiagnosticsLog.FilePath);
+    }
+
     private bool isConfigurationChangedDialogOpen = false;
 
     public bool ConfirmConfigurationReload()
@@ -192,14 +201,14 @@ public class Navigator : IClipboardService, ISendTextService
         var clipboard = GetClipboard();
         if (clipboard == null)
         {
-            Debug.WriteLine("Clipboard is unavailable; unable to apply the selected snippet.");
+            DiagnosticsLog.Error("Clipboard is unavailable; unable to apply the selected snippet.");
             return;
         }
 
         string? previousText = null;
 #pragma warning disable CS0618 // GetTextAsync is deprecated in favor of TryGetTextAsync in Avalonia 11.3+
         try { previousText = await clipboard.GetTextAsync(); }
-        catch (Exception ex) { Debug.WriteLine($"Unable to read the current clipboard text: {ex}"); }
+        catch (Exception ex) { DiagnosticsLog.Error("Unable to read the current clipboard text.", ex); }
 #pragma warning restore CS0618
 
         await clipboard.SetTextAsync(text);
@@ -216,7 +225,7 @@ public class Navigator : IClipboardService, ISendTextService
         if (previousText != null)
         {
             try { await clipboard.SetTextAsync(previousText); }
-            catch (Exception ex) { Debug.WriteLine($"Unable to restore the previous clipboard text: {ex}"); }
+            catch (Exception ex) { DiagnosticsLog.Error("Unable to restore the previous clipboard text.", ex); }
         }
     }
 
@@ -225,7 +234,7 @@ public class Navigator : IClipboardService, ISendTextService
         var clipboard = GetClipboard();
         if (clipboard == null)
         {
-            Debug.WriteLine("Clipboard is unavailable; unable to copy the selected snippet.");
+            DiagnosticsLog.Error("Clipboard is unavailable; unable to copy the selected snippet.");
             return;
         }
 
@@ -240,7 +249,14 @@ public class Navigator : IClipboardService, ISendTextService
 
         int? processId = MacOSApplication.GetFrontmostApplicationProcessId();
         if (processId.HasValue && processId.Value != Environment.ProcessId)
+        {
             lastExternalProcessId = processId.Value;
+            DiagnosticsLog.Info($"Captured frontmost macOS application PID {processId.Value} before opening the UI.");
+        }
+        else
+        {
+            DiagnosticsLog.Info("No external macOS application PID was captured before opening the UI.");
+        }
     }
 
     private static void ActivateCurrentApplication()
@@ -255,7 +271,10 @@ public class Navigator : IClipboardService, ISendTextService
         lastExternalProcessId = null;
 
         if (OperatingSystem.IsMacOS() && processId.HasValue && processId.Value != Environment.ProcessId)
+        {
+            DiagnosticsLog.Info($"Restoring focus to macOS process {processId.Value}.");
             MacOSApplication.ActivateProcess(processId.Value);
+        }
     }
 
     private IClipboard? GetClipboard()
