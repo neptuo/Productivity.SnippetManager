@@ -5,8 +5,8 @@
         Background="{DynamicResource BackgroundBrush}" CanResize="False">
     <StackPanel Margin="20">
         <TextBlock Text="Snippet Manager by Neptuo" FontSize="30" />
-        <Grid Margin="0,8,0,0">
-            <StackPanel Orientation="Vertical">
+        <Grid Margin="0,8,0,0" RowDefinitions="Auto,Auto">
+            <StackPanel Orientation="Vertical" Grid.Row="0">
                 <TextBlock Margin="0,5,0,0" x:Name="tblVersion" Text="v1.8.0" />
                 <TextBlock Margin="0,8,0,0" Text="Global hotkey: Control+Shift+V" />
                 <TextBlock Margin="0,4,0,0" MaxWidth="460" TextWrapping="Wrap"
@@ -15,7 +15,7 @@
                            Text="Hotkey diagnostics are appended to a persistent log file. Use Open Logs after reproducing the issue." />
             </StackPanel>
 
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+            <StackPanel Grid.Row="1" Margin="0,16,0,0" HorizontalAlignment="Left" Orientation="Horizontal">
                 <Button Content="GitHub repository" x:Name="btnOpenGitHub" Click="btnOpenGitHub_Click" Margin="0" />
                 <Button Content="Open Configuration" x:Name="btnOpenConfiguration" Click="btnOpenConfiguration_Click" Margin="8,0,0,0" />
                 <Button Content="Open Logs" x:Name="btnOpenLogs" Click="btnOpenLogs_Click" Margin="8,0,0,0" />
