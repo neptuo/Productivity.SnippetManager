@@ -67,7 +67,8 @@ public partial class App : Application
         enabled => configurationWatcher?.EnableRaisingEventsFromConfigurationWatcher(enabled),
         shutdown,
         GetXmlConfigurationPath,
-        GetExampleConfiguration
+        GetExampleConfiguration,
+        GetCurrentHotkey
     );
 
     private void RequestShutdown(IClassicDesktopStyleApplicationLifetime desktop)
@@ -113,6 +114,9 @@ public partial class App : Application
         snippetProviders.AddExampleConfigurations(example.Providers);
         return example;
     }
+
+    private string GetCurrentHotkey()
+        => configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey ?? "Control+Shift+V";
 
     private Configuration CreateConfiguration()
     {

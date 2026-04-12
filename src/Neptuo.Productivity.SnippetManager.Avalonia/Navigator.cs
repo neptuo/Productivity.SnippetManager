@@ -21,10 +21,11 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly Action shutdown;
     private readonly Func<string> getXmlSnippetsPath;
     private readonly Func<Configuration> getExampleConfiguration;
+    private readonly Func<string> getCurrentHotkey;
     private readonly ConfigurationRepository configurationRepository;
     private int? lastExternalProcessId;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
@@ -32,6 +33,7 @@ public class Navigator : IClipboardService, ISendTextService
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
         this.getExampleConfiguration = getExampleConfiguration;
+        this.getCurrentHotkey = getCurrentHotkey;
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
 
@@ -119,6 +121,7 @@ public class Navigator : IClipboardService, ISendTextService
             help.Closed += (sender, e) => { help = null; };
         }
 
+        help.SetHotkey(getCurrentHotkey());
         ActivateCurrentApplication();
         help.Show();
         ActivateCurrentApplication();

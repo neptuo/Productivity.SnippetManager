@@ -18,6 +18,9 @@ public partial class HelpWindow : Window
         tblVersion.Text = ApplicationVersion.GetDisplayString();
     }
 
+    public void SetHotkey(string hotkey)
+        => tblHotkey.Text = $"Global hotkey: {hotkey}";
+
     private void btnOpenGitHub_Click(object? sender, RoutedEventArgs e)
         => navigator?.OpenGitHub();
 
