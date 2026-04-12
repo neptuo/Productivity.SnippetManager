@@ -25,4 +25,19 @@
     <AvaloniaResource Include="Resources\icon.ico" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <UseAppHost>true</UseAppHost>
+    <MacAppBundleName Condition="'$(MacAppBundleName)' == ''">SnippetManager</MacAppBundleName>
+    <MacAppBundleDisplayName Condition="'$(MacAppBundleDisplayName)' == ''">Snippet Manager</MacAppBundleDisplayName>
+    <MacAppBundleIdentifier Condition="'$(MacAppBundleIdentifier)' == ''">com.neptuo.productivity.snippetmanager</MacAppBundleIdentifier>
+    <MacAppBundleVersion Condition="'$(MacAppBundleVersion)' == '' and '$(VersionPrefix)' != ''">$(VersionPrefix)</MacAppBundleVersion>
+    <MacAppBundleVersion Condition="'$(MacAppBundleVersion)' == ''">0.0.0</MacAppBundleVersion>
+    <MacAppBundleShortVersion Condition="'$(MacAppBundleShortVersion)' == ''">$(MacAppBundleVersion)</MacAppBundleShortVersion>
+    <MacAppBundleExecutable Condition="'$(MacAppBundleExecutable)' == ''">$(AssemblyName)</MacAppBundleExecutable>
+    <MacAppBundleIconPath Condition="'$(MacAppBundleIconPath)' == ''">$(MSBuildProjectDirectory)/Resources/icon.icns</MacAppBundleIconPath>
+    <MacAppBundleUseAgentUI Condition="'$(MacAppBundleUseAgentUI)' == ''">true</MacAppBundleUseAgentUI>
+    <MacAppAppleEventsUsageDescription Condition="'$(MacAppAppleEventsUsageDescription)' == ''">Snippet Manager needs Automation access to activate the target application and paste the selected snippet.</MacAppAppleEventsUsageDescription>
+  </PropertyGroup>
+  <Import Project="Neptuo.Productivity.SnippetManager.Avalonia.Publish.targets" />
+
 </Project>
