@@ -35,7 +35,7 @@ public class ConfigurationRepository
             property.Get = c => ((Configuration)c).Providers.GetValueOrDefault(entry.key);
             property.Set = (c, value) =>
             {
-                Configuration config = ((Configuration)c);
+                Configuration config = (Configuration)c;
                 if (value != null)
                     config.Providers[entry.key] = value;
                 else
