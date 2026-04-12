@@ -57,12 +57,12 @@ public class Navigator : IClipboardService, ISendTextService
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
             main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this), new CopySnippetCommand(this));
-            // On macOS, caret detection is not straightforward — center the window
-            main.SetStickPoint(null);
+            UpdateWindowPositionAnchor(main, stickToActiveCaret);
             shouldRefreshSnippets = true;
         }
         else
         {
+            UpdateWindowPositionAnchor(main, stickToActiveCaret);
             main.FocusSearchText();
             main.UpdatePosition();
         }
@@ -77,6 +77,30 @@ public class Navigator : IClipboardService, ISendTextService
             _ = UpdateSnippetsAsync(main.ViewModel);
 
         DiagnosticsLog.Info("Main window shown and focused.");
+    }
+
+    private static void UpdateWindowPositionAnchor(MainWindow window, bool stickToActiveCaret)
+    {
+        WindowPositionAnchor? anchor = null;
+
+        if (stickToActiveCaret)
+        {
+            anchor = MacOSTextAnchor.TryGetForFocusedElement();
+            if (anchor is { } resolvedAnchor)
+            {
+                DiagnosticsLog.Info($"Main window positioning will use the {resolvedAnchor.Source} anchor at ({resolvedAnchor.Bounds.X}, {resolvedAnchor.Bounds.Y}, {resolvedAnchor.Bounds.Width}, {resolvedAnchor.Bounds.Height}).");
+            }
+            else
+            {
+                DiagnosticsLog.Info("Unable to resolve a caret or focused-element anchor for the main window. Falling back to centered placement.");
+            }
+        }
+        else
+        {
+            DiagnosticsLog.Info("Main window positioning requested without caret anchoring. Using centered placement.");
+        }
+
+        window.SetPositionAnchor(anchor);
     }
 
     public void CloseMain()

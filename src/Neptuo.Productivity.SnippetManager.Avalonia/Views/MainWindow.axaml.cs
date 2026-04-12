@@ -11,7 +11,8 @@ namespace Neptuo.Productivity.SnippetManager.Views;
 
 public partial class MainWindow : Window
 {
-    private PixelPoint? stickPoint;
+    private WindowPositionAnchor? positionAnchor;
+    private bool isAnchorPositionUpdateQueued;
 
     public MainViewModel ViewModel
     {
@@ -37,12 +38,16 @@ public partial class MainWindow : Window
     protected override void OnOpened(EventArgs e)
     {
         base.OnOpened(e);
+        DiagnosticsLog.Info($"Main window opened. position={FormatPixelPoint(Position)}, anchor={FormatAnchor(positionAnchor)}, width={Width}, height={Height}, bounds={Bounds}, clientSize={ClientSize}.");
         UpdatePosition();
     }
 
-    public void SetStickPoint(PixelPoint? point)
+    internal void SetPositionAnchor(WindowPositionAnchor? anchor)
     {
-        stickPoint = point;
+        positionAnchor = anchor;
+        DiagnosticsLog.Info(anchor == null
+            ? "Main window anchor cleared. Positioning will use screen centering."
+            : $"Main window anchor set to {FormatAnchor(anchor)}.");
     }
 
     private void OnPreviewKeyDown(object? sender, KeyEventArgs e)
@@ -136,6 +141,9 @@ public partial class MainWindow : Window
     {
         base.OnPropertyChanged(change);
 
+        if (change.Property == BoundsProperty && positionAnchor != null && IsVisible && change.NewValue is Rect bounds && bounds.Width > 0 && bounds.Height > 0)
+            QueueAnchorPositionUpdate($"window bounds changed to {bounds}");
+
         if (change.Property.Name == nameof(IsActive) && change.NewValue is false)
         {
             Dispatcher.UIThread.InvokeAsync(() =>
@@ -154,20 +162,33 @@ public partial class MainWindow : Window
 
     public void UpdatePosition()
     {
-        if (stickPoint != null)
+        var screen = GetTargetScreen();
+        double positioningWidth = GetPositioningDimension(ClientSize.Width, Bounds.Width, Width, WindowPositioning.DefaultWidth);
+        double positioningHeight = GetPositioningDimension(ClientSize.Height, Bounds.Height, Height, WindowPositioning.DefaultHeight);
+
+        DiagnosticsLog.Info($"Updating main window position. currentPosition={FormatPixelPoint(Position)}, anchor={FormatAnchor(positionAnchor)}, positioningWidth={positioningWidth}, positioningHeight={positioningHeight}, width={Width}, height={Height}, bounds={Bounds}, clientSize={ClientSize}.");
+
+        if (screen == null)
         {
-            Position = stickPoint.Value;
+            DiagnosticsLog.Info("Unable to determine a target screen for main window positioning.");
+            return;
+        }
+
+        Position = WindowPositioning.CalculatePosition(positionAnchor, screen.WorkingArea, positioningWidth, positioningHeight);
+
+        if (positionAnchor is { } anchor)
+        {
+            DiagnosticsLog.Info($"Positioned main window near the {anchor.Source} anchor {FormatPixelRect(anchor.Bounds)} on screen bounds={screen.Bounds}, workingArea={screen.WorkingArea}, targetPosition={FormatPixelPoint(Position)}.");
         }
         else
         {
-            var screen = Screens.Primary ?? Screens.All.FirstOrDefault();
-            if (screen != null)
-            {
-                var x = (int)(screen.WorkingArea.X + (screen.WorkingArea.Width - Width) / 2);
-                var y = (int)(screen.WorkingArea.Y + (screen.WorkingArea.Height - 300) / 2);
-                Position = new PixelPoint(x, y);
-            }
+            DiagnosticsLog.Info($"Centered main window on screen bounds={screen.Bounds}, workingArea={screen.WorkingArea}, targetPosition={FormatPixelPoint(Position)}.");
         }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            DiagnosticsLog.Info($"Main window position update completed. finalPosition={FormatPixelPoint(Position)}, bounds={Bounds}, clientSize={ClientSize}.");
+        }, DispatcherPriority.Background);
     }
 
     public void Search()
@@ -190,4 +211,72 @@ public partial class MainWindow : Window
         SearchText.PropertyChanged -= SearchText_PropertyChanged;
         base.OnUnloaded(e);
     }
+
+    private void QueueAnchorPositionUpdate(string reason)
+    {
+        if (isAnchorPositionUpdateQueued)
+            return;
+
+        isAnchorPositionUpdateQueued = true;
+        DiagnosticsLog.Info($"Scheduling an anchor-based position update because {reason}.");
+        Dispatcher.UIThread.Post(() =>
+        {
+            isAnchorPositionUpdateQueued = false;
+            if (positionAnchor != null && IsVisible)
+                UpdatePosition();
+        }, DispatcherPriority.Background);
+    }
+
+    private global::Avalonia.Platform.Screen? GetTargetScreen()
+    {
+        if (positionAnchor is { } anchor)
+        {
+            int centerX = anchor.Bounds.X + Math.Max(0, anchor.Bounds.Width / 2);
+            int centerY = anchor.Bounds.Y + Math.Max(0, anchor.Bounds.Height / 2);
+
+            global::Avalonia.Platform.Screen? anchorScreen = Screens.All.FirstOrDefault(s => Contains(s.Bounds, centerX, centerY))
+                ?? Screens.All.FirstOrDefault(s => Intersects(s.Bounds, anchor.Bounds));
+            if (anchorScreen != null)
+                return anchorScreen;
+        }
+
+        return Screens.Primary ?? Screens.All.FirstOrDefault();
+    }
+
+    private static bool Contains(PixelRect rect, int x, int y)
+        => x >= rect.X && x < rect.X + rect.Width && y >= rect.Y && y < rect.Y + rect.Height;
+
+    private static bool Intersects(PixelRect left, PixelRect right)
+        => left.X < right.X + right.Width
+        && left.X + left.Width > right.X
+        && left.Y < right.Y + right.Height
+        && left.Y + left.Height > right.Y;
+
+    private static double GetPositioningDimension(double preferred, double secondary, double tertiary, int defaultValue)
+    {
+        if (IsUsableDimension(preferred))
+            return preferred;
+
+        if (IsUsableDimension(secondary))
+            return secondary;
+
+        if (IsUsableDimension(tertiary))
+            return tertiary;
+
+        return defaultValue;
+    }
+
+    private static bool IsUsableDimension(double value)
+        => !double.IsNaN(value) && !double.IsInfinity(value) && value > 0;
+
+    private static string FormatPixelPoint(PixelPoint? point)
+        => point.HasValue ? $"({point.Value.X}, {point.Value.Y})" : "<none>";
+
+    private static string FormatPixelRect(PixelRect rect)
+        => $"({rect.X}, {rect.Y}, {rect.Width}, {rect.Height})";
+
+    private static string FormatAnchor(WindowPositionAnchor? anchor)
+        => anchor is { } value
+            ? $"{value.Source} {FormatPixelRect(value.Bounds)}"
+            : "<none>";
 }
