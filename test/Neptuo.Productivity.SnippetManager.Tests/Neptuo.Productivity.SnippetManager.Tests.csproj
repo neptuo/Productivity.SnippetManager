@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Neptuo.Productivity.SnippetManager\Neptuo.Productivity.SnippetManager.csproj" />
+    <ProjectReference Include="..\..\src\Neptuo.Productivity.SnippetManager.Avalonia\Neptuo.Productivity.SnippetManager.Avalonia.csproj" />
   </ItemGroup>
 
   <ItemGroup>

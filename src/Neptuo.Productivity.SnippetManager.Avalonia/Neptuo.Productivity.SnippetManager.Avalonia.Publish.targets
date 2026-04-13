@@ -1,0 +1,153 @@
+<Project>
+
+  <PropertyGroup>
+    <_IsMacAppBundleRuntime>$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('osx-'))</_IsMacAppBundleRuntime>
+  </PropertyGroup>
+
+  <Target Name="ValidateMacAppBundleConfiguration"
+          BeforeTargets="CreateMacAppBundle"
+          Condition="'$(CreateMacAppBundle)' == 'true'">
+    <Error Text="CreateMacAppBundle=true requires a macOS RuntimeIdentifier such as osx-arm64 or osx-x64."
+           Condition="'$(_IsMacAppBundleRuntime)' != 'true'" />
+  </Target>
+
+  <Target Name="CreateMacAppBundle"
+          AfterTargets="Publish"
+          Condition="'$(CreateMacAppBundle)' == 'true' and '$(_IsMacAppBundleRuntime)' == 'true'">
+    <PropertyGroup>
+      <_MacAppBundleDir Condition="'$(MacAppBundleDir)' != ''">$([System.IO.Path]::GetFullPath('$(MacAppBundleDir)'))</_MacAppBundleDir>
+      <_MacAppBundleDir Condition="'$(_MacAppBundleDir)' == ''">$([System.IO.Path]::GetFullPath($([System.IO.Path]::Combine('$(PublishDir)', '$(MacAppBundleName).app'))))</_MacAppBundleDir>
+      <_MacAppBundleContentsDir>$([System.IO.Path]::Combine('$(_MacAppBundleDir)', 'Contents'))</_MacAppBundleContentsDir>
+      <_MacAppBundleMacOSDir>$([System.IO.Path]::Combine('$(_MacAppBundleContentsDir)', 'MacOS'))</_MacAppBundleMacOSDir>
+      <_MacAppBundleResourcesDir>$([System.IO.Path]::Combine('$(_MacAppBundleContentsDir)', 'Resources'))</_MacAppBundleResourcesDir>
+      <_MacAppBundleInfoPlistPath>$([System.IO.Path]::Combine('$(_MacAppBundleContentsDir)', 'Info.plist'))</_MacAppBundleInfoPlistPath>
+      <_MacAppBundleExecutablePath>$([System.IO.Path]::Combine('$(_MacAppBundleMacOSDir)', '$(MacAppBundleExecutable)'))</_MacAppBundleExecutablePath>
+      <_MacAppBundleIconFileName Condition="Exists('$(MacAppBundleIconPath)')">$([System.IO.Path]::GetFileName('$(MacAppBundleIconPath)'))</_MacAppBundleIconFileName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_MacAppInfoPlistLine Include="XmlDeclaration">
+        <Text><![CDATA[<?xml version="1.0" encoding="UTF-8"?>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="DocType">
+        <Text><![CDATA[<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="PlistStart">
+        <Text><![CDATA[<plist version="1.0">]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="DictStart">
+        <Text><![CDATA[<dict>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="DisplayNameKey">
+        <Text><![CDATA[    <key>CFBundleDisplayName</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="DisplayNameValue">
+        <Text><![CDATA[    <string>$(MacAppBundleDisplayName)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="ExecutableKey">
+        <Text><![CDATA[    <key>CFBundleExecutable</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="ExecutableValue">
+        <Text><![CDATA[    <string>$(MacAppBundleExecutable)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="IdentifierKey">
+        <Text><![CDATA[    <key>CFBundleIdentifier</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="IdentifierValue">
+        <Text><![CDATA[    <string>$(MacAppBundleIdentifier)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="InfoDictionaryVersionKey">
+        <Text><![CDATA[    <key>CFBundleInfoDictionaryVersion</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="InfoDictionaryVersionValue">
+        <Text><![CDATA[    <string>6.0</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="NameKey">
+        <Text><![CDATA[    <key>CFBundleName</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="NameValue">
+        <Text><![CDATA[    <string>$(MacAppBundleName)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="PackageTypeKey">
+        <Text><![CDATA[    <key>CFBundlePackageType</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="PackageTypeValue">
+        <Text><![CDATA[    <string>APPL</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="ShortVersionKey">
+        <Text><![CDATA[    <key>CFBundleShortVersionString</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="ShortVersionValue">
+        <Text><![CDATA[    <string>$(MacAppBundleShortVersion)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="VersionKey">
+        <Text><![CDATA[    <key>CFBundleVersion</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="VersionValue">
+        <Text><![CDATA[    <string>$(MacAppBundleVersion)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="AppleEventsUsageDescriptionKey">
+        <Text><![CDATA[    <key>NSAppleEventsUsageDescription</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="AppleEventsUsageDescriptionValue">
+        <Text><![CDATA[    <string>$(MacAppAppleEventsUsageDescription)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="AgentUiKey">
+        <Text><![CDATA[    <key>LSUIElement</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="AgentUiTrueValue"
+                            Condition="'$(MacAppBundleUseAgentUI)' == 'true'">
+        <Text><![CDATA[    <true/>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="AgentUiFalseValue"
+                            Condition="'$(MacAppBundleUseAgentUI)' != 'true'">
+        <Text><![CDATA[    <false/>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="HighResolutionKey">
+        <Text><![CDATA[    <key>NSHighResolutionCapable</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="HighResolutionValue">
+        <Text><![CDATA[    <true/>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="IconKey"
+                            Condition="'$(_MacAppBundleIconFileName)' != ''">
+        <Text><![CDATA[    <key>CFBundleIconFile</key>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="IconValue"
+                            Condition="'$(_MacAppBundleIconFileName)' != ''">
+        <Text><![CDATA[    <string>$(_MacAppBundleIconFileName)</string>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="DictEnd">
+        <Text><![CDATA[</dict>]]></Text>
+      </_MacAppInfoPlistLine>
+      <_MacAppInfoPlistLine Include="PlistEnd">
+        <Text><![CDATA[</plist>]]></Text>
+      </_MacAppInfoPlistLine>
+
+      <_MacAppBundleIcon Include="$(MacAppBundleIconPath)"
+                         Condition="Exists('$(MacAppBundleIconPath)')" />
+    </ItemGroup>
+
+    <RemoveDir Directories="$(_MacAppBundleDir)"
+               Condition="Exists('$(_MacAppBundleDir)')" />
+    <MakeDir Directories="$(_MacAppBundleMacOSDir);$(_MacAppBundleResourcesDir)" />
+
+    <Copy SourceFiles="@(ResolvedFileToPublish)"
+          DestinationFiles="@(ResolvedFileToPublish->'$(_MacAppBundleMacOSDir)/%(RelativePath)')" />
+
+    <Copy SourceFiles="@(_MacAppBundleIcon)"
+          DestinationFolder="$(_MacAppBundleResourcesDir)"
+          Condition="'@(_MacAppBundleIcon)' != ''" />
+
+    <WriteLinesToFile File="$(_MacAppBundleInfoPlistPath)"
+                      Lines="@(_MacAppInfoPlistLine->'%(Text)')"
+                      Overwrite="true" />
+
+    <Exec Command="chmod +x &quot;$(_MacAppBundleExecutablePath)&quot;"
+          Condition="'$(OS)' != 'Windows_NT' and Exists('$(_MacAppBundleExecutablePath)')" />
+
+    <Message Importance="high"
+             Text="Created macOS app bundle at '$(_MacAppBundleDir)'." />
+  </Target>
+
+</Project>
