@@ -6,6 +6,6 @@ namespace Neptuo.Productivity.SnippetManager.ViewModels.Commands
     public abstract class UseSnippetCommand : Command<SnippetModel>
     {
         public override bool CanExecute(SnippetModel parameter) 
-            => parameter.IsFilled;
+            => parameter != null && parameter.IsFilled;
     }
 }
