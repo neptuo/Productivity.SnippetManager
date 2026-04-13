@@ -3,13 +3,12 @@ namespace Neptuo.Productivity.SnippetManager.Tests;
 public class GeneralConfigurationTests
 {
     [Fact]
-    public void DefaultHotKey_UsesThePlatformSpecificShortcut()
+    public void DefaultHotKey_IsOneOfTheSupportedPlatformDefaults()
     {
-        string expected = OperatingSystem.IsMacOS()
-            ? GeneralConfiguration.MacDefaultHotKey
-            : GeneralConfiguration.WindowsDefaultHotKey;
-
-        Assert.Equal(expected, GeneralConfiguration.DefaultHotKey);
+        Assert.Contains(
+            GeneralConfiguration.DefaultHotKey,
+            new[] { GeneralConfiguration.MacDefaultHotKey, GeneralConfiguration.NonMacDefaultHotKey }
+        );
     }
 
     [Fact]

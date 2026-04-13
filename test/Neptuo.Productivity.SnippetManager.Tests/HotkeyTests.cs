@@ -29,16 +29,26 @@ public class HotkeyTests
     }
 
     [Fact]
-    public void IsCopyShortcutGesture_UsesPlatformSpecificModifier()
+    public void IsCopyShortcutGesture_MatchesPlatformModifier()
     {
         KeyModifiers expectedModifier = OperatingSystem.IsMacOS()
             ? KeyModifiers.Meta
             : KeyModifiers.Control;
-        KeyModifiers unexpectedModifier = OperatingSystem.IsMacOS()
+
+        Assert.True(MainWindow.IsCopyShortcutGesture(Key.C, expectedModifier));
+    }
+
+    [Fact]
+    public void IsCopyShortcutGesture_RejectsWrongKey()
+        => Assert.False(MainWindow.IsCopyShortcutGesture(Key.V, KeyModifiers.Control | KeyModifiers.Meta));
+
+    [Fact]
+    public void IsCopyShortcutGesture_RejectsOppositeModifier()
+    {
+        KeyModifiers wrongModifier = OperatingSystem.IsMacOS()
             ? KeyModifiers.Control
             : KeyModifiers.Meta;
 
-        Assert.True(MainWindow.IsCopyShortcutGesture(Key.C, expectedModifier));
-        Assert.False(MainWindow.IsCopyShortcutGesture(Key.C, unexpectedModifier));
+        Assert.False(MainWindow.IsCopyShortcutGesture(Key.C, wrongModifier));
     }
 }

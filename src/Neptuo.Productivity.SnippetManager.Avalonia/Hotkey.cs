@@ -16,7 +16,7 @@ public class Hotkey : IDisposable
             ? GeneralConfiguration.DefaultHotKey
             : rawHotkey;
         string sourceSuffix = string.IsNullOrWhiteSpace(rawHotkey) ? " (default)" : string.Empty;
-        DiagnosticsLog.Info($"Binding global hotkey. Configured value: '{effectiveHotkey}{sourceSuffix}'.");
+        DiagnosticsLog.Info($"Binding global hotkey. Effective value: '{effectiveHotkey}{sourceSuffix}'.");
 
         if (!TryParseHotKey(effectiveHotkey, out var key, out var modifiers))
         {
