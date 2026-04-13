@@ -100,7 +100,7 @@ public partial class MainWindow : Window
             UseSelectedSnippet(ViewModel.Apply);
             e.Handled = true;
         }
-        else if (e.Key == Key.C && (e.KeyModifiers & KeyModifiers.Control) != 0)
+        else if (IsCopyShortcutGesture(e.Key, e.KeyModifiers))
         {
             UseSelectedSnippet(ViewModel.Copy);
             e.Handled = true;
@@ -135,6 +135,18 @@ public partial class MainWindow : Window
         }
 
         return false;
+    }
+
+    internal static bool IsCopyShortcutGesture(Key key, KeyModifiers modifiers)
+    {
+        if (key != Key.C)
+            return false;
+
+        KeyModifiers expectedModifier = OperatingSystem.IsMacOS()
+            ? KeyModifiers.Meta
+            : KeyModifiers.Control;
+
+        return (modifiers & expectedModifier) != 0;
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

@@ -48,7 +48,7 @@ Once you have the configuration file, the app will monitor changes and prompt yo
 
 ### General
 
-Enables you to define your own global hotkey for opening snippet list. Default is `Ctrl+Shift+V`.
+Enables you to define your own global hotkey for opening snippet list. Default is `Ctrl+Shift+V` on Windows/Linux and `Cmd+Shift+V` on macOS.
 
 ### Clipboard
 

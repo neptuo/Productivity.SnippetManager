@@ -116,7 +116,7 @@ public partial class App : Application
     }
 
     private string GetCurrentHotkey()
-        => configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey ?? "Control+Shift+V";
+        => configuration.General?.HotKey ?? GeneralConfiguration.DefaultHotKey;
 
     private Configuration CreateConfiguration()
     {
