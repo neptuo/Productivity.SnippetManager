@@ -63,17 +63,7 @@
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Background" Value="Transparent" />
         </Style>
-        <Style Selector="TextBox#SearchText:focus /template/ Border">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-        <Style Selector="TextBox#SearchText:focus-within /template/ Border">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-        <Style Selector="TextBox#SearchText:focus-visible /template/ Border">
+        <Style Selector="TextBox#SearchText:focus /template/ Border, TextBox#SearchText:focus-within /template/ Border, TextBox#SearchText:focus-visible /template/ Border">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Background" Value="Transparent" />

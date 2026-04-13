@@ -5,7 +5,7 @@ using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 
 namespace Neptuo.Productivity.SnippetManager.Tests;
 
-public class UseSnippetCommandTests
+public class CopySnippetCommandTests
 {
     [Fact]
     public void CopyCommand_CanExecute_ReturnsFalseForNullParameter()
