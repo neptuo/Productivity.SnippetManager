@@ -15,8 +15,8 @@
           AfterTargets="Publish"
           Condition="'$(CreateMacAppBundle)' == 'true' and '$(_IsMacAppBundleRuntime)' == 'true'">
     <PropertyGroup>
-      <_MacAppBundleDir Condition="'$(MacAppBundleDir)' != ''">$([System.IO.Path]::GetFullPath('$(MacAppBundleDir)'))</_MacAppBundleDir>
-      <_MacAppBundleDir Condition="'$(_MacAppBundleDir)' == ''">$([System.IO.Path]::GetFullPath($([System.IO.Path]::Combine('$(PublishDir)', '$(MacAppBundleName).app'))))</_MacAppBundleDir>
+      <_MacAppBundleDir Condition="'$(MacAppBundleDir)' != ''">$([MSBuild]::NormalizePath('$(MacAppBundleDir)'))</_MacAppBundleDir>
+      <_MacAppBundleDir Condition="'$(_MacAppBundleDir)' == ''">$([MSBuild]::NormalizePath('$(PublishDir)', '$(MacAppBundleName).app'))</_MacAppBundleDir>
       <_MacAppBundleContentsDir>$([System.IO.Path]::Combine('$(_MacAppBundleDir)', 'Contents'))</_MacAppBundleContentsDir>
       <_MacAppBundleMacOSDir>$([System.IO.Path]::Combine('$(_MacAppBundleContentsDir)', 'MacOS'))</_MacAppBundleMacOSDir>
       <_MacAppBundleResourcesDir>$([System.IO.Path]::Combine('$(_MacAppBundleContentsDir)', 'Resources'))</_MacAppBundleResourcesDir>
