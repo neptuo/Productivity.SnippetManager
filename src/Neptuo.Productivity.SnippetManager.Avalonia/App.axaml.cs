@@ -152,19 +152,15 @@ public partial class App : Application
             {
                 navigator.CloseMain();
 
-                string? oldHotKey = configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey;
-
                 configuration = CreateConfiguration();
                 provider = snippetProviders.Create(configuration.Providers);
 
                 var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
                 navigator = CreateNavigator(() => RequestShutdown(desktop));
-
-                if (configuration.General?.HotKey != oldHotKey)
-                {
-                    hotkey.UnBind();
-                    hotkey.Bind(navigator, configuration.General?.HotKey);
-                }
+                trayIcon?.Dispose();
+                trayIcon = new TrayIcon(navigator, hotkey);
+                hotkey.UnBind();
+                hotkey.Bind(navigator, configuration.General?.HotKey);
             });
         }
     }

@@ -7,11 +7,11 @@ public class ArrayLastItemConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is IEnumerable<object> items)
-            return items.Last();
-
         if (value is string[] arr && arr.Length > 0)
             return arr[arr.Length - 1];
+
+        if (value is IEnumerable<object> items)
+            return items.LastOrDefault() ?? "";
 
         return "";
     }
