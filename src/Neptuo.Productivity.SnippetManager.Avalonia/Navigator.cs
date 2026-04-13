@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input.Platform;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Neptuo.Productivity.SnippetManager.Services;
 using Neptuo.Productivity.SnippetManager.ViewModels;
@@ -199,13 +201,118 @@ public class Navigator : IClipboardService, ISendTextService
 
     private bool isConfigurationChangedDialogOpen = false;
 
-    public bool ConfirmConfigurationReload()
+    public async Task<bool> ConfirmConfigurationReloadAsync()
+    {
+        if (!Dispatcher.UIThread.CheckAccess())
+            return await Dispatcher.UIThread.InvokeAsync(ConfirmConfigurationReloadAsync);
+
+        return await ConfirmConfigurationReloadCoreAsync();
+    }
+
+    private async Task<bool> ConfirmConfigurationReloadCoreAsync()
     {
         if (isConfigurationChangedDialogOpen)
             return false;
 
-        // Auto-reload on config change (no dialog on macOS for simplicity)
-        return true;
+        try
+        {
+            isConfigurationChangedDialogOpen = true;
+            return await ShowConfirmationDialogAsync(
+                "Snippet Manager",
+                "Configuration has changed. Do you want to apply changes?"
+            );
+        }
+        finally
+        {
+            isConfigurationChangedDialogOpen = false;
+        }
+    }
+
+    private Task<bool> ShowConfirmationDialogAsync(string title, string message)
+    {
+        var dialog = new Window()
+        {
+            Title = title,
+            Width = 420,
+            SizeToContent = SizeToContent.Height,
+            CanResize = false,
+            Topmost = true,
+            ShowInTaskbar = false,
+            WindowStartupLocation = GetDialogOwner() is null
+                ? WindowStartupLocation.CenterScreen
+                : WindowStartupLocation.CenterOwner
+        };
+
+        var result = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        void CloseDialog(bool shouldReload)
+        {
+            if (result.TrySetResult(shouldReload))
+                dialog.Close();
+        }
+
+        var yesButton = new Button()
+        {
+            Content = "Yes",
+            MinWidth = 80,
+            IsDefault = true
+        };
+        yesButton.Click += (_, _) => CloseDialog(true);
+
+        var noButton = new Button()
+        {
+            Content = "No",
+            MinWidth = 80,
+            IsCancel = true
+        };
+        noButton.Click += (_, _) => CloseDialog(false);
+
+        dialog.Closed += (_, _) => result.TrySetResult(false);
+        dialog.Content = new StackPanel()
+        {
+            Margin = new Thickness(20),
+            Spacing = 16,
+            Children =
+            {
+                new TextBlock()
+                {
+                    Text = message,
+                    TextWrapping = TextWrapping.Wrap
+                },
+                new StackPanel()
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Spacing = 8,
+                    Children =
+                    {
+                        noButton,
+                        yesButton
+                    }
+                }
+            }
+        };
+
+        if (GetDialogOwner() is { } owner)
+            _ = dialog.ShowDialog(owner);
+        else
+            dialog.Show();
+
+        return result.Task;
+    }
+
+    private Window? GetDialogOwner()
+    {
+        if (main != null)
+            return main;
+
+        if (help != null)
+            return help;
+
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            return desktop.Windows.LastOrDefault(w => w.IsVisible) ?? desktop.MainWindow;
+
+        return null;
     }
 
     public void Shutdown()

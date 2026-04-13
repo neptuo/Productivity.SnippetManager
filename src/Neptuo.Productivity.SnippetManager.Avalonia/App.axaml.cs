@@ -144,24 +144,24 @@ public partial class App : Application
     public static string GetConfigurationPath()
         => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SnippetManager.json");
 
-    private void AskToReloadConfiguration()
+    private async void AskToReloadConfiguration()
     {
-        if (navigator.ConfirmConfigurationReload())
+        if (!await navigator.ConfirmConfigurationReloadAsync())
+            return;
+
+        await Dispatcher.UIThread.InvokeAsync(() =>
         {
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                navigator.CloseMain();
+            navigator.CloseMain();
 
-                configuration = CreateConfiguration();
-                provider = snippetProviders.Create(configuration.Providers);
+            configuration = CreateConfiguration();
+            provider = snippetProviders.Create(configuration.Providers);
 
-                var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
-                navigator = CreateNavigator(() => RequestShutdown(desktop));
-                trayIcon?.Dispose();
-                trayIcon = new TrayIcon(navigator, hotkey);
-                hotkey.UnBind();
-                hotkey.Bind(navigator, configuration.General?.HotKey);
-            });
-        }
+            var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
+            navigator = CreateNavigator(() => RequestShutdown(desktop));
+            trayIcon?.Dispose();
+            trayIcon = new TrayIcon(navigator, hotkey);
+            hotkey.UnBind();
+            hotkey.Bind(navigator, configuration.General?.HotKey);
+        });
     }
 }
