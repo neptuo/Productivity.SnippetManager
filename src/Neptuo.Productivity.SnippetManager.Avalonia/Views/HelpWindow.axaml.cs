@@ -10,6 +10,7 @@ public partial class HelpWindow : Window
     public HelpWindow()
     {
         InitializeComponent();
+        SetHotkey(GeneralConfiguration.DefaultHotKey);
     }
 
     public HelpWindow(Navigator navigator) : this()

@@ -12,13 +12,15 @@ public class Hotkey : IDisposable
 
     public void Bind(Navigator navigator, string? rawHotkey)
     {
-        DiagnosticsLog.Info($"Binding global hotkey. Configured value: '{rawHotkey ?? "Control+Shift+V (default)"}'.");
+        string effectiveHotkey = string.IsNullOrWhiteSpace(rawHotkey)
+            ? GeneralConfiguration.DefaultHotKey
+            : rawHotkey;
+        string sourceSuffix = string.IsNullOrWhiteSpace(rawHotkey) ? " (default)" : string.Empty;
+        DiagnosticsLog.Info($"Binding global hotkey. Configured value: '{effectiveHotkey}{sourceSuffix}'.");
 
-        var key = KeyCode.VcV;
-        var modifiers = ModifierMask.Ctrl | ModifierMask.Shift;
-        if (!string.IsNullOrEmpty(rawHotkey) && !TryParseHotKey(rawHotkey, out key, out modifiers))
+        if (!TryParseHotKey(effectiveHotkey, out var key, out var modifiers))
         {
-            DiagnosticsLog.Error($"Unable to parse configured global hotkey '{rawHotkey}'.");
+            DiagnosticsLog.Error($"Unable to parse configured global hotkey '{effectiveHotkey}'.");
             navigator.Shutdown();
             return;
         }
