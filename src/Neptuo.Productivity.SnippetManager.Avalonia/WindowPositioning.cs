@@ -22,11 +22,15 @@ internal static class WindowPositioning
 
         int x = anchorRight + normalizedWidth <= workingAreaRight
             ? anchorRight
-            : resolvedAnchor.Bounds.X - normalizedWidth;
+            : resolvedAnchor.Bounds.X - normalizedWidth >= workingArea.X
+                ? resolvedAnchor.Bounds.X - normalizedWidth
+                : resolvedAnchor.Bounds.X;
 
         int y = anchorBottom + normalizedHeight <= workingAreaBottom
             ? anchorBottom
-            : resolvedAnchor.Bounds.Y - normalizedHeight;
+            : resolvedAnchor.Bounds.Y - normalizedHeight >= workingArea.Y
+                ? resolvedAnchor.Bounds.Y - normalizedHeight
+                : resolvedAnchor.Bounds.Y;
 
         x = Clamp(x, workingArea.X, workingAreaRight - normalizedWidth);
         y = Clamp(y, workingArea.Y, workingAreaBottom - normalizedHeight);
