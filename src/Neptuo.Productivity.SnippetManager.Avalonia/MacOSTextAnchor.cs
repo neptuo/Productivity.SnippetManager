@@ -84,8 +84,58 @@ internal static class MacOSTextAnchor
 
                 bounds = ToPixelRect(selectedRangeRect);
                 DiagnosticsLog.Info($"Resolved macOS selected text bounds to {FormatPixelRect(bounds)}.");
+
+                PixelRect? screenBounds = TryGetDisplayBoundsForPoint(bounds);
+                if (!IsSelectedTextBoundsPlausible(bounds, screenBounds))
+                {
+                    DiagnosticsLog.Info($"Rejected macOS selected text bounds {FormatPixelRect(bounds)} as implausible (degenerate size at screen edge). Falling back to alternative anchoring.");
+                    bounds = default;
+                    return false;
+                }
+
                 return true;
             }
+        }
+    }
+
+    internal static bool IsSelectedTextBoundsPlausible(PixelRect bounds, PixelRect? screenBounds)
+    {
+        if (bounds.Width > 1 || bounds.Height > 1)
+            return true;
+
+        // A 1×1 (or smaller) rect is only suspicious when it sits at a screen edge,
+        // which indicates the application returned a degenerate placeholder rather than
+        // a real caret position (observed with Chromium-based browsers' address bar).
+        if (screenBounds is not PixelRect screen)
+            return true;
+
+        if (bounds.X <= screen.X || bounds.Y <= screen.Y)
+            return false;
+
+        if (bounds.X + bounds.Width >= screen.X + screen.Width || bounds.Y + bounds.Height >= screen.Y + screen.Height)
+            return false;
+
+        return true;
+    }
+
+    private static PixelRect? TryGetDisplayBoundsForPoint(PixelRect bounds)
+    {
+        if (!OperatingSystem.IsMacOS())
+            return null;
+
+        try
+        {
+            var point = new CGPoint { X = bounds.X + bounds.Width / 2.0, Y = bounds.Y + bounds.Height / 2.0 };
+            int error = NativeMethods.CGGetDisplaysWithPoint(point, 1, out uint displayId, out uint matchingCount);
+            if (error != 0 || matchingCount == 0)
+                return null;
+
+            CGRect displayRect = NativeMethods.CGDisplayBounds(displayId);
+            return ToPixelRect(displayRect);
+        }
+        catch
+        {
+            return null;
         }
     }
 
@@ -353,5 +403,13 @@ internal static class MacOSTextAnchor
 
         [DllImport(CoreFoundationLib)]
         internal static extern void CFRelease(IntPtr value);
+
+        private const string CoreGraphicsLib = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
+
+        [DllImport(CoreGraphicsLib)]
+        internal static extern int CGGetDisplaysWithPoint(CGPoint point, uint maxDisplays, out uint display, out uint matchingDisplayCount);
+
+        [DllImport(CoreGraphicsLib)]
+        internal static extern CGRect CGDisplayBounds(uint display);
     }
 }
