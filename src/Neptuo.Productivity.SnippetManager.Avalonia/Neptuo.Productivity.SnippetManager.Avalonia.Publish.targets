@@ -146,7 +146,8 @@
     <Exec Command="chmod +x &quot;$(_MacAppBundleExecutablePath)&quot;"
           Condition="'$(OS)' != 'Windows_NT' and Exists('$(_MacAppBundleExecutablePath)')" />
 
-    <Exec Command="echo Created macOS app bundle at '$(_MacAppBundleDir)'" />
+    <Message Importance="high"
+             Text="$(MSBuildProjectName) -> $(_MacAppBundleDir)" />
   </Target>
 
 </Project>
