@@ -84,9 +84,48 @@ internal static class MacOSTextAnchor
 
                 bounds = ToPixelRect(selectedRangeRect);
                 DiagnosticsLog.Info($"Resolved macOS selected text bounds to {FormatPixelRect(bounds)}.");
+
+                if (!IsSelectedTextBoundsPlausible(bounds))
+                {
+                    DiagnosticsLog.Info($"Rejected macOS selected text bounds {FormatPixelRect(bounds)} as implausible (degenerate size at screen edge). Falling back to alternative anchoring.");
+                    bounds = default;
+                    return false;
+                }
+
                 return true;
             }
         }
+    }
+
+    internal static bool IsSelectedTextBoundsPlausible(PixelRect bounds)
+    {
+        if (bounds.Width > 1 || bounds.Height > 1)
+            return true;
+
+        // A 1×1 (or smaller) rect is only suspicious when it sits at a screen edge,
+        // which indicates the application returned a degenerate placeholder rather than
+        // a real caret position (observed with Chromium-based browsers' address bar).
+        if (bounds.X <= 0 || bounds.Y <= 0)
+            return false;
+
+        if (OperatingSystem.IsMacOS())
+        {
+            try
+            {
+                uint displayId = NativeMethods.CGMainDisplayID();
+                int displayWidth = (int)NativeMethods.CGDisplayPixelsWide(displayId);
+                int displayHeight = (int)NativeMethods.CGDisplayPixelsHigh(displayId);
+
+                if (bounds.X + bounds.Width >= displayWidth || bounds.Y + bounds.Height >= displayHeight)
+                    return false;
+            }
+            catch
+            {
+                // If we can't query display dimensions, accept the bounds.
+            }
+        }
+
+        return true;
     }
 
     private static bool TryGetElementBounds(CFObjectHandle element, out PixelRect bounds)
@@ -353,5 +392,16 @@ internal static class MacOSTextAnchor
 
         [DllImport(CoreFoundationLib)]
         internal static extern void CFRelease(IntPtr value);
+
+        private const string CoreGraphicsLib = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
+
+        [DllImport(CoreGraphicsLib)]
+        internal static extern uint CGMainDisplayID();
+
+        [DllImport(CoreGraphicsLib)]
+        internal static extern nuint CGDisplayPixelsWide(uint display);
+
+        [DllImport(CoreGraphicsLib)]
+        internal static extern nuint CGDisplayPixelsHigh(uint display);
     }
 }
