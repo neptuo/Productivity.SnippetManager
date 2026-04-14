@@ -23,6 +23,7 @@
   <ItemGroup>
     <AvaloniaResource Include="Resources\icon.png" />
     <AvaloniaResource Include="Resources\icon.ico" />
+    <AvaloniaResource Include="Resources\tray-icon.png" />
   </ItemGroup>
 
   <PropertyGroup>
