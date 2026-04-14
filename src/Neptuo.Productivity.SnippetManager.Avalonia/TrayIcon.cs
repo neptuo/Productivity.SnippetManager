@@ -60,9 +60,16 @@ public class TrayIcon : IDisposable
         // Set icon from embedded Avalonia resource
         try
         {
-            var uri = new Uri("avares://Neptuo.Productivity.SnippetManager.Avalonia/Resources/icon.png");
+            string iconResource = OperatingSystem.IsMacOS()
+                ? "avares://Neptuo.Productivity.SnippetManager.Avalonia/Resources/tray-icon.png"
+                : "avares://Neptuo.Productivity.SnippetManager.Avalonia/Resources/icon.png";
+
+            var uri = new Uri(iconResource);
             using var stream = Avalonia.Platform.AssetLoader.Open(uri);
             trayIcon.Icon = new WindowIcon(stream);
+
+            if (OperatingSystem.IsMacOS())
+                MacOSProperties.SetIsTemplateIcon(trayIcon, true);
         }
         catch
         {
