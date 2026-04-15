@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <FrameworkPackageVersion>9.0.0</FrameworkPackageVersion>
+    <FrameworkPackageVersion>10.0.0</FrameworkPackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Neptuo.Windows.Converters" Version="1.0.0" />
