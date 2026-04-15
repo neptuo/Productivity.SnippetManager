@@ -57,6 +57,8 @@ public class TrayIcon : IDisposable
             IsVisible = true
         };
 
+        hotkey.HookFailed += OnHookFailed;
+
         // Set icon from embedded Avalonia resource
         try
         {
@@ -79,6 +81,13 @@ public class TrayIcon : IDisposable
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
     }
 
+    private void OnHookFailed(string message)
+    {
+        trayIcon.ToolTipText = $"Snippet Manager — {message}";
+        if (hotkeyMenuItem != null)
+            hotkeyMenuItem.Header = "Hotkey unavailable";
+    }
+
     private void ToggleHotkey()
     {
         if (isPaused)
@@ -97,6 +106,7 @@ public class TrayIcon : IDisposable
 
     public void Dispose()
     {
+        hotkey.HookFailed -= OnHookFailed;
         trayIcon.IsVisible = false;
         trayIcon.Dispose();
     }
