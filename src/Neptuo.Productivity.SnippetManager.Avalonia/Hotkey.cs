@@ -10,6 +10,8 @@ public class Hotkey : IDisposable
     private (KeyCode key, ModifierMask modifiers)? hotkey;
     private Action? openMainAction;
 
+    public event Action<string>? HookFailed;
+
     public void Bind(Navigator navigator, string? rawHotkey)
     {
         string effectiveHotkey = string.IsNullOrWhiteSpace(rawHotkey)
@@ -42,7 +44,7 @@ public class Hotkey : IDisposable
 
         hook = CreateHook();
         DiagnosticsLog.Info("Starting global hotkey hook.");
-        StartHookAsync(hook);
+        StartHookAsync(hook, HookFailed);
     }
 
     private void OnKeyPressed(object? sender, KeyboardHookEventArgs e)
@@ -204,7 +206,7 @@ public class Hotkey : IDisposable
             if (!hook.IsRunning)
             {
                 DiagnosticsLog.Info("Restarting the global hotkey hook.");
-                StartHookAsync(hook);
+                StartHookAsync(hook, HookFailed);
             }
             else
             {
@@ -226,12 +228,33 @@ public class Hotkey : IDisposable
         return createdHook;
     }
 
-    private static void StartHookAsync(SimpleGlobalHook hook)
+    private static void StartHookAsync(SimpleGlobalHook hook, Action<string>? hookFailed)
     {
         Task runTask = hook.RunAsync();
         _ = runTask.ContinueWith(
-            task => DiagnosticsLog.Error("The global hotkey hook terminated with an exception.", task.Exception),
+            task =>
+            {
+                DiagnosticsLog.Error("The global hotkey hook terminated with an exception.", task.Exception);
+
+                string? message = GetHookFailureMessage(task.Exception);
+                if (message != null)
+                    hookFailed?.Invoke(message);
+            },
             TaskContinuationOptions.OnlyOnFaulted);
+    }
+
+    private static string? GetHookFailureMessage(AggregateException? exception)
+    {
+        if (exception == null)
+            return null;
+
+        foreach (var inner in exception.Flatten().InnerExceptions)
+        {
+            if (inner is HookException hookEx && hookEx.Result == SharpHook.Native.UioHookResult.ErrorAxApiDisabled)
+                return "Global hotkey unavailable — grant Accessibility permission in System Settings > Privacy & Security > Accessibility.";
+        }
+
+        return "Global hotkey failed to start.";
     }
 
     private void LogRelevantKeyEvent(string eventName, KeyboardHookEventArgs e, bool keyMatch, bool modifiersMatch)
