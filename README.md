@@ -97,7 +97,7 @@ The `Variables` section lets you declare named values that are substituted into 
 ```json
 {
   "Variables": {
-    "ShellExt": "ps1"
+    "ShellExt": "sh"
   },
   "Snippets": {
     "Install": "Run install.{ShellExt} to get started."
@@ -105,7 +105,7 @@ The `Variables` section lets you declare named values that are substituted into 
 }
 ```
 
-On macOS/Linux you would set `"ShellExt": "sh"`, on Windows `"ShellExt": "ps1"`. The snippet text `"Run install.{ShellExt} to get started."` expands to the correct value at apply/copy time, while the snippet source stays unchanged.
+On macOS/Linux you would set `"ShellExt": "sh"`, on Windows `"ShellExt": "cmd"` — those are the defaults the generated example config uses. The snippet text `"Run install.{ShellExt} to get started."` expands to the correct value at apply/copy time, while the snippet source stays unchanged.
 
 **Notes:**
 - Variable names are matched exactly as declared (case-sensitive).
