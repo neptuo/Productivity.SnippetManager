@@ -33,10 +33,10 @@ public class XmlIncludeTests : IDisposable
     private async Task<(List<SnippetModel> snippets, IReadOnlyList<string> filePaths)> LoadSnippetsAsync(string rootPath)
     {
         var configuration = new XmlConfiguration { FilePath = rootPath };
-        var provider = new XmlSnippetProvider(configuration);
+        using var provider = new XmlSnippetProvider(configuration);
         var context = new SnippetProviderContext();
         await provider.InitializeAsync(context);
-        return (context.Models.ToList(), provider.ResolvedFilePaths);
+        return (context.Models.ToList(), provider.ResolvedFilePaths.ToList());
     }
 
     [Fact]

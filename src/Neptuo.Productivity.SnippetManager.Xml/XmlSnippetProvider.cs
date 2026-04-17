@@ -34,9 +34,14 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
 
     private void LoadSnippets(ICollection<SnippetModel> result, string rootPath, List<string> allFilePaths)
     {
-        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var visited = new HashSet<string>(GetPathComparer());
         LoadSnippetsRecursive(result, rootPath, visited, allFilePaths);
     }
+
+    private static StringComparer GetPathComparer()
+        => OperatingSystem.IsWindows() || OperatingSystem.IsMacOS()
+            ? StringComparer.OrdinalIgnoreCase
+            : StringComparer.Ordinal;
 
     private void LoadSnippetsRecursive(ICollection<SnippetModel> result, string filePath, HashSet<string> visited, List<string> allFilePaths)
     {
@@ -51,7 +56,7 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
 
         XmlSnippetRoot? root;
         XmlSerializer serializer = new XmlSerializer(typeof(XmlSnippetRoot));
-        using (FileStream sourceContent = new FileStream(absolutePath, FileMode.Open))
+        using (FileStream sourceContent = new FileStream(absolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             root = (XmlSnippetRoot?)serializer.Deserialize(sourceContent);
 
         if (root == null)
@@ -104,7 +109,7 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
 
         var directories = filePaths
             .Select(p => Path.GetDirectoryName(p)!)
-            .Distinct(StringComparer.OrdinalIgnoreCase);
+            .Distinct(GetPathComparer());
 
         foreach (var dir in directories)
         {
@@ -113,6 +118,7 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
                 var watcher = new FileSystemWatcher(dir, "*.xml");
                 watcher.Changed += OnFileChanged;
                 watcher.Created += OnFileChanged;
+                watcher.Deleted += OnFileChanged;
                 watcher.Renamed += OnFileChanged;
                 watcher.EnableRaisingEvents = true;
                 watchers.Add(watcher);
@@ -122,7 +128,7 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
 
     private void OnFileChanged(object sender, FileSystemEventArgs e) => loadSnippetsTask = Task.Run(() =>
     {
-        if (resolvedFilePaths.Contains(e.FullPath, StringComparer.OrdinalIgnoreCase))
+        if (resolvedFilePaths.Contains(e.FullPath, GetPathComparer()))
         {
             lock (nextSnippets)
             {
@@ -146,11 +152,14 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
             await loadSnippetsTask;
             loadSnippetsTask = null;
 
-            SetupWatchers(resolvedFilePaths);
-            context.AddRange(nextSnippets);
-            lastSnippets.Clear();
-            lastSnippets.AddRange(nextSnippets);
-            nextSnippets.Clear();
+            lock (nextSnippets)
+            {
+                SetupWatchers(resolvedFilePaths);
+                context.AddRange(nextSnippets);
+                lastSnippets.Clear();
+                lastSnippets.AddRange(nextSnippets);
+                nextSnippets.Clear();
+            }
         }
     }
 
