@@ -1,5 +1,4 @@
 ﻿using Neptuo.Productivity.SnippetManager.Models;
-using System.Diagnostics;
 using System.Xml.Serialization;
 
 namespace Neptuo.Productivity.SnippetManager;
@@ -20,7 +19,6 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
     protected override Task InitializeOnceAsync(SnippetProviderContext context)
     {
         string sourcePath = configuration.GetFilePathOrDefault();
-        Trace.WriteLine($"XmlSnippetProvider.InitializeOnceAsync sourcePath='{sourcePath}' exists={File.Exists(sourcePath)}");
         if (!File.Exists(sourcePath))
             return Task.CompletedTask;
 
@@ -29,7 +27,6 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
             var filePaths = new List<string>();
             LoadSnippets(lastSnippets, sourcePath, filePaths);
             resolvedFilePaths = filePaths;
-            Trace.WriteLine($"XmlSnippetProvider.InitializeOnceAsync resolved {filePaths.Count} file(s): [{string.Join(", ", filePaths)}]");
             SetupWatchers(filePaths);
             context.AddRange(lastSnippets);
         });
@@ -107,10 +104,7 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
 
         var directories = filePaths
             .Select(p => Path.GetDirectoryName(p)!)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToList();
-
-        Trace.WriteLine($"XmlSnippetProvider.SetupWatchers watching {directories.Count} directory(ies): [{string.Join(", ", directories)}]");
+            .Distinct(StringComparer.OrdinalIgnoreCase);
 
         foreach (var dir in directories)
         {
@@ -123,16 +117,11 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
                 watcher.EnableRaisingEvents = true;
                 watchers.Add(watcher);
             }
-            else
-            {
-                Trace.WriteLine($"XmlSnippetProvider.SetupWatchers skipped missing directory '{dir}'");
-            }
         }
     }
 
     private void OnFileChanged(object sender, FileSystemEventArgs e) => loadSnippetsTask = Task.Run(() =>
     {
-        Trace.WriteLine($"XmlSnippetProvider.OnFileChanged {e.ChangeType} '{e.FullPath}'");
         if (resolvedFilePaths.Contains(e.FullPath, StringComparer.OrdinalIgnoreCase))
         {
             lock (nextSnippets)
@@ -143,12 +132,7 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
                 string sourcePath = configuration.GetFilePathOrDefault();
                 LoadSnippets(nextSnippets, sourcePath, filePaths);
                 resolvedFilePaths = filePaths;
-                Trace.WriteLine($"XmlSnippetProvider.OnFileChanged reloaded, now {filePaths.Count} file(s): [{string.Join(", ", filePaths)}]");
             }
-        }
-        else
-        {
-            Trace.WriteLine($"XmlSnippetProvider.OnFileChanged ignored (not in resolvedFilePaths)");
         }
     });
 

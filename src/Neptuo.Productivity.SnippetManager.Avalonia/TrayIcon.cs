@@ -56,12 +56,7 @@ public class TrayIcon : IDisposable
         // is not re-exported by Avalonia on macOS once the item has been
         // shown, so we replace the NativeMenuItem entirely inside the root
         // menu's Items collection.
-        menu.NeedsUpdate += (_, _) =>
-        {
-            DiagnosticsLog.Debug("TrayIcon root NativeMenu.NeedsUpdate fired");
-            menu.Items[xmlIndex] = BuildXmlSnippetsMenuItem(navigator);
-        };
-        menu.Opening += (_, _) => DiagnosticsLog.Debug("TrayIcon root NativeMenu.Opening fired");
+        menu.NeedsUpdate += (_, _) => menu.Items[xmlIndex] = BuildXmlSnippetsMenuItem(navigator);
 
         trayIcon = new TrayIconBase
         {
@@ -98,7 +93,6 @@ public class TrayIcon : IDisposable
     {
         var xmlMenu = new NativeMenuItem("XML snippets");
         var filePaths = navigator.GetXmlSnippetFilePaths();
-        DiagnosticsLog.Debug($"TrayIcon.BuildXmlSnippetsMenuItem filePaths.Count={filePaths.Count} [{string.Join(", ", filePaths)}]");
 
         if (filePaths.Count > 1)
         {

@@ -21,16 +21,12 @@ internal static class DiagnosticsLog
             {
                 AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
                 TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
-                Trace.Listeners.Add(new DiagnosticsTraceListener());
                 isInitialized = true;
             }
 
             WriteUnlocked("INFO", $"Diagnostics logging initialized. File='{filePath}', pid={Environment.ProcessId}, args={FormatArgs(args)}");
         }
     }
-
-    public static void Debug(string message)
-        => Write("DEBUG", message);
 
     public static void Info(string message)
         => Write("INFO", message);
@@ -69,8 +65,11 @@ internal static class DiagnosticsLog
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Failed to append diagnostics log: {ex}");
+            Trace.WriteLine($"Failed to append diagnostics log: {ex}");
         }
+
+        Trace.WriteLine(line);
+        Debug.WriteLine(line);
     }
 
     private static void EnsureLogDirectory()
@@ -101,19 +100,4 @@ internal static class DiagnosticsLog
 
     private static string FormatArgs(string[] args)
         => args.Length == 0 ? "<none>" : string.Join(", ", args);
-
-    private sealed class DiagnosticsTraceListener : TraceListener
-    {
-        public override void Write(string? message)
-        {
-            if (!string.IsNullOrEmpty(message))
-                DiagnosticsLog.Write("TRACE", message);
-        }
-
-        public override void WriteLine(string? message)
-        {
-            if (!string.IsNullOrEmpty(message))
-                DiagnosticsLog.Write("TRACE", message);
-        }
-    }
 }
