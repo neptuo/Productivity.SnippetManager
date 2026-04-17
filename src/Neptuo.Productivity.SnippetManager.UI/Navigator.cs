@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Neptuo.Productivity.SnippetManager.Services;
+using Neptuo.Productivity.SnippetManager.Variables;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
@@ -24,8 +25,9 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly Action shutdown;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly ConfigurationRepository configurationRepository;
+    private readonly SnippetExpansionPipeline expansionPipeline;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration, VariablesConfiguration? variables)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
@@ -34,6 +36,11 @@ public class Navigator : IClipboardService, ISendTextService
         this.getExampleConfiguration = getExampleConfiguration;
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
+        this.expansionPipeline = new SnippetExpansionPipeline(
+            new TokenSnippetVariableScanner(),
+            new ConfigurationVariableValueResolver(variables),
+            new TokenSnippetTextExpander()
+        );
 
         snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
     }
@@ -52,7 +59,7 @@ public class Navigator : IClipboardService, ISendTextService
         {
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
-            main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this), new CopySnippetCommand(this));
+            main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this, expansionPipeline), new CopySnippetCommand(this, expansionPipeline));
             UpdateWindowStickPointToCaret(main, stickToActiveCaret);
 
             _ = UpdateSnippetsAsync(main.ViewModel);

@@ -90,7 +90,7 @@ In addition to the XML snippets, you can declare some snippets using `Snippets` 
 
 The `Variables` section lets you declare named values that are substituted into snippet text at apply/copy time. This makes it easy to share snippets across machines or operating systems.
 
-**Syntax:** use `{VariableName}` placeholders inside any snippet text. To include a literal brace, escape it as `{{` or `}}`.
+**Syntax:** use `{VariableName}` placeholders inside any snippet text.
 
 **Configuration example:**
 
@@ -109,6 +109,7 @@ On macOS/Linux you would set `"ShellExt": "sh"`, on Windows `"ShellExt": "ps1"`.
 
 **Notes:**
 - Variable names are matched exactly as declared (case-sensitive).
-- Unknown tokens (variables not declared in `Variables`) are left verbatim in the expanded text.
+- Unknown tokens (variables not declared in `Variables`) are left verbatim in the expanded text — you typically don't need to escape literal `{Name}` content unless `Name` happens to match a declared variable.
+- To prevent a `{Name}` span from being expanded (when the name collides with a declared variable), wrap it as `{{Name}}`. The braces are preserved in the output.
 - If a snippet text fails to parse (e.g. contains JSON-like `{...}` syntax), the text is returned unchanged.
 - Snippet search always runs against the raw (unexpanded) template text.

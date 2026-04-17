@@ -1,4 +1,5 @@
 ﻿using Neptuo.Productivity.SnippetManager.Models;
+using Neptuo.Productivity.SnippetManager.Variables;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 
@@ -6,6 +7,12 @@ namespace Neptuo.Productivity.SnippetManager.Views.DesignData;
 
 internal class ViewModelLocator
 {
+    private static readonly SnippetExpansionPipeline emptyPipeline = new SnippetExpansionPipeline(
+        new TokenSnippetVariableScanner(),
+        new ConfigurationVariableValueResolver(null),
+        new TokenSnippetTextExpander()
+    );
+
     private static MainViewModel? mainViewModel;
     public static MainViewModel MainViewModel
     {
@@ -17,8 +24,8 @@ internal class ViewModelLocator
 
                 mainViewModel = new MainViewModel(
                     tree, 
-                    new ApplySnippetCommand(InteropService.Instance), 
-                    new CopySnippetCommand(InteropService.Instance)
+                    new ApplySnippetCommand(InteropService.Instance, emptyPipeline), 
+                    new CopySnippetCommand(InteropService.Instance, emptyPipeline)
                 );
 
                 var gitHub = tree.GetRoots().First(s => s.Title == "GitHub");
