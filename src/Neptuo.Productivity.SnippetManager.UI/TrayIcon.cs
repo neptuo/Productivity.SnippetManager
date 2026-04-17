@@ -8,7 +8,7 @@ public class TrayIcon : IDisposable
     private readonly NotifyIcon icon;
     private readonly Hotkey hotkey;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey)
+    public TrayIcon(Navigator navigator, Hotkey hotkey, Action<Action> subscribeXmlFilesChanged)
     {
         this.hotkey = hotkey;
 
@@ -28,18 +28,18 @@ public class TrayIcon : IDisposable
         icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
         icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
         BindHotkey(icon.ContextMenuStrip);
-        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator);
+        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator, subscribeXmlFilesChanged);
         icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) => navigator.OpenHelp();
         icon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); navigator.Shutdown(); };
     }
 
-    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator)
+    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator, Action<Action> subscribeXmlFilesChanged)
     {
         var xmlMenu = new ToolStripMenuItem("XML snippets");
         xmlMenu.Click += (s, ev) => navigator.OpenXmlSnippets();
         contextMenu.Items.Add(xmlMenu);
 
-        contextMenu.Opening += (sender, e) =>
+        void Rebuild()
         {
             xmlMenu.DropDownItems.Clear();
 
@@ -53,7 +53,10 @@ public class TrayIcon : IDisposable
                     item.Click += (s, ev) => navigator.OpenXmlSnippets(path);
                 }
             }
-        };
+        }
+
+        Rebuild();
+        subscribeXmlFilesChanged(Rebuild);
     }
 
     private void BindHotkey(ContextMenuStrip contextMenu)

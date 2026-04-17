@@ -14,7 +14,7 @@ public class TrayIcon : IDisposable
     private NativeMenuItem? hotkeyMenuItem;
     private bool isPaused;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey)
+    public TrayIcon(Navigator navigator, Hotkey hotkey, Action<Action> subscribeXmlFilesChanged)
     {
         this.hotkey = hotkey;
 
@@ -32,10 +32,8 @@ public class TrayIcon : IDisposable
         hotkeyMenuItem.Click += (_, _) => ToggleHotkey();
         menu.Items.Add(hotkeyMenuItem);
 
-        var xmlItem = BuildXmlSnippetsMenu(navigator);
+        var xmlItem = BuildXmlSnippetsMenu(navigator, subscribeXmlFilesChanged);
         menu.Items.Add(xmlItem);
-
-        menu.NeedsUpdate += (_, _) => UpdateXmlSnippetsMenu(xmlItem, navigator);
 
         var aboutItem = new NativeMenuItem("About");
         aboutItem.Click += (_, _) => navigator.OpenHelp();
@@ -83,34 +81,37 @@ public class TrayIcon : IDisposable
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
     }
 
-    private static NativeMenuItem BuildXmlSnippetsMenu(Navigator navigator)
+    private static NativeMenuItem BuildXmlSnippetsMenu(Navigator navigator, Action<Action> subscribeXmlFilesChanged)
     {
         var xmlMenu = new NativeMenuItem("XML snippets");
         xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets();
 
-        return xmlMenu;
-    }
-
-    private static void UpdateXmlSnippetsMenu(NativeMenuItem xmlMenu, Navigator navigator)
-    {
-        var filePaths = navigator.GetXmlSnippetFilePaths();
-        if (filePaths.Count > 1)
+        void Rebuild()
         {
-            var subMenu = new NativeMenu();
-            foreach (var path in filePaths)
+            var filePaths = navigator.GetXmlSnippetFilePaths();
+            if (filePaths.Count > 1)
             {
-                string label = Path.GetFileName(path);
-                var item = new NativeMenuItem(label);
-                var capturedPath = path;
-                item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
-                subMenu.Items.Add(item);
+                var subMenu = new NativeMenu();
+                foreach (var path in filePaths)
+                {
+                    string label = Path.GetFileName(path);
+                    var item = new NativeMenuItem(label);
+                    var capturedPath = path;
+                    item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
+                    subMenu.Items.Add(item);
+                }
+                xmlMenu.Menu = subMenu;
             }
-            xmlMenu.Menu = subMenu;
+            else
+            {
+                xmlMenu.Menu = null;
+            }
         }
-        else
-        {
-            xmlMenu.Menu = null;
-        }
+
+        Rebuild();
+        subscribeXmlFilesChanged(Rebuild);
+
+        return xmlMenu;
     }
 
     private void OnHookFailed(string message)
