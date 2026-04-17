@@ -55,7 +55,6 @@ namespace Neptuo.Productivity.SnippetManager
             configurationRepository,
             enabled => configurationWatcher.EnableRaisingEventsFromConfigurationWatcher(enabled),
             Shutdown,
-            GetXmlConfigurationPath,
             GetExampleConfiguration
         );
 

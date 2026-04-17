@@ -109,7 +109,7 @@ public class TrayIcon : IDisposable
         }
         else
         {
-            xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets();
+            xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets(filePaths[0]);
         }
 
         return xmlMenu;

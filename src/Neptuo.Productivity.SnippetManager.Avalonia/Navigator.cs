@@ -21,19 +21,17 @@ public class Navigator : IClipboardService, ISendTextService
     private Task snippetProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
-    private readonly Func<string> getXmlSnippetsPath;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly Func<string> getCurrentHotkey;
     private readonly ConfigurationRepository configurationRepository;
     private int? lastExternalProcessId;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
-        this.getXmlSnippetsPath = getXmlSnippetsPath;
         this.getExampleConfiguration = getExampleConfiguration;
         this.getCurrentHotkey = getCurrentHotkey;
         this.snippetProviderContext = new();
@@ -171,9 +169,8 @@ public class Navigator : IClipboardService, ISendTextService
         OpenFile(filePath);
     }
 
-    public void OpenXmlSnippets(string? filePath = null)
+    public void OpenXmlSnippets(string filePath)
     {
-        filePath ??= getXmlSnippetsPath();
         if (!File.Exists(filePath))
         {
             File.WriteAllText(filePath, """

@@ -67,7 +67,6 @@ public partial class App : Application
         configurationRepository,
         enabled => configurationWatcher?.EnableRaisingEventsFromConfigurationWatcher(enabled),
         shutdown,
-        GetXmlConfigurationPath,
         GetExampleConfiguration,
         GetCurrentHotkey
     );

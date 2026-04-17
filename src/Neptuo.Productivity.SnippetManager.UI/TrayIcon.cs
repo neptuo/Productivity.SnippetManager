@@ -36,7 +36,7 @@ public class TrayIcon : IDisposable
     private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
     {
         var xmlMenu = new ToolStripMenuItem("XML snippets");
-        xmlMenu.Click += (s, ev) => navigator.OpenXmlSnippets();
+        xmlMenu.Click += (s, ev) => navigator.OpenXmlSnippets(getXmlSnippetFilePaths()[0]);
         contextMenu.Items.Add(xmlMenu);
 
         void Rebuild()
