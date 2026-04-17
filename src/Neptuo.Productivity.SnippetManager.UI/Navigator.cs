@@ -22,17 +22,15 @@ public class Navigator : IClipboardService, ISendTextService
     private Task snippetProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
-    private readonly Func<string> getXmlSnippetsPath;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly ConfigurationRepository configurationRepository;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
-        this.getXmlSnippetsPath = getXmlSnippetsPath;
         this.getExampleConfiguration = getExampleConfiguration;
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
@@ -149,9 +147,8 @@ public class Navigator : IClipboardService, ISendTextService
         Process.Start("explorer", filePath);
     }
 
-    public void OpenXmlSnippets()
+    public void OpenXmlSnippets(string filePath)
     {
-        string filePath = getXmlSnippetsPath();
         if (!File.Exists(filePath))
         {
             var result = MessageBox.Show("XML snippets file doesn't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);

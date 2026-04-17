@@ -8,7 +8,13 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
     private readonly List<SnippetModel> lastSnippets = new();
     private readonly List<SnippetModel> nextSnippets = new();
     private Task? loadSnippetsTask = null;
-    private FileSystemWatcher? watcher;
+    private readonly List<FileSystemWatcher> watchers = new();
+    private List<string> resolvedFilePaths = new();
+
+    /// <summary>
+    /// Returns the list of all XML files involved (root + includes), resolved after initialization or reload.
+    /// </summary>
+    public IReadOnlyList<string> ResolvedFilePaths => resolvedFilePaths;
 
     protected override Task InitializeOnceAsync(SnippetProviderContext context)
     {
@@ -16,39 +22,75 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
         if (!File.Exists(sourcePath))
             return Task.CompletedTask;
 
-        watcher = new FileSystemWatcher(Path.GetDirectoryName(sourcePath)!, "*.xml");
-        watcher.Changed += OnFileChanged;
-        watcher.EnableRaisingEvents = true;
-
         return Task.Run(() =>
         {
-            LoadSnippets(lastSnippets);
+            var filePaths = new List<string>();
+            LoadSnippets(lastSnippets, sourcePath, filePaths);
+            resolvedFilePaths = filePaths;
+            SetupWatchers(filePaths);
             context.AddRange(lastSnippets);
         });
     }
 
-    private void LoadSnippets(ICollection<SnippetModel> result)
+    private void LoadSnippets(ICollection<SnippetModel> result, string rootPath, List<string> allFilePaths)
     {
-        string sourcePath = configuration.GetFilePathOrDefault();
+        var visited = new HashSet<string>(GetPathComparer());
+        LoadSnippetsRecursive(result, rootPath, visited, allFilePaths);
+    }
+
+    private static StringComparer GetPathComparer()
+        => OperatingSystem.IsWindows() || OperatingSystem.IsMacOS()
+            ? StringComparer.OrdinalIgnoreCase
+            : StringComparer.Ordinal;
+
+    private void LoadSnippetsRecursive(ICollection<SnippetModel> result, string filePath, HashSet<string> visited, List<string> allFilePaths)
+    {
+        string absolutePath = Path.GetFullPath(filePath);
+        if (!visited.Add(absolutePath))
+            return;
+
+        if (!File.Exists(absolutePath))
+            return;
+
+        allFilePaths.Add(absolutePath);
 
         XmlSnippetRoot? root;
         XmlSerializer serializer = new XmlSerializer(typeof(XmlSnippetRoot));
-        using (FileStream sourceContent = new FileStream(sourcePath, FileMode.Open))
+        using (FileStream sourceContent = new FileStream(absolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             root = (XmlSnippetRoot?)serializer.Deserialize(sourceContent);
 
-        if (root == null || root.Snippets == null)
+        if (root == null)
             return;
 
-        foreach (var snippet in root.Snippets)
+        if (root.Snippets != null)
         {
-            string? text = snippet.TextAttribute ?? snippet.Text;
-            if (text == null)
-                continue;
+            foreach (var snippet in root.Snippets)
+            {
+                string? text = snippet.TextAttribute ?? snippet.Text;
+                if (text == null)
+                    continue;
 
-            string title = snippet.Title ?? text;
-            var model = new SnippetModel(title, text, priority: MapPriority(snippet.Priority));
+                string title = snippet.Title ?? text;
+                var model = new SnippetModel(title, text, priority: MapPriority(snippet.Priority));
 
-            result.Add(model);
+                result.Add(model);
+            }
+        }
+
+        if (root.Includes != null)
+        {
+            string? baseDir = Path.GetDirectoryName(absolutePath);
+            foreach (var include in root.Includes)
+            {
+                if (string.IsNullOrEmpty(include.Path))
+                    continue;
+
+                string includePath = baseDir != null
+                    ? Path.GetFullPath(include.Path, baseDir)
+                    : Path.GetFullPath(include.Path);
+
+                LoadSnippetsRecursive(result, includePath, visited, allFilePaths);
+            }
         }
     }
 
@@ -61,15 +103,41 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
         _ => throw Ensure.Exception.NotSupported(priority)
     };
 
+    private void SetupWatchers(List<string> filePaths)
+    {
+        DisposeWatchers();
+
+        var directories = filePaths
+            .Select(p => Path.GetDirectoryName(p)!)
+            .Distinct(GetPathComparer());
+
+        foreach (var dir in directories)
+        {
+            if (dir != null && Directory.Exists(dir))
+            {
+                var watcher = new FileSystemWatcher(dir, "*.xml");
+                watcher.Changed += OnFileChanged;
+                watcher.Created += OnFileChanged;
+                watcher.Deleted += OnFileChanged;
+                watcher.Renamed += OnFileChanged;
+                watcher.EnableRaisingEvents = true;
+                watchers.Add(watcher);
+            }
+        }
+    }
+
     private void OnFileChanged(object sender, FileSystemEventArgs e) => loadSnippetsTask = Task.Run(() =>
     {
-        if (e.FullPath == configuration.GetFilePathOrDefault())
+        if (resolvedFilePaths.Contains(e.FullPath, GetPathComparer()))
         {
             lock (nextSnippets)
             {
                 Thread.Sleep(100);
                 nextSnippets.Clear();
-                LoadSnippets(nextSnippets);
+                var filePaths = new List<string>();
+                string sourcePath = configuration.GetFilePathOrDefault();
+                LoadSnippets(nextSnippets, sourcePath, filePaths);
+                resolvedFilePaths = filePaths;
             }
         }
     });
@@ -84,13 +152,25 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
             await loadSnippetsTask;
             loadSnippetsTask = null;
 
-            context.AddRange(nextSnippets);
-            lastSnippets.Clear();
-            lastSnippets.AddRange(nextSnippets);
-            nextSnippets.Clear();
+            lock (nextSnippets)
+            {
+                SetupWatchers(resolvedFilePaths);
+                context.AddRange(nextSnippets);
+                lastSnippets.Clear();
+                lastSnippets.AddRange(nextSnippets);
+                nextSnippets.Clear();
+            }
         }
     }
 
+    private void DisposeWatchers()
+    {
+        foreach (var watcher in watchers)
+            watcher.Dispose();
+
+        watchers.Clear();
+    }
+
     public void Dispose()
-        => watcher?.Dispose();
+        => DisposeWatchers();
 }

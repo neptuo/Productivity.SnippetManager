@@ -8,7 +8,7 @@ public class TrayIcon : IDisposable
     private readonly NotifyIcon icon;
     private readonly Hotkey hotkey;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey)
+    public TrayIcon(Navigator navigator, Hotkey hotkey, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
     {
         this.hotkey = hotkey;
 
@@ -28,9 +28,36 @@ public class TrayIcon : IDisposable
         icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
         icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
         BindHotkey(icon.ContextMenuStrip);
-        icon.ContextMenuStrip.Items.Add("XML snippets").Click += (sender, e) => navigator.OpenXmlSnippets();
+        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator, getXmlSnippetFilePaths);
         icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) => navigator.OpenHelp();
         icon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); navigator.Shutdown(); };
+    }
+
+    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
+    {
+        var xmlMenu = new ToolStripMenuItem("XML snippets");
+        xmlMenu.Click += (s, ev) => navigator.OpenXmlSnippets(getXmlSnippetFilePaths()[0]);
+        contextMenu.Items.Add(xmlMenu);
+
+        void Rebuild()
+        {
+            xmlMenu.DropDownItems.Clear();
+
+            var filePaths = getXmlSnippetFilePaths();
+            if (filePaths.Count > 1)
+            {
+                foreach (var path in filePaths)
+                {
+                    string label = Path.GetFileName(path);
+                    var item = xmlMenu.DropDownItems.Add(label);
+                    item.Click += (s, ev) => navigator.OpenXmlSnippets(path);
+                }
+            }
+        }
+
+        Rebuild();
+        // Rebuild on every menu open so newly included files appear without restarting the app.
+        contextMenu.Opening += (s, ev) => Rebuild();
     }
 
     private void BindHotkey(ContextMenuStrip contextMenu)

@@ -13,6 +13,7 @@ public partial class App : Application
 {
     private Configuration configuration = new();
     private ISnippetProvider provider = new CompositeSnippetProvider(Array.Empty<ISnippetProvider>());
+    private XmlSnippetProvider? xmlProvider;
     private Navigator navigator = null!;
     private TrayIcon? trayIcon;
     private ConfigurationWatcher? configurationWatcher;
@@ -26,7 +27,7 @@ public partial class App : Application
     {
         snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Clipboard", c => new ClipboardSnippetProvider(), true);
         snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Guid", c => new GuidSnippetProvider(), true);
-        snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => new XmlSnippetProvider(c), true);
+        snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => xmlProvider = new XmlSnippetProvider(c), true);
         snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
         snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
         configurationRepository = new ConfigurationRepository(snippetProviders);
@@ -53,7 +54,7 @@ public partial class App : Application
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator(() => RequestShutdown(desktop));
 
-            trayIcon = new TrayIcon(navigator, hotkey);
+            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
             hotkey.Bind(navigator, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
         }
@@ -66,7 +67,6 @@ public partial class App : Application
         configurationRepository,
         enabled => configurationWatcher?.EnableRaisingEventsFromConfigurationWatcher(enabled),
         shutdown,
-        GetXmlConfigurationPath,
         GetExampleConfiguration,
         GetCurrentHotkey
     );
@@ -106,6 +106,14 @@ public partial class App : Application
 
     private string GetXmlConfigurationPath()
         => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
+
+    private IReadOnlyList<string> GetXmlSnippetFilePaths()
+    {
+        if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
+            return xmlProvider.ResolvedFilePaths;
+
+        return new[] { GetXmlConfigurationPath() };
+    }
 
     private Configuration GetExampleConfiguration()
     {
@@ -159,7 +167,7 @@ public partial class App : Application
             var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             navigator = CreateNavigator(() => RequestShutdown(desktop));
             trayIcon?.Dispose();
-            trayIcon = new TrayIcon(navigator, hotkey);
+            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
             hotkey.UnBind();
             hotkey.Bind(navigator, configuration.General?.HotKey);
         });
