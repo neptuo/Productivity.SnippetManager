@@ -23,16 +23,18 @@ public class Navigator : IClipboardService, ISendTextService
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
     private readonly Func<string> getXmlSnippetsPath;
+    private readonly Func<IReadOnlyList<string>> getXmlSnippetFilePaths;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly ConfigurationRepository configurationRepository;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<IReadOnlyList<string>> getXmlSnippetFilePaths, Func<Configuration> getExampleConfiguration)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
+        this.getXmlSnippetFilePaths = getXmlSnippetFilePaths;
         this.getExampleConfiguration = getExampleConfiguration;
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
@@ -149,9 +151,9 @@ public class Navigator : IClipboardService, ISendTextService
         Process.Start("explorer", filePath);
     }
 
-    public void OpenXmlSnippets()
+    public void OpenXmlSnippets(string? filePath = null)
     {
-        string filePath = getXmlSnippetsPath();
+        filePath ??= getXmlSnippetsPath();
         if (!File.Exists(filePath))
         {
             var result = MessageBox.Show("XML snippets file doesn't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -177,6 +179,9 @@ public class Navigator : IClipboardService, ISendTextService
         // Duplicated in App.xaml
         Process.Start("explorer", filePath);
     }
+
+    public IReadOnlyList<string> GetXmlSnippetFilePaths()
+        => getXmlSnippetFilePaths();
 
     public void OpenGitHub() => Process.Start(new ProcessStartInfo()
     {

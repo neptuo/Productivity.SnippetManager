@@ -2,6 +2,8 @@
 
 public class CompositeSnippetProvider(IEnumerable<ISnippetProvider> snippetProviders) : ISnippetProvider
 {
+    public IEnumerable<ISnippetProvider> Providers => snippetProviders;
+
     public Task InitializeAsync(SnippetProviderContext context) 
         => Task.WhenAll(snippetProviders.Select(p => p.InitializeAsync(context)));
 

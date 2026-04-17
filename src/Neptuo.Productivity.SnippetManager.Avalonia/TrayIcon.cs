@@ -1,3 +1,4 @@
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using NativeMenu = Avalonia.Controls.NativeMenu;
@@ -31,8 +32,7 @@ public class TrayIcon : IDisposable
         hotkeyMenuItem.Click += (_, _) => ToggleHotkey();
         menu.Items.Add(hotkeyMenuItem);
 
-        var xmlItem = new NativeMenuItem("XML snippets");
-        xmlItem.Click += (_, _) => navigator.OpenXmlSnippets();
+        var xmlItem = BuildXmlSnippetsMenu(navigator);
         menu.Items.Add(xmlItem);
 
         var aboutItem = new NativeMenuItem("About");
@@ -79,6 +79,39 @@ public class TrayIcon : IDisposable
         }
 
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
+    }
+
+    private static NativeMenuItem BuildXmlSnippetsMenu(Navigator navigator)
+    {
+        var xmlMenu = new NativeMenuItem("XML snippets");
+        var subMenu = new NativeMenu();
+        xmlMenu.Menu = subMenu;
+
+        subMenu.NeedsUpdate += (_, _) =>
+        {
+            subMenu.Items.Clear();
+
+            var filePaths = navigator.GetXmlSnippetFilePaths();
+            if (filePaths.Count <= 1)
+            {
+                var openItem = new NativeMenuItem("Open");
+                openItem.Click += (_, _) => navigator.OpenXmlSnippets();
+                subMenu.Items.Add(openItem);
+            }
+            else
+            {
+                foreach (var path in filePaths)
+                {
+                    string label = Path.GetFileName(path);
+                    var item = new NativeMenuItem(label);
+                    var capturedPath = path;
+                    item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
+                    subMenu.Items.Add(item);
+                }
+            }
+        };
+
+        return xmlMenu;
     }
 
     private void OnHookFailed(string message)

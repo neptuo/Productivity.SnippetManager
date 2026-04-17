@@ -7,4 +7,7 @@ public class XmlSnippetRoot
 {
     [XmlElement("Snippet")]
     public List<XmlSnippetEntry>? Snippets { get; set; }
+
+    [XmlElement("Include")]
+    public List<XmlIncludeEntry>? Includes { get; set; }
 }

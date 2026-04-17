@@ -28,9 +28,35 @@ public class TrayIcon : IDisposable
         icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
         icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
         BindHotkey(icon.ContextMenuStrip);
-        icon.ContextMenuStrip.Items.Add("XML snippets").Click += (sender, e) => navigator.OpenXmlSnippets();
+        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator);
         icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) => navigator.OpenHelp();
         icon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); navigator.Shutdown(); };
+    }
+
+    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator)
+    {
+        var xmlMenu = new ToolStripMenuItem("XML snippets");
+        contextMenu.Items.Add(xmlMenu);
+
+        contextMenu.Opening += (sender, e) =>
+        {
+            xmlMenu.DropDownItems.Clear();
+
+            var filePaths = navigator.GetXmlSnippetFilePaths();
+            if (filePaths.Count <= 1)
+            {
+                xmlMenu.DropDownItems.Add("Open").Click += (s, ev) => navigator.OpenXmlSnippets();
+            }
+            else
+            {
+                foreach (var path in filePaths)
+                {
+                    string label = Path.GetFileName(path);
+                    var item = xmlMenu.DropDownItems.Add(label);
+                    item.Click += (s, ev) => navigator.OpenXmlSnippets(path);
+                }
+            }
+        };
     }
 
     private void BindHotkey(ContextMenuStrip contextMenu)

@@ -57,11 +57,43 @@ namespace Neptuo.Productivity.SnippetManager
             enabled => configurationWatcher.EnableRaisingEventsFromConfigurationWatcher(enabled),
             Shutdown,
             GetXmlConfigurationPath,
+            GetXmlSnippetFilePaths,
             GetExampleConfiguration
         );
 
         private string GetXmlConfigurationPath() 
             => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
+
+        private IReadOnlyList<string> GetXmlSnippetFilePaths()
+        {
+            if (provider is CompositeSnippetProvider)
+            {
+                // Find the XmlSnippetProvider through the provider chain
+                var xmlProvider = FindXmlSnippetProvider(provider);
+                if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
+                    return xmlProvider.ResolvedFilePaths;
+            }
+
+            return new[] { GetXmlConfigurationPath() };
+        }
+
+        private static XmlSnippetProvider? FindXmlSnippetProvider(ISnippetProvider provider)
+        {
+            if (provider is XmlSnippetProvider xmlProvider)
+                return xmlProvider;
+
+            if (provider is CompositeSnippetProvider composite)
+            {
+                foreach (var child in composite.Providers)
+                {
+                    var found = FindXmlSnippetProvider(child);
+                    if (found != null)
+                        return found;
+                }
+            }
+
+            return null;
+        }
 
         private Configuration GetExampleConfiguration()
         {
