@@ -28,7 +28,7 @@ namespace Neptuo.Productivity.SnippetManager
         {
             snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Clipboard", c => new ClipboardSnippetProvider(), true);
             snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Guid", c => new GuidSnippetProvider(), true);
-            snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => new XmlSnippetProvider(c), true);
+            snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => xmlProvider = new XmlSnippetProvider(c), true);
             snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
             snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
             configurationRepository = new ConfigurationRepository(snippetProviders);
@@ -43,7 +43,6 @@ namespace Neptuo.Productivity.SnippetManager
         {
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
-            xmlProvider = ExtractXmlProvider(provider);
             navigator = CreateNavigator();
             trayIcon = new TrayIcon(navigator, hotkey);
 
@@ -71,11 +70,6 @@ namespace Neptuo.Productivity.SnippetManager
 
             return new[] { GetXmlConfigurationPath() };
         }
-
-        private static XmlSnippetProvider? ExtractXmlProvider(ISnippetProvider provider)
-            => provider is CompositeSnippetProvider composite
-                ? composite.Providers.OfType<XmlSnippetProvider>().FirstOrDefault()
-                : provider as XmlSnippetProvider;
 
         private Configuration GetExampleConfiguration()
         {
@@ -126,7 +120,6 @@ namespace Neptuo.Productivity.SnippetManager
 
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
-                    xmlProvider = ExtractXmlProvider(provider);
                     navigator = CreateNavigator();
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)

@@ -27,7 +27,7 @@ public partial class App : Application
     {
         snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Clipboard", c => new ClipboardSnippetProvider(), true);
         snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Guid", c => new GuidSnippetProvider(), true);
-        snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => new XmlSnippetProvider(c), true);
+        snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => xmlProvider = new XmlSnippetProvider(c), true);
         snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
         snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
         configurationRepository = new ConfigurationRepository(snippetProviders);
@@ -52,7 +52,6 @@ public partial class App : Application
 
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
-            xmlProvider = ExtractXmlProvider(provider);
             navigator = CreateNavigator(() => RequestShutdown(desktop));
 
             trayIcon = new TrayIcon(navigator, hotkey);
@@ -118,11 +117,6 @@ public partial class App : Application
         return new[] { GetXmlConfigurationPath() };
     }
 
-    private static XmlSnippetProvider? ExtractXmlProvider(ISnippetProvider provider)
-        => provider is CompositeSnippetProvider composite
-            ? composite.Providers.OfType<XmlSnippetProvider>().FirstOrDefault()
-            : provider as XmlSnippetProvider;
-
     private Configuration GetExampleConfiguration()
     {
         var example = new Configuration();
@@ -171,7 +165,6 @@ public partial class App : Application
 
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
-            xmlProvider = ExtractXmlProvider(provider);
 
             var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             navigator = CreateNavigator(() => RequestShutdown(desktop));
