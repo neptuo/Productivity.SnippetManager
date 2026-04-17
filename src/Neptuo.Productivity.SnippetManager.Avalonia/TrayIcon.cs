@@ -32,8 +32,8 @@ public class TrayIcon : IDisposable
         hotkeyMenuItem.Click += (_, _) => ToggleHotkey();
         menu.Items.Add(hotkeyMenuItem);
 
-        var xmlItem = BuildXmlSnippetsMenu(navigator, menu);
-        menu.Items.Add(xmlItem);
+        int xmlIndex = menu.Items.Count;
+        menu.Items.Add(BuildXmlSnippetsMenuItem(navigator));
 
         var aboutItem = new NativeMenuItem("About");
         aboutItem.Click += (_, _) => navigator.OpenHelp();
@@ -49,6 +49,19 @@ public class TrayIcon : IDisposable
             navigator.Shutdown();
         };
         menu.Items.Add(exitItem);
+
+        // Rebuild the XML snippets item in place on every menu open so that
+        // newly included files (or a single-file fallback) are re-exported to
+        // the macOS status bar menu. Mutating a submenu via xmlMenu.Menu=...
+        // is not re-exported by Avalonia on macOS once the item has been
+        // shown, so we replace the NativeMenuItem entirely inside the root
+        // menu's Items collection.
+        menu.NeedsUpdate += (_, _) =>
+        {
+            DiagnosticsLog.Debug("TrayIcon root NativeMenu.NeedsUpdate fired");
+            menu.Items[xmlIndex] = BuildXmlSnippetsMenuItem(navigator);
+        };
+        menu.Opening += (_, _) => DiagnosticsLog.Debug("TrayIcon root NativeMenu.Opening fired");
 
         trayIcon = new TrayIconBase
         {
@@ -81,43 +94,29 @@ public class TrayIcon : IDisposable
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
     }
 
-    private static NativeMenuItem BuildXmlSnippetsMenu(Navigator navigator, NativeMenu rootMenu)
+    private static NativeMenuItem BuildXmlSnippetsMenuItem(Navigator navigator)
     {
         var xmlMenu = new NativeMenuItem("XML snippets");
-        xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets();
+        var filePaths = navigator.GetXmlSnippetFilePaths();
+        DiagnosticsLog.Debug($"TrayIcon.BuildXmlSnippetsMenuItem filePaths.Count={filePaths.Count} [{string.Join(", ", filePaths)}]");
 
-        void Rebuild()
+        if (filePaths.Count > 1)
         {
-            var filePaths = navigator.GetXmlSnippetFilePaths();
-            DiagnosticsLog.Debug($"TrayIcon.BuildXmlSnippetsMenu.Rebuild filePaths.Count={filePaths.Count} [{string.Join(", ", filePaths)}]");
-            if (filePaths.Count > 1)
+            var subMenu = new NativeMenu();
+            foreach (var path in filePaths)
             {
-                var subMenu = new NativeMenu();
-                foreach (var path in filePaths)
-                {
-                    string label = Path.GetFileName(path);
-                    var item = new NativeMenuItem(label);
-                    var capturedPath = path;
-                    item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
-                    subMenu.Items.Add(item);
-                }
-                xmlMenu.Menu = subMenu;
+                string label = Path.GetFileName(path);
+                var item = new NativeMenuItem(label);
+                var capturedPath = path;
+                item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
+                subMenu.Items.Add(item);
             }
-            else
-            {
-                xmlMenu.Menu = null;
-            }
+            xmlMenu.Menu = subMenu;
         }
-
-        Rebuild();
-        // Rebuild on every menu open so newly included files appear without restarting the app.
-        // NeedsUpdate is the macOS-native pattern for refreshing NativeMenu before display.
-        rootMenu.NeedsUpdate += (_, _) =>
+        else
         {
-            DiagnosticsLog.Debug("TrayIcon root NativeMenu.NeedsUpdate fired");
-            Rebuild();
-        };
-        rootMenu.Opening += (_, _) => DiagnosticsLog.Debug("TrayIcon root NativeMenu.Opening fired");
+            xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets();
+        }
 
         return xmlMenu;
     }
