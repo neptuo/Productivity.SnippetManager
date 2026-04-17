@@ -117,17 +117,15 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     navigator.CloseMain();
 
-                    string? oldHotKey = configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey;
-
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
                     navigator = CreateNavigator();
 
-                    if (hotkey != null && configuration.General?.HotKey != oldHotKey)
-                    {
-                        hotkey.UnBind();
-                        hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
-                    }
+                    trayIcon.Dispose();
+                    trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
+
+                    hotkey.UnBind();
+                    hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
                 });
             }
         }
