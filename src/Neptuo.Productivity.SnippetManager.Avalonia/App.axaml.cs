@@ -21,7 +21,6 @@ public partial class App : Application
     private readonly ConfigurationRepository configurationRepository;
     private bool isShuttingDown;
     private bool areResourcesDisposed;
-    private Action? xmlFilesChangedCallback;
 
     public App()
     {
@@ -53,9 +52,8 @@ public partial class App : Application
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator(() => RequestShutdown(desktop));
-            WireXmlFileChanges();
 
-            trayIcon = new TrayIcon(navigator, hotkey, SubscribeToXmlFilesChanged);
+            trayIcon = new TrayIcon(navigator, hotkey);
             hotkey.Bind(navigator, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
         }
@@ -148,19 +146,6 @@ public partial class App : Application
     private string GetCurrentHotkey()
         => configuration.General?.HotKey ?? GeneralConfiguration.DefaultHotKey;
 
-    private void SubscribeToXmlFilesChanged(Action callback)
-        => xmlFilesChangedCallback = callback;
-
-    private void WireXmlFileChanges()
-    {
-        var xmlProvider = FindXmlSnippetProvider(provider);
-        if (xmlProvider != null)
-            xmlProvider.FilesChanged += OnXmlFilesChanged;
-    }
-
-    private void OnXmlFilesChanged()
-        => Dispatcher.UIThread.Post(() => xmlFilesChangedCallback?.Invoke());
-
     private Configuration CreateConfiguration()
     {
         var filePath = GetConfigurationPath();
@@ -201,9 +186,8 @@ public partial class App : Application
 
             var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             navigator = CreateNavigator(() => RequestShutdown(desktop));
-            WireXmlFileChanges();
             trayIcon?.Dispose();
-            trayIcon = new TrayIcon(navigator, hotkey, SubscribeToXmlFilesChanged);
+            trayIcon = new TrayIcon(navigator, hotkey);
             hotkey.UnBind();
             hotkey.Bind(navigator, configuration.General?.HotKey);
         });

@@ -21,9 +21,7 @@ namespace Neptuo.Productivity.SnippetManager
         private ConfigurationWatcher configurationWatcher;
         private Hotkey hotkey;
         private readonly SnippetProviderCollection snippetProviders = new SnippetProviderCollection();
-        private readonly ConfigurationRepository configurationRepository;
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        private readonly ConfigurationRepository configurationRepository;#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public App()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
@@ -40,32 +38,16 @@ namespace Neptuo.Productivity.SnippetManager
 #endif
         }
 
-        private Action? xmlFilesChangedCallback;
-
         protected override void OnStartup(StartupEventArgs e)
         {
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator();
-            WireXmlFileChanges();
-            trayIcon = new TrayIcon(navigator, hotkey, SubscribeToXmlFilesChanged);
+            trayIcon = new TrayIcon(navigator, hotkey);
 
             hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
         }
-
-        private void SubscribeToXmlFilesChanged(Action callback)
-            => xmlFilesChangedCallback = callback;
-
-        private void WireXmlFileChanges()
-        {
-            var xmlProvider = FindXmlSnippetProvider(provider);
-            if (xmlProvider != null)
-                xmlProvider.FilesChanged += OnXmlFilesChanged;
-        }
-
-        private void OnXmlFilesChanged()
-            => Dispatcher.Invoke(() => xmlFilesChangedCallback?.Invoke());
 
         private Navigator CreateNavigator() => new Navigator(
             provider,
@@ -161,8 +143,6 @@ namespace Neptuo.Productivity.SnippetManager
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
                     navigator = CreateNavigator();
-                    WireXmlFileChanges();
-                    xmlFilesChangedCallback?.Invoke();
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)
                     {

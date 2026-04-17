@@ -14,7 +14,7 @@ public class TrayIcon : IDisposable
     private NativeMenuItem? hotkeyMenuItem;
     private bool isPaused;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey, Action<Action> subscribeXmlFilesChanged)
+    public TrayIcon(Navigator navigator, Hotkey hotkey)
     {
         this.hotkey = hotkey;
 
@@ -32,7 +32,7 @@ public class TrayIcon : IDisposable
         hotkeyMenuItem.Click += (_, _) => ToggleHotkey();
         menu.Items.Add(hotkeyMenuItem);
 
-        var xmlItem = BuildXmlSnippetsMenu(navigator, subscribeXmlFilesChanged);
+        var xmlItem = BuildXmlSnippetsMenu(navigator, menu);
         menu.Items.Add(xmlItem);
 
         var aboutItem = new NativeMenuItem("About");
@@ -81,7 +81,7 @@ public class TrayIcon : IDisposable
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
     }
 
-    private static NativeMenuItem BuildXmlSnippetsMenu(Navigator navigator, Action<Action> subscribeXmlFilesChanged)
+    private static NativeMenuItem BuildXmlSnippetsMenu(Navigator navigator, NativeMenu rootMenu)
     {
         var xmlMenu = new NativeMenuItem("XML snippets");
         xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets();
@@ -109,7 +109,9 @@ public class TrayIcon : IDisposable
         }
 
         Rebuild();
-        subscribeXmlFilesChanged(Rebuild);
+        // Rebuild on every menu open so newly included files appear without restarting the app.
+        // NeedsUpdate is the macOS-native pattern for refreshing NativeMenu before display.
+        rootMenu.NeedsUpdate += (_, _) => Rebuild();
 
         return xmlMenu;
     }

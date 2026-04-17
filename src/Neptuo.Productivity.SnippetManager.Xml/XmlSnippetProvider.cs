@@ -16,11 +16,6 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
     /// </summary>
     public IReadOnlyList<string> ResolvedFilePaths => resolvedFilePaths;
 
-    /// <summary>
-    /// Raised when the set of resolved XML files changes after a reload triggered by file system changes.
-    /// </summary>
-    public event Action? FilesChanged;
-
     protected override Task InitializeOnceAsync(SnippetProviderContext context)
     {
         string sourcePath = configuration.GetFilePathOrDefault();
@@ -127,7 +122,6 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
     {
         if (resolvedFilePaths.Contains(e.FullPath, StringComparer.OrdinalIgnoreCase))
         {
-            bool filesChanged;
             lock (nextSnippets)
             {
                 Thread.Sleep(100);
@@ -135,12 +129,8 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
                 var filePaths = new List<string>();
                 string sourcePath = configuration.GetFilePathOrDefault();
                 LoadSnippets(nextSnippets, sourcePath, filePaths);
-                filesChanged = !resolvedFilePaths.SequenceEqual(filePaths, StringComparer.OrdinalIgnoreCase);
                 resolvedFilePaths = filePaths;
             }
-
-            if (filesChanged)
-                FilesChanged?.Invoke();
         }
     });
 

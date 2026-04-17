@@ -8,7 +8,7 @@ public class TrayIcon : IDisposable
     private readonly NotifyIcon icon;
     private readonly Hotkey hotkey;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey, Action<Action> subscribeXmlFilesChanged)
+    public TrayIcon(Navigator navigator, Hotkey hotkey)
     {
         this.hotkey = hotkey;
 
@@ -28,12 +28,12 @@ public class TrayIcon : IDisposable
         icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
         icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
         BindHotkey(icon.ContextMenuStrip);
-        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator, subscribeXmlFilesChanged);
+        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator);
         icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) => navigator.OpenHelp();
         icon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); navigator.Shutdown(); };
     }
 
-    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator, Action<Action> subscribeXmlFilesChanged)
+    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator)
     {
         var xmlMenu = new ToolStripMenuItem("XML snippets");
         xmlMenu.Click += (s, ev) => navigator.OpenXmlSnippets();
@@ -56,7 +56,8 @@ public class TrayIcon : IDisposable
         }
 
         Rebuild();
-        subscribeXmlFilesChanged(Rebuild);
+        // Rebuild on every menu open so newly included files appear without restarting the app.
+        contextMenu.Opening += (s, ev) => Rebuild();
     }
 
     private void BindHotkey(ContextMenuStrip contextMenu)
