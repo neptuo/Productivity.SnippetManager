@@ -8,7 +8,7 @@ public class TrayIcon : IDisposable
     private readonly NotifyIcon icon;
     private readonly Hotkey hotkey;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey)
+    public TrayIcon(Navigator navigator, Hotkey hotkey, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
     {
         this.hotkey = hotkey;
 
@@ -28,12 +28,12 @@ public class TrayIcon : IDisposable
         icon.ContextMenuStrip.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
         icon.ContextMenuStrip.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
         BindHotkey(icon.ContextMenuStrip);
-        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator);
+        BuildXmlSnippetsMenu(icon.ContextMenuStrip, navigator, getXmlSnippetFilePaths);
         icon.ContextMenuStrip.Items.Add("About").Click += (sender, e) => navigator.OpenHelp();
         icon.ContextMenuStrip.Items.Add("Exit").Click += (sender, e) => { navigator.CloseMain(); navigator.Shutdown(); };
     }
 
-    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator)
+    private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
     {
         var xmlMenu = new ToolStripMenuItem("XML snippets");
         xmlMenu.Click += (s, ev) => navigator.OpenXmlSnippets();
@@ -43,7 +43,7 @@ public class TrayIcon : IDisposable
         {
             xmlMenu.DropDownItems.Clear();
 
-            var filePaths = navigator.GetXmlSnippetFilePaths();
+            var filePaths = getXmlSnippetFilePaths();
             if (filePaths.Count > 1)
             {
                 foreach (var path in filePaths)

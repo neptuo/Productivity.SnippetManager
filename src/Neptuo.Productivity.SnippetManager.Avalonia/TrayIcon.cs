@@ -14,7 +14,7 @@ public class TrayIcon : IDisposable
     private NativeMenuItem? hotkeyMenuItem;
     private bool isPaused;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey)
+    public TrayIcon(Navigator navigator, Hotkey hotkey, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
     {
         this.hotkey = hotkey;
 
@@ -33,7 +33,7 @@ public class TrayIcon : IDisposable
         menu.Items.Add(hotkeyMenuItem);
 
         int xmlIndex = menu.Items.Count;
-        menu.Items.Add(BuildXmlSnippetsMenuItem(navigator));
+        menu.Items.Add(BuildXmlSnippetsMenuItem(navigator, getXmlSnippetFilePaths));
 
         var aboutItem = new NativeMenuItem("About");
         aboutItem.Click += (_, _) => navigator.OpenHelp();
@@ -56,7 +56,7 @@ public class TrayIcon : IDisposable
         // is not re-exported by Avalonia on macOS once the item has been
         // shown, so we replace the NativeMenuItem entirely inside the root
         // menu's Items collection.
-        menu.NeedsUpdate += (_, _) => menu.Items[xmlIndex] = BuildXmlSnippetsMenuItem(navigator);
+        menu.NeedsUpdate += (_, _) => menu.Items[xmlIndex] = BuildXmlSnippetsMenuItem(navigator, getXmlSnippetFilePaths);
 
         trayIcon = new TrayIconBase
         {
@@ -89,10 +89,10 @@ public class TrayIcon : IDisposable
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
     }
 
-    private static NativeMenuItem BuildXmlSnippetsMenuItem(Navigator navigator)
+    private static NativeMenuItem BuildXmlSnippetsMenuItem(Navigator navigator, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
     {
         var xmlMenu = new NativeMenuItem("XML snippets");
-        var filePaths = navigator.GetXmlSnippetFilePaths();
+        var filePaths = getXmlSnippetFilePaths();
 
         if (filePaths.Count > 1)
         {

@@ -22,20 +22,18 @@ public class Navigator : IClipboardService, ISendTextService
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
     private readonly Func<string> getXmlSnippetsPath;
-    private readonly Func<IReadOnlyList<string>> getXmlSnippetFilePaths;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly Func<string> getCurrentHotkey;
     private readonly ConfigurationRepository configurationRepository;
     private int? lastExternalProcessId;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<IReadOnlyList<string>> getXmlSnippetFilePaths, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
-        this.getXmlSnippetFilePaths = getXmlSnippetFilePaths;
         this.getExampleConfiguration = getExampleConfiguration;
         this.getCurrentHotkey = getCurrentHotkey;
         this.snippetProviderContext = new();
@@ -192,9 +190,6 @@ public class Navigator : IClipboardService, ISendTextService
 
         OpenFile(filePath);
     }
-
-    public IReadOnlyList<string> GetXmlSnippetFilePaths()
-        => getXmlSnippetFilePaths();
 
     public void OpenGitHub() => OpenUrl("https://github.com/neptuo/Productivity.SnippetManager");
 

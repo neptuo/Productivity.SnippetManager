@@ -23,18 +23,16 @@ public class Navigator : IClipboardService, ISendTextService
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
     private readonly Func<string> getXmlSnippetsPath;
-    private readonly Func<IReadOnlyList<string>> getXmlSnippetFilePaths;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly ConfigurationRepository configurationRepository;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<IReadOnlyList<string>> getXmlSnippetFilePaths, Func<Configuration> getExampleConfiguration)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
         this.getXmlSnippetsPath = getXmlSnippetsPath;
-        this.getXmlSnippetFilePaths = getXmlSnippetFilePaths;
         this.getExampleConfiguration = getExampleConfiguration;
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
@@ -179,9 +177,6 @@ public class Navigator : IClipboardService, ISendTextService
         // Duplicated in App.xaml
         Process.Start("explorer", filePath);
     }
-
-    public IReadOnlyList<string> GetXmlSnippetFilePaths()
-        => getXmlSnippetFilePaths();
 
     public void OpenGitHub() => Process.Start(new ProcessStartInfo()
     {

@@ -44,7 +44,7 @@ namespace Neptuo.Productivity.SnippetManager
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator();
-            trayIcon = new TrayIcon(navigator, hotkey);
+            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
 
             hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
@@ -56,7 +56,6 @@ namespace Neptuo.Productivity.SnippetManager
             enabled => configurationWatcher.EnableRaisingEventsFromConfigurationWatcher(enabled),
             Shutdown,
             GetXmlConfigurationPath,
-            GetXmlSnippetFilePaths,
             GetExampleConfiguration
         );
 

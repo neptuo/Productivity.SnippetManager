@@ -54,7 +54,7 @@ public partial class App : Application
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator(() => RequestShutdown(desktop));
 
-            trayIcon = new TrayIcon(navigator, hotkey);
+            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
             hotkey.Bind(navigator, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
         }
@@ -68,7 +68,6 @@ public partial class App : Application
         enabled => configurationWatcher?.EnableRaisingEventsFromConfigurationWatcher(enabled),
         shutdown,
         GetXmlConfigurationPath,
-        GetXmlSnippetFilePaths,
         GetExampleConfiguration,
         GetCurrentHotkey
     );
@@ -169,7 +168,7 @@ public partial class App : Application
             var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             navigator = CreateNavigator(() => RequestShutdown(desktop));
             trayIcon?.Dispose();
-            trayIcon = new TrayIcon(navigator, hotkey);
+            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
             hotkey.UnBind();
             hotkey.Bind(navigator, configuration.General?.HotKey);
         });
