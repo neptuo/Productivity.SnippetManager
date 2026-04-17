@@ -16,6 +16,7 @@ namespace Neptuo.Productivity.SnippetManager
     {
         private Configuration configuration;
         private ISnippetProvider provider;
+        private XmlSnippetProvider? xmlProvider;
         private Navigator navigator;
         private TrayIcon trayIcon;
         private ConfigurationWatcher configurationWatcher;
@@ -42,6 +43,7 @@ namespace Neptuo.Productivity.SnippetManager
         {
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
+            xmlProvider = ExtractXmlProvider(provider);
             navigator = CreateNavigator();
             trayIcon = new TrayIcon(navigator, hotkey);
 
@@ -64,34 +66,16 @@ namespace Neptuo.Productivity.SnippetManager
 
         private IReadOnlyList<string> GetXmlSnippetFilePaths()
         {
-            if (provider is CompositeSnippetProvider)
-            {
-                // Find the XmlSnippetProvider through the provider chain
-                var xmlProvider = FindXmlSnippetProvider(provider);
-                if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
-                    return xmlProvider.ResolvedFilePaths;
-            }
+            if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
+                return xmlProvider.ResolvedFilePaths;
 
             return new[] { GetXmlConfigurationPath() };
         }
 
-        private static XmlSnippetProvider? FindXmlSnippetProvider(ISnippetProvider provider)
-        {
-            if (provider is XmlSnippetProvider xmlProvider)
-                return xmlProvider;
-
-            if (provider is CompositeSnippetProvider composite)
-            {
-                foreach (var child in composite.Providers)
-                {
-                    var found = FindXmlSnippetProvider(child);
-                    if (found != null)
-                        return found;
-                }
-            }
-
-            return null;
-        }
+        private static XmlSnippetProvider? ExtractXmlProvider(ISnippetProvider provider)
+            => provider is CompositeSnippetProvider composite
+                ? composite.Providers.OfType<XmlSnippetProvider>().FirstOrDefault()
+                : provider as XmlSnippetProvider;
 
         private Configuration GetExampleConfiguration()
         {
@@ -142,6 +126,7 @@ namespace Neptuo.Productivity.SnippetManager
 
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
+                    xmlProvider = ExtractXmlProvider(provider);
                     navigator = CreateNavigator();
 
                     if (hotkey != null && configuration.General?.HotKey != oldHotKey)

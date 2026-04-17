@@ -13,6 +13,7 @@ public partial class App : Application
 {
     private Configuration configuration = new();
     private ISnippetProvider provider = new CompositeSnippetProvider(Array.Empty<ISnippetProvider>());
+    private XmlSnippetProvider? xmlProvider;
     private Navigator navigator = null!;
     private TrayIcon? trayIcon;
     private ConfigurationWatcher? configurationWatcher;
@@ -51,6 +52,7 @@ public partial class App : Application
 
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
+            xmlProvider = ExtractXmlProvider(provider);
             navigator = CreateNavigator(() => RequestShutdown(desktop));
 
             trayIcon = new TrayIcon(navigator, hotkey);
@@ -110,30 +112,16 @@ public partial class App : Application
 
     private IReadOnlyList<string> GetXmlSnippetFilePaths()
     {
-        var xmlProvider = FindXmlSnippetProvider(provider);
         if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
             return xmlProvider.ResolvedFilePaths;
 
         return new[] { GetXmlConfigurationPath() };
     }
 
-    private static XmlSnippetProvider? FindXmlSnippetProvider(ISnippetProvider provider)
-    {
-        if (provider is XmlSnippetProvider xmlProvider)
-            return xmlProvider;
-
-        if (provider is CompositeSnippetProvider composite)
-        {
-            foreach (var child in composite.Providers)
-            {
-                var found = FindXmlSnippetProvider(child);
-                if (found != null)
-                    return found;
-            }
-        }
-
-        return null;
-    }
+    private static XmlSnippetProvider? ExtractXmlProvider(ISnippetProvider provider)
+        => provider is CompositeSnippetProvider composite
+            ? composite.Providers.OfType<XmlSnippetProvider>().FirstOrDefault()
+            : provider as XmlSnippetProvider;
 
     private Configuration GetExampleConfiguration()
     {
@@ -183,6 +171,7 @@ public partial class App : Application
 
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
+            xmlProvider = ExtractXmlProvider(provider);
 
             var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             navigator = CreateNavigator(() => RequestShutdown(desktop));
