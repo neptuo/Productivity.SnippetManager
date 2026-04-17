@@ -149,6 +149,61 @@ public class SnippetVariablesTests
         Assert.Equal("hello and world", template.Render(values));
     }
 
+    [Fact]
+    public void Template_ReplacesRepeatedOccurrencesOfSameToken()
+    {
+        var template = Compile("{Name}-{Name}-{Name}");
+        var values = new Dictionary<string, string?> { ["Name"] = "John" };
+        Assert.Equal("John-John-John", template.Render(values));
+    }
+
+    [Fact]
+    public void Template_ReplacesAdjacentTokens()
+    {
+        var template = Compile("{A}{B}");
+        var values = new Dictionary<string, string?> { ["A"] = "hello", ["B"] = "world" };
+        Assert.Equal("helloworld", template.Render(values));
+    }
+
+    [Fact]
+    public void Template_ReplacesTokenAtStartAndEnd()
+    {
+        var template = Compile("{Only}");
+        var values = new Dictionary<string, string?> { ["Only"] = "value" };
+        Assert.Equal("value", template.Render(values));
+    }
+
+    [Fact]
+    public void Template_UsesEmptyStringValue()
+    {
+        // An empty string is a legitimate value distinct from null; it should replace the token.
+        var template = Compile("[{Name}]");
+        var values = new Dictionary<string, string?> { ["Name"] = string.Empty };
+        Assert.Equal("[]", template.Render(values));
+    }
+
+    [Fact]
+    public void Template_DoesNotRecursivelyExpandBracesInResolvedValue()
+    {
+        // Values are pasted verbatim: a value that looks like a token must not be re-expanded.
+        var template = Compile("Say {Greeting}");
+        var values = new Dictionary<string, string?>
+        {
+            ["Greeting"] = "Hello {World}",
+            ["World"] = "NEVER"
+        };
+        Assert.Equal("Say Hello {World}", template.Render(values));
+    }
+
+    [Fact]
+    public void Template_ExpandsTokensInsideMultilineText()
+    {
+        var source = "first {A}\nsecond {B}\nthird {A}";
+        var template = Compile(source);
+        var values = new Dictionary<string, string?> { ["A"] = "ALPHA", ["B"] = "BETA" };
+        Assert.Equal("first ALPHA\nsecond BETA\nthird ALPHA", template.Render(values));
+    }
+
     private static ISnippetTemplate Compile(string text)
         => new TokenSnippetTemplateCompiler().Compile(text);
 

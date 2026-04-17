@@ -43,9 +43,27 @@ public class CopySnippetCommandTests
         Assert.True(canExecute);
     }
 
+    [Fact]
+    public void CopyCommand_Execute_ExpandsVariablesBeforeSettingClipboard()
+    {
+        var service = new TestClipboardService();
+        var config = new VariablesConfiguration { ["ShellExt"] = "ps1" };
+        var pipeline = new SnippetExpansionPipeline(
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(config)
+        );
+        var command = new CopySnippetCommand(service, pipeline);
+
+        command.Execute(new SnippetModel("Install", "install.{ShellExt}"));
+
+        Assert.Equal("install.ps1", service.LastText);
+    }
+
     private sealed class TestClipboardService : IClipboardService
     {
+        public string? LastText { get; private set; }
+
         public void SetText(string text)
-        { }
+            => LastText = text;
     }
 }
