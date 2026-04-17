@@ -9,9 +9,8 @@ namespace Neptuo.Productivity.SnippetManager.Tests;
 public class CopySnippetCommandTests
 {
     private static SnippetExpansionPipeline EmptyPipeline => new SnippetExpansionPipeline(
-        new TokenSnippetVariableScanner(),
-        new ConfigurationVariableValueResolver(null),
-        new TokenSnippetTextExpander()
+        new TokenSnippetTemplateCompiler(),
+        new ConfigurationVariableValueResolver(null)
     );
 
     [Fact]

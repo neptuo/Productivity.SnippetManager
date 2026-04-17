@@ -4,146 +4,153 @@ namespace Neptuo.Productivity.SnippetManager.Tests;
 
 public class SnippetVariablesTests
 {
-    #region Scanner tests
+    #region Compiler tests
 
     [Fact]
-    public void Scanner_ReturnsEmptyForTextWithNoTokens()
+    public void Compiler_ReturnsEmptyVariablesForTextWithNoTokens()
     {
-        var scanner = new TokenSnippetVariableScanner();
-        var result = scanner.Scan("Hello, World!");
-        Assert.Empty(result);
+        var compiler = new TokenSnippetTemplateCompiler();
+        var template = compiler.Compile("Hello, World!");
+        Assert.Empty(template.Variables);
     }
 
     [Fact]
-    public void Scanner_ReturnsEmptyForEmptyText()
+    public void Compiler_ReturnsEmptyVariablesForEmptyText()
     {
-        var scanner = new TokenSnippetVariableScanner();
-        var result = scanner.Scan(string.Empty);
-        Assert.Empty(result);
+        var compiler = new TokenSnippetTemplateCompiler();
+        var template = compiler.Compile(string.Empty);
+        Assert.Empty(template.Variables);
     }
 
     [Fact]
-    public void Scanner_ReturnsDistinctNames()
+    public void Compiler_ReturnsDistinctVariableNames()
     {
-        var scanner = new TokenSnippetVariableScanner();
-        var result = scanner.Scan("{A} and {A} and {B}");
-        Assert.Equal(2, result.Count);
-        Assert.Contains(result, r => r.Name == "A");
-        Assert.Contains(result, r => r.Name == "B");
+        var compiler = new TokenSnippetTemplateCompiler();
+        var template = compiler.Compile("{A} and {A} and {B}");
+        Assert.Equal(2, template.Variables.Count);
+        Assert.Contains(template.Variables, r => r.Name == "A");
+        Assert.Contains(template.Variables, r => r.Name == "B");
     }
 
     [Fact]
-    public void Scanner_ReturnsSingleToken()
+    public void Compiler_ReturnsSingleVariable()
     {
-        var scanner = new TokenSnippetVariableScanner();
-        var result = scanner.Scan("Hello, {Name}!");
-        Assert.Single(result);
-        Assert.Equal("Name", result[0].Name);
+        var compiler = new TokenSnippetTemplateCompiler();
+        var template = compiler.Compile("Hello, {Name}!");
+        Assert.Single(template.Variables);
+        Assert.Equal("Name", template.Variables[0].Name);
     }
 
     [Fact]
-    public void Scanner_ReturnsEmptyForMalformedInput()
+    public void Compiler_ReturnsEmptyVariablesForMalformedInput()
     {
-        var scanner = new TokenSnippetVariableScanner();
+        var compiler = new TokenSnippetTemplateCompiler();
         // JSON-like input causes parse failure
-        var result = scanner.Scan("{\"key\": \"value\"}");
-        Assert.Empty(result);
+        var template = compiler.Compile("{\"key\": \"value\"}");
+        Assert.Empty(template.Variables);
     }
 
     [Fact]
-    public void Scanner_ReturnsEmptyForAttributeToken()
+    public void Compiler_ReturnsEmptyVariablesForAttributeToken()
     {
-        var scanner = new TokenSnippetVariableScanner();
+        var compiler = new TokenSnippetTemplateCompiler();
         // Attributes disabled → parse fails
-        var result = scanner.Scan("{Name key=value}");
-        Assert.Empty(result);
+        var template = compiler.Compile("{Name key=value}");
+        Assert.Empty(template.Variables);
     }
 
     [Fact]
-    public void Scanner_DoesNotReturnEscapedTokens()
+    public void Compiler_DoesNotIncludeEscapedTokensInVariables()
     {
-        var scanner = new TokenSnippetVariableScanner();
-        var result = scanner.Scan("{{escaped}} and {Real}");
-        Assert.Single(result);
-        Assert.Equal("Real", result[0].Name);
+        var compiler = new TokenSnippetTemplateCompiler();
+        var template = compiler.Compile("{{escaped}} and {Real}");
+        Assert.Single(template.Variables);
+        Assert.Equal("Real", template.Variables[0].Name);
+    }
+
+    [Fact]
+    public void Compiler_ParsesTextOnlyOnce()
+    {
+        // Compile once; Render many times on the same template reuses the parsed token positions.
+        var compiler = new TokenSnippetTemplateCompiler();
+        var template = compiler.Compile("install.{ShellExt}");
+
+        var first = template.Render(new Dictionary<string, string?> { ["ShellExt"] = "ps1" });
+        var second = template.Render(new Dictionary<string, string?> { ["ShellExt"] = "sh" });
+
+        Assert.Equal("install.ps1", first);
+        Assert.Equal("install.sh", second);
     }
 
     #endregion
 
-    #region Expander tests
+    #region Template.Render tests
 
     [Fact]
-    public void Expander_ReplacesKnownToken()
+    public void Template_ReplacesKnownToken()
     {
-        var expander = new TokenSnippetTextExpander();
+        var template = Compile("install.{ShellExt}");
         var values = new Dictionary<string, string?> { ["ShellExt"] = "ps1" };
-        var result = expander.Expand("install.{ShellExt}", values);
-        Assert.Equal("install.ps1", result);
+        Assert.Equal("install.ps1", template.Render(values));
     }
 
     [Fact]
-    public void Expander_PassesThroughUnknownToken()
+    public void Template_PassesThroughUnknownToken()
     {
-        var expander = new TokenSnippetTextExpander();
+        var template = Compile("install.{OtherExt}");
         var values = new Dictionary<string, string?>();
-        var result = expander.Expand("install.{OtherExt}", values);
-        Assert.Equal("install.{OtherExt}", result);
+        Assert.Equal("install.{OtherExt}", template.Render(values));
     }
 
     [Fact]
-    public void Expander_PassesThroughNullValue()
+    public void Template_PassesThroughNullValue()
     {
-        var expander = new TokenSnippetTextExpander();
+        var template = Compile("install.{ShellExt}");
         var values = new Dictionary<string, string?> { ["ShellExt"] = null };
-        var result = expander.Expand("install.{ShellExt}", values);
-        Assert.Equal("install.{ShellExt}", result);
+        Assert.Equal("install.{ShellExt}", template.Render(values));
     }
 
     [Fact]
-    public void Expander_PreservesEscapeSequence()
+    public void Template_PreservesEscapeSequence()
     {
-        var expander = new TokenSnippetTextExpander();
+        var template = Compile("{{literal}} and {ShellExt}");
         var values = new Dictionary<string, string?> { ["ShellExt"] = "ps1" };
-        var result = expander.Expand("{{literal}} and {ShellExt}", values);
-        Assert.Equal("{{literal}} and ps1", result);
+        Assert.Equal("{{literal}} and ps1", template.Render(values));
     }
 
     [Fact]
-    public void Expander_PreservesTextWithNoTokens()
+    public void Template_PreservesTextWithNoTokens()
     {
-        var expander = new TokenSnippetTextExpander();
-        var values = new Dictionary<string, string?>();
-        var result = expander.Expand("Hello, World!", values);
-        Assert.Equal("Hello, World!", result);
+        var template = Compile("Hello, World!");
+        Assert.Equal("Hello, World!", template.Render(new Dictionary<string, string?>()));
     }
 
     [Fact]
-    public void Expander_ReturnsMalformedInputUnchanged()
+    public void Template_ReturnsMalformedInputUnchanged()
     {
-        var expander = new TokenSnippetTextExpander();
-        var values = new Dictionary<string, string?>();
-        var result = expander.Expand("{\"key\": \"value\"}", values);
-        Assert.Equal("{\"key\": \"value\"}", result);
+        var template = Compile("{\"key\": \"value\"}");
+        Assert.Equal("{\"key\": \"value\"}", template.Render(new Dictionary<string, string?>()));
     }
 
     [Fact]
-    public void Expander_IsCaseSensitive()
+    public void Template_IsCaseSensitive()
     {
-        var expander = new TokenSnippetTextExpander();
+        var template = Compile("{shellext}");
         var values = new Dictionary<string, string?> { ["ShellExt"] = "ps1" };
-        var result = expander.Expand("{shellext}", values);
         // "shellext" is not the same as "ShellExt" → pass through
-        Assert.Equal("{shellext}", result);
+        Assert.Equal("{shellext}", template.Render(values));
     }
 
     [Fact]
-    public void Expander_ReplacesMultipleTokens()
+    public void Template_ReplacesMultipleTokens()
     {
-        var expander = new TokenSnippetTextExpander();
+        var template = Compile("{A} and {B}");
         var values = new Dictionary<string, string?> { ["A"] = "hello", ["B"] = "world" };
-        var result = expander.Expand("{A} and {B}", values);
-        Assert.Equal("hello and world", result);
+        Assert.Equal("hello and world", template.Render(values));
     }
+
+    private static ISnippetTemplate Compile(string text)
+        => new TokenSnippetTemplateCompiler().Compile(text);
 
     #endregion
 
@@ -205,9 +212,8 @@ public class SnippetVariablesTests
     {
         var config = new VariablesConfiguration { ["ShellExt"] = "ps1" };
         var pipeline = new SnippetExpansionPipeline(
-            new TokenSnippetVariableScanner(),
-            new ConfigurationVariableValueResolver(config),
-            new TokenSnippetTextExpander()
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(config)
         );
 
         var result = pipeline.Apply("Run install.{ShellExt}");
@@ -218,9 +224,8 @@ public class SnippetVariablesTests
     public void Pipeline_PassesThroughTextWithNoTokens()
     {
         var pipeline = new SnippetExpansionPipeline(
-            new TokenSnippetVariableScanner(),
-            new ConfigurationVariableValueResolver(null),
-            new TokenSnippetTextExpander()
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(null)
         );
 
         var result = pipeline.Apply("Hello, World!");
@@ -232,9 +237,8 @@ public class SnippetVariablesTests
     {
         var config = new VariablesConfiguration { ["ShellExt"] = "ps1" };
         var pipeline = new SnippetExpansionPipeline(
-            new TokenSnippetVariableScanner(),
-            new ConfigurationVariableValueResolver(config),
-            new TokenSnippetTextExpander()
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(config)
         );
 
         var result = pipeline.Apply("install.{OtherExt}");
@@ -249,9 +253,8 @@ public class SnippetVariablesTests
         // yielding "export $" + resolved-value = "export $/usr/local/bin".
         var config = new VariablesConfiguration { ["PATH"] = "/usr/local/bin" };
         var pipeline = new SnippetExpansionPipeline(
-            new TokenSnippetVariableScanner(),
-            new ConfigurationVariableValueResolver(config),
-            new TokenSnippetTextExpander()
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(config)
         );
 
         var result = pipeline.Apply("export ${PATH}");
@@ -263,9 +266,8 @@ public class SnippetVariablesTests
     {
         // ${PATH} — PATH not defined → pass through verbatim
         var pipeline = new SnippetExpansionPipeline(
-            new TokenSnippetVariableScanner(),
-            new ConfigurationVariableValueResolver(null),
-            new TokenSnippetTextExpander()
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(null)
         );
 
         var result = pipeline.Apply("export ${PATH}");

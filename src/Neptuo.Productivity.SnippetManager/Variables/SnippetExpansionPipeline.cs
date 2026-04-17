@@ -1,23 +1,22 @@
 namespace Neptuo.Productivity.SnippetManager.Variables;
 
 public class SnippetExpansionPipeline(
-    ISnippetVariableScanner scanner,
-    IVariableValueResolver resolver,
-    ISnippetTextExpander expander)
+    ISnippetTemplateCompiler compiler,
+    IVariableValueResolver resolver)
 {
     public string Apply(string text)
     {
-        var references = scanner.Scan(text);
-        if (references.Count == 0)
+        var template = compiler.Compile(text);
+        if (template.Variables.Count == 0)
             return text;
 
         var values = new Dictionary<string, string?>();
-        foreach (var reference in references)
+        foreach (var reference in template.Variables)
         {
             resolver.TryGetValue(reference.Name, out var value);
             values[reference.Name] = value;
         }
 
-        return expander.Expand(text, values);
+        return template.Render(values);
     }
 }

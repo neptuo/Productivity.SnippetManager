@@ -9,9 +9,8 @@ namespace Neptuo.Productivity.SnippetManager.Tests;
 public class ApplySnippetCommandTests
 {
     private static SnippetExpansionPipeline EmptyPipeline => new SnippetExpansionPipeline(
-        new TokenSnippetVariableScanner(),
-        new ConfigurationVariableValueResolver(null),
-        new TokenSnippetTextExpander()
+        new TokenSnippetTemplateCompiler(),
+        new ConfigurationVariableValueResolver(null)
     );
 
     [Fact]
@@ -50,9 +49,8 @@ public class ApplySnippetCommandTests
         var service = new TestSendTextService();
         var config = new VariablesConfiguration { ["ShellExt"] = "ps1" };
         var pipeline = new SnippetExpansionPipeline(
-            new TokenSnippetVariableScanner(),
-            new ConfigurationVariableValueResolver(config),
-            new TokenSnippetTextExpander()
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(config)
         );
         var command = new ApplySnippetCommand(service, pipeline);
 

@@ -39,9 +39,8 @@ public class Navigator : IClipboardService, ISendTextService
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
         this.expansionPipeline = new SnippetExpansionPipeline(
-            new TokenSnippetVariableScanner(),
-            new ConfigurationVariableValueResolver(variables),
-            new TokenSnippetTextExpander()
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(variables)
         );
 
         snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);

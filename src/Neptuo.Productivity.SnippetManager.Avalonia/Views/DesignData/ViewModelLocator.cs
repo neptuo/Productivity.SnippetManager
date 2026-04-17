@@ -8,9 +8,8 @@ namespace Neptuo.Productivity.SnippetManager.Views.DesignData;
 internal class ViewModelLocator
 {
     private static readonly SnippetExpansionPipeline emptyPipeline = new SnippetExpansionPipeline(
-        new TokenSnippetVariableScanner(),
-        new ConfigurationVariableValueResolver(null),
-        new TokenSnippetTextExpander()
+        new TokenSnippetTemplateCompiler(),
+        new ConfigurationVariableValueResolver(null)
     );
 
     private static MainViewModel? mainViewModel;
