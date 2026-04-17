@@ -85,3 +85,30 @@ Enables snippets you declare in XML syntax. The `FilePath` is a path to the root
 ### Snippets
 
 In addition to the XML snippets, you can declare some snippets using `Snippets` object. The probably main difference is that the XML is more readable for longer snippets and better escapes special characters in CDATA sections. Use these as you wish.
+
+### Variables
+
+The `Variables` section lets you declare named values that are substituted into snippet text at apply/copy time. This makes it easy to share snippets across machines or operating systems.
+
+**Syntax:** use `{VariableName}` placeholders inside any snippet text. To include a literal brace, escape it as `{{` or `}}`.
+
+**Configuration example:**
+
+```json
+{
+  "Variables": {
+    "ShellExt": "ps1"
+  },
+  "Snippets": {
+    "Install": "Run install.{ShellExt} to get started."
+  }
+}
+```
+
+On macOS/Linux you would set `"ShellExt": "sh"`, on Windows `"ShellExt": "ps1"`. The snippet text `"Run install.{ShellExt} to get started."` expands to the correct value at apply/copy time, while the snippet source stays unchanged.
+
+**Notes:**
+- Variable names are matched exactly as declared (case-sensitive).
+- Unknown tokens (variables not declared in `Variables`) are left verbatim in the expanded text.
+- If a snippet text fails to parse (e.g. contains JSON-like `{...}` syntax), the text is returned unchanged.
+- Snippet search always runs against the raw (unexpanded) template text.

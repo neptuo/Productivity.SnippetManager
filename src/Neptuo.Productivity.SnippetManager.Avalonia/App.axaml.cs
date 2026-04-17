@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Neptuo.Productivity.SnippetManager.Variables;
 
 namespace Neptuo.Productivity.SnippetManager;
 
@@ -68,7 +69,8 @@ public partial class App : Application
         enabled => configurationWatcher?.EnableRaisingEventsFromConfigurationWatcher(enabled),
         shutdown,
         GetExampleConfiguration,
-        GetCurrentHotkey
+        GetCurrentHotkey,
+        configuration.Variables
     );
 
     private void RequestShutdown(IClassicDesktopStyleApplicationLifetime desktop)
@@ -119,6 +121,7 @@ public partial class App : Application
     {
         var example = new Configuration();
         example.General = GeneralConfiguration.Example;
+        example.Variables = VariablesConfiguration.Example;
         snippetProviders.AddExampleConfigurations(example.Providers);
         return example;
     }

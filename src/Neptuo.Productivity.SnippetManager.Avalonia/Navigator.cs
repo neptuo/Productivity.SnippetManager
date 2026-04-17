@@ -8,6 +8,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Neptuo.Productivity.SnippetManager.Services;
+using Neptuo.Productivity.SnippetManager.Variables;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
@@ -24,9 +25,10 @@ public class Navigator : IClipboardService, ISendTextService
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly Func<string> getCurrentHotkey;
     private readonly ConfigurationRepository configurationRepository;
+    private readonly SnippetExpansionPipeline expansionPipeline;
     private int? lastExternalProcessId;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey, VariablesConfiguration? variables)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
@@ -36,6 +38,11 @@ public class Navigator : IClipboardService, ISendTextService
         this.getCurrentHotkey = getCurrentHotkey;
         this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
+        this.expansionPipeline = new SnippetExpansionPipeline(
+            new TokenSnippetVariableScanner(),
+            new ConfigurationVariableValueResolver(variables),
+            new TokenSnippetTextExpander()
+        );
 
         snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
     }
@@ -58,7 +65,7 @@ public class Navigator : IClipboardService, ISendTextService
         {
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
-            main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this), new CopySnippetCommand(this));
+            main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this, expansionPipeline), new CopySnippetCommand(this, expansionPipeline));
             UpdateWindowPositionAnchor(main, stickToActiveCaret);
             shouldRefreshSnippets = true;
         }
