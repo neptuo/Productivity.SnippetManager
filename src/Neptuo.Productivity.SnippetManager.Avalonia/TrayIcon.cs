@@ -35,6 +35,8 @@ public class TrayIcon : IDisposable
         var xmlItem = BuildXmlSnippetsMenu(navigator);
         menu.Items.Add(xmlItem);
 
+        menu.NeedsUpdate += (_, _) => UpdateXmlSnippetsMenu(xmlItem, navigator);
+
         var aboutItem = new NativeMenuItem("About");
         aboutItem.Click += (_, _) => navigator.OpenHelp();
         menu.Items.Add(aboutItem);
@@ -84,34 +86,31 @@ public class TrayIcon : IDisposable
     private static NativeMenuItem BuildXmlSnippetsMenu(Navigator navigator)
     {
         var xmlMenu = new NativeMenuItem("XML snippets");
-        var subMenu = new NativeMenu();
-        xmlMenu.Menu = subMenu;
-
-        subMenu.NeedsUpdate += (_, _) =>
-        {
-            subMenu.Items.Clear();
-
-            var filePaths = navigator.GetXmlSnippetFilePaths();
-            if (filePaths.Count <= 1)
-            {
-                var openItem = new NativeMenuItem("Open");
-                openItem.Click += (_, _) => navigator.OpenXmlSnippets();
-                subMenu.Items.Add(openItem);
-            }
-            else
-            {
-                foreach (var path in filePaths)
-                {
-                    string label = Path.GetFileName(path);
-                    var item = new NativeMenuItem(label);
-                    var capturedPath = path;
-                    item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
-                    subMenu.Items.Add(item);
-                }
-            }
-        };
+        xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets();
 
         return xmlMenu;
+    }
+
+    private static void UpdateXmlSnippetsMenu(NativeMenuItem xmlMenu, Navigator navigator)
+    {
+        var filePaths = navigator.GetXmlSnippetFilePaths();
+        if (filePaths.Count > 1)
+        {
+            var subMenu = new NativeMenu();
+            foreach (var path in filePaths)
+            {
+                string label = Path.GetFileName(path);
+                var item = new NativeMenuItem(label);
+                var capturedPath = path;
+                item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
+                subMenu.Items.Add(item);
+            }
+            xmlMenu.Menu = subMenu;
+        }
+        else
+        {
+            xmlMenu.Menu = null;
+        }
     }
 
     private void OnHookFailed(string message)

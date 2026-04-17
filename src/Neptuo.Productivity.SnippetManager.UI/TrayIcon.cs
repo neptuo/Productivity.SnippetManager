@@ -36,6 +36,7 @@ public class TrayIcon : IDisposable
     private static void BuildXmlSnippetsMenu(ContextMenuStrip contextMenu, Navigator navigator)
     {
         var xmlMenu = new ToolStripMenuItem("XML snippets");
+        xmlMenu.Click += (s, ev) => navigator.OpenXmlSnippets();
         contextMenu.Items.Add(xmlMenu);
 
         contextMenu.Opening += (sender, e) =>
@@ -43,11 +44,7 @@ public class TrayIcon : IDisposable
             xmlMenu.DropDownItems.Clear();
 
             var filePaths = navigator.GetXmlSnippetFilePaths();
-            if (filePaths.Count <= 1)
-            {
-                xmlMenu.DropDownItems.Add("Open").Click += (s, ev) => navigator.OpenXmlSnippets();
-            }
-            else
+            if (filePaths.Count > 1)
             {
                 foreach (var path in filePaths)
                 {
