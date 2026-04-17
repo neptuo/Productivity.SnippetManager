@@ -111,6 +111,15 @@ public partial class App : Application
     private IReadOnlyList<string> GetXmlSnippetFilePaths()
     {
         var xmlProvider = FindXmlSnippetProvider(provider);
+        if (xmlProvider == null)
+        {
+            DiagnosticsLog.Debug("App.GetXmlSnippetFilePaths: XmlSnippetProvider not found in provider chain");
+        }
+        else
+        {
+            DiagnosticsLog.Debug($"App.GetXmlSnippetFilePaths: xmlProvider.ResolvedFilePaths.Count={xmlProvider.ResolvedFilePaths.Count}");
+        }
+
         if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
             return xmlProvider.ResolvedFilePaths;
 

@@ -89,6 +89,7 @@ public class TrayIcon : IDisposable
         void Rebuild()
         {
             var filePaths = navigator.GetXmlSnippetFilePaths();
+            DiagnosticsLog.Debug($"TrayIcon.BuildXmlSnippetsMenu.Rebuild filePaths.Count={filePaths.Count} [{string.Join(", ", filePaths)}]");
             if (filePaths.Count > 1)
             {
                 var subMenu = new NativeMenu();
@@ -111,7 +112,12 @@ public class TrayIcon : IDisposable
         Rebuild();
         // Rebuild on every menu open so newly included files appear without restarting the app.
         // NeedsUpdate is the macOS-native pattern for refreshing NativeMenu before display.
-        rootMenu.NeedsUpdate += (_, _) => Rebuild();
+        rootMenu.NeedsUpdate += (_, _) =>
+        {
+            DiagnosticsLog.Debug("TrayIcon root NativeMenu.NeedsUpdate fired");
+            Rebuild();
+        };
+        rootMenu.Opening += (_, _) => DiagnosticsLog.Debug("TrayIcon root NativeMenu.Opening fired");
 
         return xmlMenu;
     }
