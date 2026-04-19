@@ -28,6 +28,8 @@ The configuration is expected to be at `~/SnippetManager.json` (user home). If y
     "UserName": "jon",
     "AccessToken": "doe",
     "ExtraRepositories": [],
+    "HighPriorityRepositories": [],
+    "IncludeStars": true,
     "Enabled": true
   },
   "Xml": {
@@ -46,7 +48,7 @@ Once you have the configuration file, the app will monitor changes and prompt yo
 
 ### General
 
-Enables you to define your own global hotkey for opening snippet list. Default is `Ctrl+Shift+V`.
+Enables you to define your own global hotkey for opening snippet list. Default is `Ctrl+Shift+V` on Windows/Linux and `Cmd+Shift+V` on macOS.
 
 ### Clipboard
 
@@ -59,6 +61,8 @@ Enables a snippet containing a new guid everytime the snippet list opened. Enabl
 ### GitHub
 
 Enables snippets for URL of every repository you have on GitHub. Organizations requiring 2FA won't be included, but you can add extra repositories using `ExtraRepositories` array.
+If you want some repositories to be created as "high" priority, you can add them to `HighPriorityRepositories`. It requires a full name (owner/name).
+By default starred repositories are included as well, you can disable this behavior with `IncludeStars: false`.
 
 ### XML
 
@@ -67,8 +71,8 @@ Enables snippets you declare in XML syntax. The `FilePath` is a path to the root
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-	<Snippet Title="Google" Text="https://google.com" Priority="High" />
-	<Snippet Title="Long snippet">
+  <Snippet Title="Google" Text="https://google.com" Priority="High" />
+  <Snippet Title="Long snippet">
 <![CDATA[1
 2
 3
@@ -81,3 +85,31 @@ Enables snippets you declare in XML syntax. The `FilePath` is a path to the root
 ### Snippets
 
 In addition to the XML snippets, you can declare some snippets using `Snippets` object. The probably main difference is that the XML is more readable for longer snippets and better escapes special characters in CDATA sections. Use these as you wish.
+
+### Variables
+
+The `Variables` section lets you declare named values that are substituted into snippet text at apply/copy time. This makes it easy to share snippets across machines or operating systems.
+
+**Syntax:** use `{VariableName}` placeholders inside any snippet text.
+
+**Configuration example:**
+
+```json
+{
+  "Variables": {
+    "ShellExt": "sh"
+  },
+  "Snippets": {
+    "Install": "Run install.{ShellExt} to get started."
+  }
+}
+```
+
+On macOS/Linux you would set `"ShellExt": "sh"`, on Windows `"ShellExt": "cmd"` — those are the defaults the generated example config uses. The snippet text `"Run install.{ShellExt} to get started."` expands to the correct value at apply/copy time, while the snippet source stays unchanged.
+
+**Notes:**
+- Variable names are matched exactly as declared (case-sensitive).
+- Unknown tokens (variables not declared in `Variables`) are left verbatim in the expanded text — you typically don't need to escape literal `{Name}` content unless `Name` happens to match a declared variable.
+- To prevent a `{Name}` span from being expanded (when the name collides with a declared variable), wrap it as `{{Name}}`. The braces are preserved in the output.
+- If a snippet text fails to parse (e.g. contains JSON-like `{...}` syntax), the text is returned unchanged.
+- Snippet search always runs against the raw (unexpanded) template text.

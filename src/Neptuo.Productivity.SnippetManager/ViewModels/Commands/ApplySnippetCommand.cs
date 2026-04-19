@@ -1,22 +1,12 @@
 ﻿using Neptuo.Productivity.SnippetManager.Models;
 using Neptuo.Productivity.SnippetManager.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Neptuo.Productivity.SnippetManager.Variables;
 
 namespace Neptuo.Productivity.SnippetManager.ViewModels.Commands
 {
-    public class ApplySnippetCommand : UseSnippetCommand
+    public class ApplySnippetCommand(ISendTextService sendText, SnippetExpansionPipeline pipeline) : UseSnippetCommand
     {
-        private readonly ISendTextService sendText;
-
-        public ApplySnippetCommand(ISendTextService sendText) 
-            => this.sendText = sendText;
-
-        public override void Execute(IAppliableSnippetModel parameter)
-            => sendText.Send(parameter.Text);
+        public override void Execute(SnippetModel parameter)
+            => sendText.Send(pipeline.Apply(parameter.Text));
     }
 }

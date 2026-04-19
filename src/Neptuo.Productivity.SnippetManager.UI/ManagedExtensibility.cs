@@ -65,16 +65,4 @@ public sealed class ConfigChangeTrackingSnippetProviderAttribute<T> : ExportAttr
     }
 }
 
-[ConfigChangeTrackingSnippetProvider<GitHubConfiguration>("GitHub")]
-public class TestSnippetProvider : ISnippetProvider
-{
-    public Task InitializeAsync(SnippetProviderContext context)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task UpdateAsync(SnippetProviderContext context)
-    {
-        throw new NotImplementedException();
-    }
-}

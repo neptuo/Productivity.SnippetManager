@@ -1,21 +1,7 @@
-﻿using Neptuo.Collections.Generic;
-using Neptuo.Productivity.SnippetManager.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Neptuo.Productivity.SnippetManager;
 
-namespace Neptuo.Productivity.SnippetManager;
-
-public class CompositeSnippetProvider : ISnippetProvider
+public class CompositeSnippetProvider(IEnumerable<ISnippetProvider> snippetProviders) : ISnippetProvider
 {
-    private readonly IEnumerable<ISnippetProvider> snippetProviders;
-
-    public CompositeSnippetProvider(IEnumerable<ISnippetProvider> snippetProviders) 
-        => this.snippetProviders = snippetProviders;
-
     public Task InitializeAsync(SnippetProviderContext context) 
         => Task.WhenAll(snippetProviders.Select(p => p.InitializeAsync(context)));
 

@@ -1,0 +1,186 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Neptuo.Productivity.SnippetManager.Views.Controls"
+        xmlns:models="clr-namespace:Neptuo.Productivity.SnippetManager.Models;assembly=Neptuo.Productivity.SnippetManager"
+        x:Class="Neptuo.Productivity.SnippetManager.Views.MainWindow"
+        Title="Snippets" Width="400" SizeToContent="Height"
+        CanResize="False" SystemDecorations="None" ShowInTaskbar="False"
+        Topmost="True" Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True">
+    <Window.Resources>
+        <controls:StringEmptyConverter x:Key="StringEmptyToVisible" TrueValue="True" FalseValue="False" />
+        <controls:StringJoinMultiConverter x:Key="SnippetPathJoinConverter" Separator="{x:Static models:SnippetModel.PathSeparator}" />
+        <controls:ArrayLastItemConverter x:Key="ArrayLastItemConverter" />
+        <controls:BoolToObjectConverter x:Key="TrueToVisibleConverter" TrueValue="True" FalseValue="False" />
+        <controls:NumberCompareConverter x:Key="ZeroToCollapsedConverter" EdgeValue="0" EqualValue="False" GreaterValue="True" />
+        <StreamGeometry x:Key="SearchIconGeometry">M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16a6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z</StreamGeometry>
+        <StreamGeometry x:Key="CopyIconGeometry">M16 1H4C2.9 1 2 1.9 2 3v12h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z</StreamGeometry>
+        <ControlTheme x:Key="SnippetListBoxItemTheme" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="ItemBorder" CornerRadius="2" Background="Transparent">
+                        <Grid>
+                            <Border Name="SelectionStripe"
+                                    Width="2"
+                                    Height="20"
+                                    CornerRadius="1"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center" />
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Margin="4,2,2,2"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:pointerover /template/ Border#ItemBorder">
+                <Setter Property="Background" Value="{DynamicResource HoverBrush}" />
+            </Style>
+            <Style Selector="^:selected /template/ Border#ItemBorder">
+                <Setter Property="Background" Value="{DynamicResource ActiveBrush}" />
+            </Style>
+            <Style Selector="^:selected /template/ Border#SelectionStripe">
+                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+            </Style>
+        </ControlTheme>
+    </Window.Resources>
+
+    <Window.Styles>
+        <Style Selector="TextBox#SearchText /template/ Border">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TextBox#SearchText /template/ Border#PART_BorderElement">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TextBox#SearchText:focus /template/ Border, TextBox#SearchText:focus-within /template/ Border, TextBox#SearchText:focus-visible /template/ Border">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TextBox#SearchText /template/ ScrollViewer#PART_ScrollViewer">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="TextBox#SearchText /template/ TextPresenter#PART_TextPresenter">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Styles>
+
+    <Border Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource InactiveBrush}"
+            BorderThickness="1" CornerRadius="4" Padding="0">
+        <Grid RowDefinitions="Auto,Auto,*">
+            <StackPanel Margin="4">
+                <StackPanel Orientation="Horizontal" Margin="6,0,0,2">
+                    <TextBlock Text="Snippets" FontSize="10" />
+                    <ItemsControl ItemsSource="{Binding Selected}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="»" FontSize="10" Margin="4,0,0,0" />
+                                    <TextBlock Text="{Binding Path, Converter={StaticResource ArrayLastItemConverter}}" FontSize="10" Margin="4,0,0,0" MaxHeight="13" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <Border Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        CornerRadius="0"
+                        Height="30">
+                    <Grid>
+                        <Viewbox Width="13" Height="13"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,7,0">
+                            <Path Data="{StaticResource SearchIconGeometry}"
+                                  Fill="{DynamicResource GrayBrush}" />
+                        </Viewbox>
+                        <TextBlock Text="Search..."
+                                   VerticalAlignment="Center"
+                                   Margin="6,0,24,0"
+                                   IsVisible="{Binding Text, ElementName=SearchText, Converter={StaticResource StringEmptyToVisible}}"
+                                   FontSize="14"
+                                   Opacity=".5"
+                                   IsHitTestVisible="False" />
+                        <TextBox x:Name="SearchText"
+                                 FontSize="14"
+                                 MinHeight="0"
+                                 Height="28"
+                                 FocusAdorner="{x:Null}"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 VerticalContentAlignment="Center"
+                                 Padding="6,0,24,1" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource ActiveBrush}" Grid.Row="1"
+                    IsVisible="{Binding Snippets.Count, Converter={StaticResource ZeroToCollapsedConverter}}" />
+            <ProgressBar Height="2" Foreground="{DynamicResource AccentBrush}" Background="Transparent"
+                         HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsIndeterminate="True"
+                         IsVisible="{Binding IsInitializing, Converter={StaticResource TrueToVisibleConverter}}" Grid.Row="1" />
+
+            <ListBox x:Name="ListBox" ItemsSource="{Binding Snippets}" SelectedIndex="0"
+                     BorderThickness="0" Margin="4" Grid.Row="2"
+                     ItemContainerTheme="{StaticResource SnippetListBoxItemTheme}"
+                     IsVisible="{Binding Snippets.Count, Converter={StaticResource ZeroToCollapsedConverter}}"
+                     MaxHeight="400"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="4">
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Height="16" TextTrimming="CharacterEllipsis">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource SnippetPathJoinConverter}">
+                                                <Binding Path="Path" />
+                                                <Binding Path="DataContext.Selected.Count"
+                                                         RelativeSource="{RelativeSource AncestorType=ListBox}" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding Description}"
+                                               FontSize="11"
+                                               Opacity=".3"
+                                               TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+
+                                <Button Classes="plain"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        ToolTip.Tip="Copy snippet to the clipboard (Ctrl+C)"
+                                        Command="{Binding DataContext.Copy, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}"
+                                        IsVisible="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource TrueToVisibleConverter}}">
+                                    <Viewbox Width="14" Height="14">
+                                        <Path Data="{StaticResource CopyIconGeometry}"
+                                              Fill="{DynamicResource ForegroundBrush}" />
+                                    </Viewbox>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Border>
+</Window>

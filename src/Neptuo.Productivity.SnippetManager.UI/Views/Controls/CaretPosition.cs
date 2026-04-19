@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Interop;
-using System.Windows;
-using System.Drawing;
+﻿using System.Runtime.InteropServices;
 using UIAutomationClient;
 
 namespace Neptuo.Productivity.SnippetManager.Views.Controls;

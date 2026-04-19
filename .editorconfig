@@ -1,0 +1,45 @@
+root = true
+
+# All files
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# C# files
+[*.cs]
+indent_style = space
+indent_size = 4
+
+# XML files (including .csproj, .props, .targets)
+[*.{xml,csproj,props,targets,wapproj}]
+indent_style = space
+indent_size = 2
+
+# XAML files
+[*.xaml]
+indent_style = space
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_style = space
+indent_size = 2
+
+# Markdown files
+[*.md]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+
+# Solution files
+[*.sln]
+indent_style = tab
+
+# Package.appxmanifest
+[Package.appxmanifest]
+indent_style = space
+indent_size = 2

@@ -1,18 +1,17 @@
-﻿using Neptuo.Observables.Collections;
-using Neptuo.Productivity.SnippetManager.Models;
+﻿using Neptuo.Productivity.SnippetManager.Models;
+using Neptuo.Productivity.SnippetManager.Variables;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.SnippetManager.Views.DesignData;
 
 internal class ViewModelLocator
 {
+    private static readonly SnippetExpansionPipeline emptyPipeline = new SnippetExpansionPipeline(
+        new TokenSnippetTemplateCompiler(),
+        new ConfigurationVariableValueResolver(null)
+    );
+
     private static MainViewModel? mainViewModel;
     public static MainViewModel MainViewModel
     {
@@ -20,25 +19,33 @@ internal class ViewModelLocator
         {
             if (mainViewModel == null)
             {
+                var tree = LoadSnippets();
+
                 mainViewModel = new MainViewModel(
-                    new ObservableCollection<SnippetModel>(), 
-                    new ApplySnippetCommand(InteropService.Instance), 
-                    new CopySnippetCommand(InteropService.Instance)
+                    tree, 
+                    new ApplySnippetCommand(InteropService.Instance, emptyPipeline), 
+                    new CopySnippetCommand(InteropService.Instance, emptyPipeline)
                 );
 
-                LoadSnippets();
+                var gitHub = tree.GetRoots().First(s => s.Title == "GitHub");
+                mainViewModel.Selected.Add(gitHub);
+                mainViewModel.Selected.Add(tree.GetChildren(gitHub).First());
 
-                MainViewModel.IsInitializing = false;
+                mainViewModel.Snippets.AddRange(tree.GetRoots());
+                mainViewModel.Search("");
+                mainViewModel.IsInitializing = false;
             }
 
             return mainViewModel;
         }
     }
 
-    private static void LoadSnippets()
+    private static ISnippetTree LoadSnippets()
     {
+        SnippetProviderContext ctx = new SnippetProviderContext();
+
         void Add(string title, string text, string? description = null)
-            => MainViewModel.Snippets.Add(new SnippetModel(title, text, description, SnippetPriority.High));
+            => ctx.Add(new SnippetModel(title, text, description, SnippetPriority.High));
 
         Add(
             "C# class",
@@ -61,7 +68,10 @@ internal class ViewModelLocator
         );
         Add("Maps", "https://maps.google.com");
         Add("GitHub - dotnet - runtime", "https://github.com/dotnet/runtime");
+        Add("GitHub - dotnet - aspnetcore", "https://github.com/dotnet/aspnetcore");
+        Add("GitHub - dotnet - sdk", "https://github.com/dotnet/sdk");
         Add("Money", "https://app.money.neptuo.com");
         Add("Signature", $"S pozdravem{Environment.NewLine}Marek Fišera");
+        return ctx;
     }
 }

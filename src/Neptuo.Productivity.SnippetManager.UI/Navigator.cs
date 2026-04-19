@@ -1,59 +1,53 @@
-﻿using Neptuo.Observables.Collections;
-using Neptuo.Productivity.SnippetManager.Models;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Neptuo.Productivity.SnippetManager.Services;
+using Neptuo.Productivity.SnippetManager.Variables;
 using Neptuo.Productivity.SnippetManager.ViewModels;
 using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 using Neptuo.Productivity.SnippetManager.Views;
 using Neptuo.Productivity.SnippetManager.Views.Controls;
 using Neptuo.Windows.Threading;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
-using Clipboard = System.Windows.Forms.Clipboard;
+using Windows.ApplicationModel.DataTransfer;
 using MessageBox = System.Windows.MessageBox;
+using Clipboard = Windows.ApplicationModel.DataTransfer.Clipboard;
 
 namespace Neptuo.Productivity.SnippetManager;
 
 public class Navigator : IClipboardService, ISendTextService
 {
-    private readonly ObservableCollection<SnippetModel> allSnippets;
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
-    private bool isSnippetProviderInitialized = false;
-    private Task? snippetProviderInitializeTask;
+    private Task snippetProviderInitializeTask;
     private Action<bool> setConfigChangeEnabled;
     private readonly Action shutdown;
-    private readonly Func<string> getXmlSnippetsPath;
     private readonly Func<Configuration> getExampleConfiguration;
     private readonly ConfigurationRepository configurationRepository;
+    private readonly SnippetExpansionPipeline expansionPipeline;
 
-    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<string> getXmlSnippetsPath, Func<Configuration> getExampleConfiguration)
+    public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration, VariablesConfiguration? variables)
     {
         this.snippetProvider = snippetProvider;
         this.configurationRepository = configurationRepository;
         this.setConfigChangeEnabled = setConfigChangeEnabled;
         this.shutdown = shutdown;
-        this.getXmlSnippetsPath = getXmlSnippetsPath;
         this.getExampleConfiguration = getExampleConfiguration;
-        this.allSnippets = new();
-        this.snippetProviderContext = new(allSnippets);
+        this.snippetProviderContext = new();
         this.snippetProviderContext.Changed += OnModelsChanged;
+        this.expansionPipeline = new SnippetExpansionPipeline(
+            new TokenSnippetTemplateCompiler(),
+            new ConfigurationVariableValueResolver(variables)
+        );
+
+        snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
     }
 
     private void OnModelsChanged()
     {
         if (main != null)
-            DispatcherHelper.Run(main.Dispatcher, () => main.Search());
+            DispatcherHelper.Run(main.Dispatcher, () => main?.Search());
     }
 
     private MainWindow? main;
@@ -64,7 +58,7 @@ public class Navigator : IClipboardService, ISendTextService
         {
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
-            main.ViewModel = new MainViewModel(allSnippets, new ApplySnippetCommand(this), new CopySnippetCommand(this));
+            main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this, expansionPipeline), new CopySnippetCommand(this, expansionPipeline));
             UpdateWindowStickPointToCaret(main, stickToActiveCaret);
 
             _ = UpdateSnippetsAsync(main.ViewModel);
@@ -106,21 +100,16 @@ public class Navigator : IClipboardService, ISendTextService
 
     private async Task UpdateSnippetsAsync(MainViewModel viewModel)
     {
-        if (!isSnippetProviderInitialized)
+        if (!snippetProviderInitializeTask.IsCompleted)
         {
-            if (snippetProviderInitializeTask == null)
-                snippetProviderInitializeTask = snippetProvider.InitializeAsync(snippetProviderContext);
-            else
-                main?.Search();
+            // To show up to date currently available snippets
+            main?.Search();
 
             await snippetProviderInitializeTask;
-            snippetProviderInitializeTask = null;
-            isSnippetProviderInitialized = true;
 
-            // Main lost focus and is closed.
+            // Main lost focus and is closed
             if (main == null)
                 return;
-
         }
 
         await snippetProvider.UpdateAsync(snippetProviderContext);
@@ -128,6 +117,8 @@ public class Navigator : IClipboardService, ISendTextService
         if (main != null)
         {
             main.Search();
+
+            // Hide initialization after update completes
             main.ViewModel.IsInitializing = false;
         }
     }
@@ -162,9 +153,8 @@ public class Navigator : IClipboardService, ISendTextService
         Process.Start("explorer", filePath);
     }
 
-    public void OpenXmlSnippets()
+    public void OpenXmlSnippets(string filePath)
     {
-        string filePath = getXmlSnippetsPath();
         if (!File.Exists(filePath))
         {
             var result = MessageBox.Show("XML snippets file doesn't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -173,8 +163,8 @@ public class Navigator : IClipboardService, ISendTextService
                 File.WriteAllText(filePath, """
                     <?xml version="1.0" encoding="utf-8" ?>
                     <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-                    	<Snippet Title="Greet" Text="Hello, World!" />
-                    	<Snippet Title="Wheather Forecast" Priority="High">
+                      <Snippet Title="Greet" Text="Hello, World!" />
+                      <Snippet Title="Wheather Forecast" Priority="High">
                     <![CDATA[Prague 22,
                     London 18,
                     New York 25]]></Snippet>
@@ -222,15 +212,28 @@ public class Navigator : IClipboardService, ISendTextService
 
     async void ISendTextService.Send(string text)
     {
-        var scope = new ClipboardScope();
+        var scope = await ClipboardScope.CreateAsync();
         try
         {
+            bool isCtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
             main?.Close();
 
-            Clipboard.SetText(text);
+            // Don't this item in history, because the change of clipboard shouldn't actually happen
+            var data = new DataPackage();
+            data.SetText(text);
+            Clipboard.SetContentWithOptions(data, new ClipboardContentOptions() { IsAllowedInHistory = false });
 
             await Task.Delay(100);
-            SendKeys.SendWait("^{v}");
+            
+            if (isCtrlDown)
+                await WaitForCtrlReleaseAsync();
+
+            SendKeys.SendWait("+{INSERT}");
+
+            if (isCtrlDown)
+                SendKeys.SendWait("{ENTER}");
+
             await Task.Delay(100);
         }
         finally
@@ -239,10 +242,27 @@ public class Navigator : IClipboardService, ISendTextService
         }
     }
 
+    private async Task WaitForCtrlReleaseAsync()
+    {
+        // Wait for Ctrl key release with timeout
+        int timeout = 5000; // 5 seconds timeout
+        int stepDelay = 50;
+        int elapsed = 0;
+
+        while ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && elapsed < timeout)
+        {
+            await Task.Delay(stepDelay);
+            elapsed += stepDelay;
+        }
+    }
+
     void IClipboardService.SetText(string text)
     {
         main?.Close();
-        Clipboard.SetText(text);
+
+        var data = new DataPackage();
+        data.SetText(text);
+        Clipboard.SetContent(data);
     }
 
     #endregion

@@ -1,18 +1,8 @@
-﻿using Neptuo.Windows.HotKeys;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
+using Neptuo.Productivity.SnippetManager.Variables;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
@@ -27,24 +17,27 @@ namespace Neptuo.Productivity.SnippetManager
     {
         private Configuration configuration;
         private ISnippetProvider provider;
+        private XmlSnippetProvider? xmlProvider;
         private Navigator navigator;
         private TrayIcon trayIcon;
-        private readonly ComponentDispatcherHotkeyCollection hotkeys = new ComponentDispatcherHotkeyCollection();
         private ConfigurationWatcher configurationWatcher;
-        private (Key key, ModifierKeys modifiers)? hotkey;
+        private Hotkey hotkey;
         private readonly SnippetProviderCollection snippetProviders = new SnippetProviderCollection();
-        private readonly ConfigurationRepository configurationRepository;
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        private readonly ConfigurationRepository configurationRepository;#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public App()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Clipboard", c => new ClipboardSnippetProvider(), true);
             snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Guid", c => new GuidSnippetProvider(), true);
-            snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => new XmlSnippetProvider(c), true);
+            snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => xmlProvider = new XmlSnippetProvider(c), true);
             snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
             snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
             configurationRepository = new ConfigurationRepository(snippetProviders);
+            hotkey = new Hotkey();
+
+#if !DEBUG
+            Win32.RegisterApplicationRestart("/restart", Win32.RestartRestrictions.None);
+#endif
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -52,12 +45,10 @@ namespace Neptuo.Productivity.SnippetManager
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator();
-            trayIcon = new TrayIcon(navigator);
+            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
 
-            //BindHotkey();
+            hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
-
-            new ManagedExtensibility().Initialize();
         }
 
         private Navigator CreateNavigator() => new Navigator(
@@ -65,81 +56,29 @@ namespace Neptuo.Productivity.SnippetManager
             configurationRepository,
             enabled => configurationWatcher.EnableRaisingEventsFromConfigurationWatcher(enabled),
             Shutdown,
-            GetXmlConfigurationPath,
-            GetExampleConfiguration
+            GetExampleConfiguration,
+            configuration.Variables
         );
 
         private string GetXmlConfigurationPath() 
             => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
 
+        private IReadOnlyList<string> GetXmlSnippetFilePaths()
+        {
+            if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
+                return xmlProvider.ResolvedFilePaths;
+
+            return new[] { GetXmlConfigurationPath() };
+        }
+
         private Configuration GetExampleConfiguration()
         {
             var example = new Configuration();
             example.General = GeneralConfiguration.Example;
+            example.Variables = VariablesConfiguration.Example;
             snippetProviders.AddExampleConfigurations(example.Providers);
 
             return example;
-        }
-
-        private void BindHotkey()
-        {
-            var key = Key.V;
-            var modifiers = ModifierKeys.Control | ModifierKeys.Shift;
-            if (!String.IsNullOrEmpty(configuration.General?.HotKey) && !TryParseHotKey(configuration.General.HotKey, out key, out modifiers))
-            {
-                MessageBox.Show("Error in hotkey configuration", "Snippet Manager", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown();
-            }
-
-            hotkey = (key, modifiers);
-
-            try
-            {
-                hotkeys.Add(key, modifiers, (_, _) => navigator.OpenMain());
-            }
-            catch (Win32Exception)
-            {
-                MessageBox.Show("The configured hotkey is probably taken by other application. Edit your configuration.", "Snippet Manager", MessageBoxButton.OK, MessageBoxImage.Error);
-                navigator.OpenConfiguration();
-                Dispatcher.Invoke(() => Shutdown());
-            }
-        }
-
-        private bool TryParseHotKey(string hotKey, out Key key, out ModifierKeys modifiers)
-        {
-            modifiers = ModifierKeys.None;
-            key = Key.None;
-
-            string[] parts = hotKey.Split('+', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length > 1)
-            {
-                for (int i = 0; i < parts.Length; i++)
-                {
-                    if (i < parts.Length - 1)
-                    {
-                        if (Enum.TryParse<ModifierKeys>(parts[i], out var mod))
-                        {
-                            if (i == 0)
-                                modifiers = mod;
-                            else
-                                modifiers |= mod;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (Enum.TryParse<Key>(parts[i], out var k))
-                            key = k;
-                        else
-                            return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         private Configuration CreateConfiguration()
@@ -178,17 +117,15 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     navigator.CloseMain();
 
-                    string? oldHotKey = configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey;
-
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
                     navigator = CreateNavigator();
 
-                    if (hotkey != null && configuration.General?.HotKey != oldHotKey)
-                    {
-                        hotkeys.Remove(hotkey.Value.key, hotkey.Value.modifiers);
-                        BindHotkey();
-                    }
+                    trayIcon.Dispose();
+                    trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
+
+                    hotkey.UnBind();
+                    hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
                 });
             }
         }
