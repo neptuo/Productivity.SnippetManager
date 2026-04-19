@@ -6,7 +6,7 @@ using Neptuo.Productivity.SnippetManager.ViewModels.Commands;
 
 namespace Neptuo.Productivity.SnippetManager.Tests;
 
-public class CopySnippetCommandTests
+public class ApplySnippetCommandTests
 {
     private static SnippetExpansionPipeline EmptyPipeline => new SnippetExpansionPipeline(
         new TokenSnippetTemplateCompiler(),
@@ -14,9 +14,9 @@ public class CopySnippetCommandTests
     );
 
     [Fact]
-    public void CopyCommand_CanExecute_ReturnsFalseForNullParameter()
+    public void ApplyCommand_CanExecute_ReturnsFalseForNullParameter()
     {
-        ICommand command = new CopySnippetCommand(new TestClipboardService(), EmptyPipeline);
+        ICommand command = new ApplySnippetCommand(new TestSendTextService(), EmptyPipeline);
 
         bool canExecute = command.CanExecute(null);
 
@@ -24,9 +24,9 @@ public class CopySnippetCommandTests
     }
 
     [Fact]
-    public void CopyCommand_CanExecute_ReturnsFalseForShadowSnippet()
+    public void ApplyCommand_CanExecute_ReturnsFalseForShadowSnippet()
     {
-        var command = new CopySnippetCommand(new TestClipboardService(), EmptyPipeline);
+        var command = new ApplySnippetCommand(new TestSendTextService(), EmptyPipeline);
 
         bool canExecute = command.CanExecute(new SnippetModel("GitHub"));
 
@@ -34,9 +34,9 @@ public class CopySnippetCommandTests
     }
 
     [Fact]
-    public void CopyCommand_CanExecute_ReturnsTrueForFilledSnippet()
+    public void ApplyCommand_CanExecute_ReturnsTrueForFilledSnippet()
     {
-        var command = new CopySnippetCommand(new TestClipboardService(), EmptyPipeline);
+        var command = new ApplySnippetCommand(new TestSendTextService(), EmptyPipeline);
 
         bool canExecute = command.CanExecute(new SnippetModel("GitHub - dotnet", "https://github.com/dotnet"));
 
@@ -44,26 +44,26 @@ public class CopySnippetCommandTests
     }
 
     [Fact]
-    public void CopyCommand_Execute_ExpandsVariablesBeforeSettingClipboard()
+    public void ApplyCommand_Execute_ExpandsVariablesBeforeSend()
     {
-        var service = new TestClipboardService();
+        var service = new TestSendTextService();
         var config = new VariablesConfiguration { ["ShellExt"] = "ps1" };
         var pipeline = new SnippetExpansionPipeline(
             new TokenSnippetTemplateCompiler(),
             new ConfigurationVariableValueResolver(config)
         );
-        var command = new CopySnippetCommand(service, pipeline);
+        var command = new ApplySnippetCommand(service, pipeline);
 
         command.Execute(new SnippetModel("Install", "install.{ShellExt}"));
 
         Assert.Equal("install.ps1", service.LastText);
     }
 
-    private sealed class TestClipboardService : IClipboardService
+    private sealed class TestSendTextService : ISendTextService
     {
         public string? LastText { get; private set; }
 
-        public void SetText(string text)
+        public void Send(string text)
             => LastText = text;
     }
 }

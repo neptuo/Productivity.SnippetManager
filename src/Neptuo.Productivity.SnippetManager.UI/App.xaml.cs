@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using System.Windows;
+using Neptuo.Productivity.SnippetManager.Variables;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
@@ -55,7 +56,8 @@ namespace Neptuo.Productivity.SnippetManager
             configurationRepository,
             enabled => configurationWatcher.EnableRaisingEventsFromConfigurationWatcher(enabled),
             Shutdown,
-            GetExampleConfiguration
+            GetExampleConfiguration,
+            configuration.Variables
         );
 
         private string GetXmlConfigurationPath() 
@@ -73,6 +75,7 @@ namespace Neptuo.Productivity.SnippetManager
         {
             var example = new Configuration();
             example.General = GeneralConfiguration.Example;
+            example.Variables = VariablesConfiguration.Example;
             snippetProviders.AddExampleConfigurations(example.Providers);
 
             return example;
@@ -114,17 +117,15 @@ namespace Neptuo.Productivity.SnippetManager
                 {
                     navigator.CloseMain();
 
-                    string? oldHotKey = configuration.General?.HotKey ?? GeneralConfiguration.Example.HotKey;
-
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
                     navigator = CreateNavigator();
 
-                    if (hotkey != null && configuration.General?.HotKey != oldHotKey)
-                    {
-                        hotkey.UnBind();
-                        hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
-                    }
+                    trayIcon.Dispose();
+                    trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
+
+                    hotkey.UnBind();
+                    hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
                 });
             }
         }
