@@ -1,6 +1,7 @@
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
+using Neptuo.Productivity.SnippetManager.Plugins;
 using NativeMenu = Avalonia.Controls.NativeMenu;
 using NativeMenuItem = Avalonia.Controls.NativeMenuItem;
 using TrayIconBase = Avalonia.Controls.TrayIcon;
@@ -11,12 +12,16 @@ public class TrayIcon : IDisposable
 {
     private readonly TrayIconBase trayIcon;
     private readonly Hotkey hotkey;
+    private readonly IReadOnlyList<ITrayMenuContributor> contributors;
+    private readonly int contribInsertIndex;
+    private int contribCount;
     private NativeMenuItem? hotkeyMenuItem;
     private bool isPaused;
 
-    public TrayIcon(Navigator navigator, Hotkey hotkey, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
+    public TrayIcon(Navigator navigator, Hotkey hotkey, IEnumerable<ITrayMenuContributor> contributors)
     {
         this.hotkey = hotkey;
+        this.contributors = contributors.ToArray();
 
         var menu = new NativeMenu();
 
@@ -32,8 +37,8 @@ public class TrayIcon : IDisposable
         hotkeyMenuItem.Click += (_, _) => ToggleHotkey();
         menu.Items.Add(hotkeyMenuItem);
 
-        int xmlIndex = menu.Items.Count;
-        menu.Items.Add(BuildXmlSnippetsMenuItem(navigator, getXmlSnippetFilePaths));
+        contribInsertIndex = menu.Items.Count;
+        RebuildContributions(menu);
 
         var aboutItem = new NativeMenuItem("About");
         aboutItem.Click += (_, _) => navigator.OpenHelp();
@@ -50,13 +55,13 @@ public class TrayIcon : IDisposable
         };
         menu.Items.Add(exitItem);
 
-        // Rebuild the XML snippets item in place on every menu open so that
-        // newly included files (or a single-file fallback) are re-exported to
-        // the macOS status bar menu. Mutating a submenu via xmlMenu.Menu=...
-        // is not re-exported by Avalonia on macOS once the item has been
-        // shown, so we replace the NativeMenuItem entirely inside the root
-        // menu's Items collection.
-        menu.NeedsUpdate += (_, _) => menu.Items[xmlIndex] = BuildXmlSnippetsMenuItem(navigator, getXmlSnippetFilePaths);
+        // Rebuild contributed items in place on every menu open so that
+        // plugin state (e.g. the list of XML snippet files) is re-exported
+        // to the macOS status bar menu. Mutating items via submenu.Menu = ...
+        // is not re-exported by Avalonia on macOS once the menu has been
+        // shown, so we replace the contributed NativeMenuItems entirely
+        // inside the root menu's Items collection.
+        menu.NeedsUpdate += (_, _) => RebuildContributions(menu);
 
         trayIcon = new TrayIconBase
         {
@@ -89,30 +94,101 @@ public class TrayIcon : IDisposable
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
     }
 
-    private static NativeMenuItem BuildXmlSnippetsMenuItem(Navigator navigator, Func<IReadOnlyList<string>> getXmlSnippetFilePaths)
+    private void RebuildContributions(NativeMenu menu)
     {
-        var xmlMenu = new NativeMenuItem("XML snippets");
-        var filePaths = getXmlSnippetFilePaths();
+        for (int i = 0; i < contribCount; i++)
+            menu.Items.RemoveAt(contribInsertIndex);
 
-        if (filePaths.Count > 1)
+        var builder = new Builder(menu, contribInsertIndex);
+        foreach (var contributor in contributors)
+            contributor.Contribute(builder);
+
+        contribCount = builder.InsertedCount;
+    }
+
+    private sealed class Builder : ITrayMenuBuilder
+    {
+        private readonly NativeMenu menu;
+        private readonly int insertIndex;
+        public int InsertedCount { get; private set; }
+
+        public Builder(NativeMenu menu, int insertIndex)
         {
+            this.menu = menu;
+            this.insertIndex = insertIndex;
+        }
+
+        public void AddItem(string label, Action onClick)
+        {
+            var item = new NativeMenuItem(label);
+            item.Click += (_, _) => onClick();
+            Insert(item);
+        }
+
+        public void AddSubMenu(string label, Action? onClick, Action<ITrayMenuBuilder> buildChildren)
+        {
+            var item = new NativeMenuItem(label);
+            if (onClick != null)
+                item.Click += (_, _) => onClick();
+
             var subMenu = new NativeMenu();
-            foreach (var path in filePaths)
-            {
-                string label = Path.GetFileName(path);
-                var item = new NativeMenuItem(label);
-                var capturedPath = path;
-                item.Click += (_, _) => navigator.OpenXmlSnippets(capturedPath);
-                subMenu.Items.Add(item);
-            }
-            xmlMenu.Menu = subMenu;
-        }
-        else
-        {
-            xmlMenu.Click += (_, _) => navigator.OpenXmlSnippets(filePaths[0]);
+            var child = new SubBuilder(subMenu);
+            buildChildren(child);
+            if (child.InsertedCount > 0)
+                item.Menu = subMenu;
+
+            Insert(item);
         }
 
-        return xmlMenu;
+        public void AddSeparator()
+            => Insert(new NativeMenuItemSeparator());
+
+        private void Insert(NativeMenuItemBase item)
+        {
+            menu.Items.Insert(insertIndex + InsertedCount, item);
+            InsertedCount++;
+        }
+    }
+
+    private sealed class SubBuilder : ITrayMenuBuilder
+    {
+        private readonly NativeMenu menu;
+        public int InsertedCount { get; private set; }
+
+        public SubBuilder(NativeMenu menu)
+        {
+            this.menu = menu;
+        }
+
+        public void AddItem(string label, Action onClick)
+        {
+            var item = new NativeMenuItem(label);
+            item.Click += (_, _) => onClick();
+            menu.Items.Add(item);
+            InsertedCount++;
+        }
+
+        public void AddSubMenu(string label, Action? onClick, Action<ITrayMenuBuilder> buildChildren)
+        {
+            var item = new NativeMenuItem(label);
+            if (onClick != null)
+                item.Click += (_, _) => onClick();
+
+            var subMenu = new NativeMenu();
+            var child = new SubBuilder(subMenu);
+            buildChildren(child);
+            if (child.InsertedCount > 0)
+                item.Menu = subMenu;
+
+            menu.Items.Add(item);
+            InsertedCount++;
+        }
+
+        public void AddSeparator()
+        {
+            menu.Items.Add(new NativeMenuItemSeparator());
+            InsertedCount++;
+        }
     }
 
     private void OnHookFailed(string message)

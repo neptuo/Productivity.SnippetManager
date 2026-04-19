@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using System.Windows;
+using Neptuo.Productivity.SnippetManager.Plugins;
 using Neptuo.Productivity.SnippetManager.Variables;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
@@ -17,21 +18,29 @@ namespace Neptuo.Productivity.SnippetManager
     {
         private Configuration configuration;
         private ISnippetProvider provider;
-        private XmlSnippetProvider? xmlProvider;
         private Navigator navigator;
         private TrayIcon trayIcon;
         private ConfigurationWatcher configurationWatcher;
         private Hotkey hotkey;
         private readonly SnippetProviderCollection snippetProviders = new SnippetProviderCollection();
-        private readonly ConfigurationRepository configurationRepository;#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        private readonly ConfigurationRepository configurationRepository;
+        private readonly PluginHost pluginHost;
+        private readonly IReadOnlyList<ITrayMenuContributor> trayContributors;
+        private readonly HostServices hostServices = new HostServices();
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public App()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-            snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Clipboard", c => new ClipboardSnippetProvider(), true);
-            snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Guid", c => new GuidSnippetProvider(), true);
-            snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => xmlProvider = new XmlSnippetProvider(c), true);
-            snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
-            snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
+            pluginHost = new PluginHost();
+            pluginHost.AddAssembly(typeof(ClipboardPlugin).Assembly);   // WPF host: ClipboardPlugin
+            pluginHost.AddAssembly(typeof(GuidPlugin).Assembly);        // core: Guid, Inline
+            pluginHost.AddAssembly(typeof(XmlPlugin).Assembly);         // Xml plugin
+            pluginHost.AddAssembly(typeof(GitHubPlugin).Assembly);      // GitHub plugin
+            pluginHost.AddExportedValue<ITrayHostServices>(hostServices);
+
+            var container = pluginHost.Compose(snippetProviders);
+            trayContributors = container.GetExportedValues<ITrayMenuContributor>().ToArray();
+
             configurationRepository = new ConfigurationRepository(snippetProviders);
             hotkey = new Hotkey();
 
@@ -45,7 +54,8 @@ namespace Neptuo.Productivity.SnippetManager
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator();
-            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
+            hostServices.Navigator = navigator;
+            trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
 
             hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
@@ -59,17 +69,6 @@ namespace Neptuo.Productivity.SnippetManager
             GetExampleConfiguration,
             configuration.Variables
         );
-
-        private string GetXmlConfigurationPath() 
-            => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
-
-        private IReadOnlyList<string> GetXmlSnippetFilePaths()
-        {
-            if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
-                return xmlProvider.ResolvedFilePaths;
-
-            return new[] { GetXmlConfigurationPath() };
-        }
 
         private Configuration GetExampleConfiguration()
         {
@@ -120,9 +119,10 @@ namespace Neptuo.Productivity.SnippetManager
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
                     navigator = CreateNavigator();
+                    hostServices.Navigator = navigator;
 
                     trayIcon.Dispose();
-                    trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
+                    trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
 
                     hotkey.UnBind();
                     hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
@@ -136,6 +136,7 @@ namespace Neptuo.Productivity.SnippetManager
 
             trayIcon.Dispose();
             configurationWatcher?.Dispose();
+            pluginHost.Dispose();
         }
     }
 }

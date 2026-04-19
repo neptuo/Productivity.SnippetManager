@@ -17,6 +17,7 @@ public sealed class PluginHost : IDisposable
 {
     private readonly AggregateCatalog catalog = new();
     private readonly HashSet<Assembly> assemblies = new();
+    private readonly List<Action<CompositionContainer>> pendingExports = new();
     private CompositionContainer? container;
     private bool composed;
 
@@ -34,6 +35,19 @@ public sealed class PluginHost : IDisposable
     }
 
     /// <summary>
+    /// Registers a host-provided service instance as a MEF export under
+    /// contract <typeparamref name="TContract"/> so plugins can import it.
+    /// Must be called before <see cref="Compose"/>.
+    /// </summary>
+    public void AddExportedValue<TContract>(TContract value)
+    {
+        if (composed)
+            throw Ensure.Exception.InvalidOperation($"{nameof(AddExportedValue)} must be called before {nameof(Compose)}.");
+
+        pendingExports.Add(c => c.ComposeExportedValue<TContract>(value));
+    }
+
+    /// <summary>
     /// Composes all discovered plugins and registers them into
     /// <paramref name="registry"/> in ascending
     /// <see cref="ISnippetManagerPluginMetadata.Priority"/> order (ties
@@ -47,6 +61,9 @@ public sealed class PluginHost : IDisposable
 
         composed = true;
         container = new CompositionContainer(catalog);
+
+        foreach (var export in pendingExports)
+            export(container);
 
         var importer = new Importer();
         try
