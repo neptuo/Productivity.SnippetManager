@@ -3,6 +3,7 @@
   <ItemGroup>
     <PackageReference Include="Neptuo" />
     <PackageReference Include="Neptuo.Observables" />
+    <PackageReference Include="System.ComponentModel.Composition" />
   </ItemGroup>
 
 </Project>

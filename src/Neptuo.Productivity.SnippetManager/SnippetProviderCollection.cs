@@ -1,6 +1,8 @@
-﻿namespace Neptuo.Productivity.SnippetManager;
+﻿using Neptuo.Productivity.SnippetManager.Plugins;
 
-public class SnippetProviderCollection
+namespace Neptuo.Productivity.SnippetManager;
+
+public class SnippetProviderCollection : ISnippetProviderRegistry
 {
     private Dictionary<string, (Type configurationType, Func<Dictionary<string, object>, ISnippetProvider?> factory, Func<object> exampleConfiguration)> storage = new();
 
