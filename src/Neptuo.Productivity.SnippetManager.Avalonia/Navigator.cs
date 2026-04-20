@@ -7,6 +7,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Neptuo.Productivity.SnippetManager.Plugins;
 using Neptuo.Productivity.SnippetManager.Services;
 using Neptuo.Productivity.SnippetManager.Variables;
 using Neptuo.Productivity.SnippetManager.ViewModels;
@@ -15,7 +16,7 @@ using Neptuo.Productivity.SnippetManager.Views;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class Navigator : IClipboardService, ISendTextService
+public class Navigator : IClipboardService, ISendTextService, ITrayHostServices
 {
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
@@ -175,25 +176,6 @@ public class Navigator : IClipboardService, ISendTextService
         OpenFile(filePath);
     }
 
-    public void OpenXmlSnippets(string filePath)
-    {
-        if (!File.Exists(filePath))
-        {
-            File.WriteAllText(filePath, """
-                <?xml version="1.0" encoding="utf-8" ?>
-                <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-                  <Snippet Title="Greet" Text="Hello, World!" />
-                  <Snippet Title="Weather Forecast" Priority="High">
-                <![CDATA[Prague 22,
-                London 18,
-                New York 25]]></Snippet>
-                </Snippets>
-                """);
-        }
-
-        OpenFile(filePath);
-    }
-
     public void OpenGitHub() => OpenUrl("https://github.com/neptuo/Productivity.SnippetManager");
 
     public void OpenLogs()
@@ -326,7 +308,7 @@ public class Navigator : IClipboardService, ISendTextService
 
     #region Platform helpers
 
-    private static void OpenFile(string path)
+    public void OpenFile(string path)
     {
         Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
     }

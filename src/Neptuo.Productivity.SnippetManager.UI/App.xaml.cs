@@ -26,7 +26,6 @@ namespace Neptuo.Productivity.SnippetManager
         private readonly ConfigurationRepository configurationRepository;
         private readonly PluginHost pluginHost;
         private readonly IReadOnlyList<ITrayMenuContributor> trayContributors;
-        private readonly HostServices hostServices = new HostServices();
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public App()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -36,7 +35,6 @@ namespace Neptuo.Productivity.SnippetManager
             pluginHost.AddAssembly(typeof(GuidPlugin).Assembly);        // core: Guid, Inline
             pluginHost.AddAssembly(typeof(XmlPlugin).Assembly);         // Xml plugin
             pluginHost.AddAssembly(typeof(GitHubPlugin).Assembly);      // GitHub plugin
-            pluginHost.AddExportedValue<ITrayHostServices>(hostServices);
 
             var container = pluginHost.Compose(snippetProviders);
             trayContributors = container.GetExportedValues<ITrayMenuContributor>().ToArray();
@@ -54,7 +52,6 @@ namespace Neptuo.Productivity.SnippetManager
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator();
-            hostServices.Navigator = navigator;
             trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
 
             hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
@@ -119,7 +116,6 @@ namespace Neptuo.Productivity.SnippetManager
                     configuration = CreateConfiguration();
                     provider = snippetProviders.Create(configuration.Providers);
                     navigator = CreateNavigator();
-                    hostServices.Navigator = navigator;
 
                     trayIcon.Dispose();
                     trayIcon = new TrayIcon(navigator, hotkey, trayContributors);

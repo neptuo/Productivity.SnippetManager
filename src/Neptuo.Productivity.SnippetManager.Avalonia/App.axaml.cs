@@ -23,7 +23,6 @@ public partial class App : Application
     private readonly ConfigurationRepository configurationRepository;
     private readonly PluginHost pluginHost;
     private readonly IReadOnlyList<ITrayMenuContributor> trayContributors;
-    private readonly HostServices hostServices = new();
     private bool isShuttingDown;
     private bool areResourcesDisposed;
 
@@ -34,7 +33,6 @@ public partial class App : Application
         pluginHost.AddAssembly(typeof(GuidPlugin).Assembly);        // core: Guid, Inline
         pluginHost.AddAssembly(typeof(XmlPlugin).Assembly);         // Xml plugin
         pluginHost.AddAssembly(typeof(GitHubPlugin).Assembly);      // GitHub plugin
-        pluginHost.AddExportedValue<ITrayHostServices>(hostServices);
 
         var container = pluginHost.Compose(snippetProviders);
         trayContributors = container.GetExportedValues<ITrayMenuContributor>().ToArray();
@@ -62,7 +60,6 @@ public partial class App : Application
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator(() => RequestShutdown(desktop));
-            hostServices.Navigator = navigator;
 
             trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
             hotkey.Bind(navigator, configuration.General?.HotKey);
@@ -168,7 +165,6 @@ public partial class App : Application
 
             var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             navigator = CreateNavigator(() => RequestShutdown(desktop));
-            hostServices.Navigator = navigator;
             trayIcon?.Dispose();
             trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
             hotkey.UnBind();

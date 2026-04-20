@@ -13,5 +13,5 @@ namespace Neptuo.Productivity.SnippetManager.Plugins;
 /// </summary>
 public interface ITrayMenuContributor
 {
-    void Contribute(ITrayMenuBuilder menu);
+    void Contribute(ITrayMenuBuilder menu, ITrayHostServices services);
 }

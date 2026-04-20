@@ -13,9 +13,6 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
     private XmlConfiguration? currentConfiguration;
     private XmlSnippetProvider? currentProvider;
 
-    [Import(AllowDefault = true)]
-    internal ITrayHostServices? HostServices { get; set; }
-
     public void Register(ISnippetProviderRegistry registry)
         => registry.AddConfigChangeTracking<XmlConfiguration>(
             Key,
@@ -26,17 +23,14 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
             },
             isNullConfigurationEnabled: true);
 
-    public void Contribute(ITrayMenuBuilder menu)
+    public void Contribute(ITrayMenuBuilder menu, ITrayHostServices services)
     {
-        if (HostServices is null)
-            return;
-
         var filePaths = GetResolvedFilePaths();
         if (filePaths.Count == 0)
             return;
 
         string primary = filePaths[0];
-        Action openPrimary = () => HostServices.OpenFile(primary);
+        Action openPrimary = () => OpenXmlFile(services, primary);
 
         if (filePaths.Count == 1)
         {
@@ -50,10 +44,29 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
                 {
                     string label = Path.GetFileName(path);
                     string captured = path;
-                    sub.AddItem(label, () => HostServices.OpenFile(captured));
+                    sub.AddItem(label, () => OpenXmlFile(services, captured));
                 }
             });
         }
+    }
+
+    private static void OpenXmlFile(ITrayHostServices services, string path)
+    {
+        if (!File.Exists(path))
+        {
+            File.WriteAllText(path, """
+                <?xml version="1.0" encoding="utf-8" ?>
+                <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
+                  <Snippet Title="Greet" Text="Hello, World!" />
+                  <Snippet Title="Weather Forecast" Priority="High">
+                <![CDATA[Prague 22,
+                London 18,
+                New York 25]]></Snippet>
+                </Snippets>
+                """);
+        }
+
+        services.OpenFile(path);
     }
 
     private IReadOnlyList<string> GetResolvedFilePaths()
