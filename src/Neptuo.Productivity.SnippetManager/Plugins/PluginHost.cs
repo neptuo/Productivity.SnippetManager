@@ -17,8 +17,22 @@ public sealed class PluginHost : IDisposable
 {
     private readonly AggregateCatalog catalog = new();
     private readonly HashSet<Assembly> assemblies = new();
+    private readonly List<Action<CompositionContainer>> pendingExports = new();
     private CompositionContainer? container;
     private bool composed;
+
+    /// <summary>
+    /// Exports <paramref name="value"/> as <typeparamref name="TContract"/> into
+    /// the composition container so plugin parts can <c>[Import]</c> it. Must be
+    /// called before <see cref="Compose"/>.
+    /// </summary>
+    public void AddExportedValue<TContract>(TContract value) where TContract : class
+    {
+        if (composed)
+            throw Ensure.Exception.InvalidOperation($"{nameof(AddExportedValue)} must be called before {nameof(Compose)}.");
+
+        pendingExports.Add(c => c.ComposeExportedValue<TContract>(value));
+    }
 
     /// <summary>
     /// Adds an assembly to the MEF catalog. No-op if the assembly has already
@@ -47,6 +61,9 @@ public sealed class PluginHost : IDisposable
 
         composed = true;
         container = new CompositionContainer(catalog);
+
+        foreach (var export in pendingExports)
+            export(container);
 
         var importer = new Importer();
         try

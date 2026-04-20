@@ -17,7 +17,7 @@ using Clipboard = Windows.ApplicationModel.DataTransfer.Clipboard;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class Navigator : IClipboardService, ISendTextService, ITrayHostServices
+public class Navigator : IClipboardService, ISendTextService, INavigator
 {
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
@@ -153,6 +153,8 @@ public class Navigator : IClipboardService, ISendTextService, ITrayHostServices
         // Duplicated in App.xaml
         Process.Start("explorer", filePath);
     }
+
+    public void Open() => OpenMain();
 
     public void OpenFile(string filePath)
         => Process.Start("explorer", filePath);

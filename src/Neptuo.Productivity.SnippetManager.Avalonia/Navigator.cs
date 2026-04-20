@@ -16,7 +16,7 @@ using Neptuo.Productivity.SnippetManager.Views;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class Navigator : IClipboardService, ISendTextService, ITrayHostServices
+public class Navigator : IClipboardService, ISendTextService, INavigator
 {
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
@@ -54,6 +54,8 @@ public class Navigator : IClipboardService, ISendTextService, ITrayHostServices
     }
 
     private MainWindow? main;
+
+    public void Open() => OpenMain();
 
     public void OpenMain(bool stickToActiveCaret = true)
     {

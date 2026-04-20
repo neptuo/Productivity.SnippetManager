@@ -48,7 +48,7 @@ public class TrayIcon : IDisposable
 
             var builder = new Builder(contextMenu.Items, contribInsertIndex);
             foreach (var contributor in contributorList)
-                contributor.Contribute(builder, navigator);
+                contributor.Contribute(builder);
 
             contribCount = builder.InsertedCount;
         }

@@ -38,7 +38,7 @@ public class TrayIcon : IDisposable
         menu.Items.Add(hotkeyMenuItem);
 
         contribInsertIndex = menu.Items.Count;
-        RebuildContributions(menu, navigator);
+        RebuildContributions(menu);
 
         var aboutItem = new NativeMenuItem("About");
         aboutItem.Click += (_, _) => navigator.OpenHelp();
@@ -61,7 +61,7 @@ public class TrayIcon : IDisposable
         // is not re-exported by Avalonia on macOS once the menu has been
         // shown, so we replace the contributed NativeMenuItems entirely
         // inside the root menu's Items collection.
-        menu.NeedsUpdate += (_, _) => RebuildContributions(menu, navigator);
+        menu.NeedsUpdate += (_, _) => RebuildContributions(menu);
 
         trayIcon = new TrayIconBase
         {
@@ -94,14 +94,14 @@ public class TrayIcon : IDisposable
         trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
     }
 
-    private void RebuildContributions(NativeMenu menu, Navigator services)
+    private void RebuildContributions(NativeMenu menu)
     {
         for (int i = 0; i < contribCount; i++)
             menu.Items.RemoveAt(contribInsertIndex);
 
         var builder = new Builder(menu, contribInsertIndex);
         foreach (var contributor in contributors)
-            contributor.Contribute(builder, services);
+            contributor.Contribute(builder);
 
         contribCount = builder.InsertedCount;
     }

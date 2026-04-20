@@ -13,6 +13,9 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
     private XmlConfiguration? currentConfiguration;
     private XmlSnippetProvider? currentProvider;
 
+    [Import]
+    internal INavigator Navigator { get; set; } = default!;
+
     public void Register(ISnippetProviderRegistry registry)
         => registry.AddConfigChangeTracking<XmlConfiguration>(
             Key,
@@ -23,14 +26,14 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
             },
             isNullConfigurationEnabled: true);
 
-    public void Contribute(ITrayMenuBuilder menu, ITrayHostServices services)
+    public void Contribute(ITrayMenuBuilder menu)
     {
         var filePaths = GetResolvedFilePaths();
         if (filePaths.Count == 0)
             return;
 
         string primary = filePaths[0];
-        Action openPrimary = () => OpenXmlFile(services, primary);
+        Action openPrimary = () => OpenXmlFile(primary);
 
         if (filePaths.Count == 1)
         {
@@ -44,13 +47,13 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
                 {
                     string label = Path.GetFileName(path);
                     string captured = path;
-                    sub.AddItem(label, () => OpenXmlFile(services, captured));
+                    sub.AddItem(label, () => OpenXmlFile(captured));
                 }
             });
         }
     }
 
-    private static void OpenXmlFile(ITrayHostServices services, string path)
+    private void OpenXmlFile(string path)
     {
         if (!File.Exists(path))
         {
@@ -66,7 +69,7 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
                 """);
         }
 
-        services.OpenFile(path);
+        Navigator.OpenFile(path);
     }
 
     private IReadOnlyList<string> GetResolvedFilePaths()
