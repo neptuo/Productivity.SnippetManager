@@ -2,7 +2,7 @@ using Neptuo.Productivity.SnippetManager.Plugins;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-[SnippetManagerPlugin("Guid")]
+[SnippetManagerPlugin("Guid", Priority = 20)]
 public sealed class GuidPlugin : ISnippetManagerPlugin
 {
     public const string Key = "Guid";

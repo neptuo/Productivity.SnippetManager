@@ -7,7 +7,7 @@ namespace Neptuo.Productivity.SnippetManager;
 /// <see cref="ClipboardSnippetProvider"/> that reads the current clipboard via
 /// Avalonia's <c>IClipboard</c>. Clipboard history is not available on this host.
 /// </summary>
-[SnippetManagerPlugin("Clipboard")]
+[SnippetManagerPlugin("Clipboard", Priority = 10)]
 public sealed class ClipboardPlugin : ISnippetManagerPlugin
 {
     public const string Key = "Clipboard";

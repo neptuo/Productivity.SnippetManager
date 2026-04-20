@@ -110,24 +110,24 @@ namespace Neptuo.Productivity.SnippetManager
 
         private void AskToReloadConfiguration()
         {
-            if (navigator.ConfirmConfigurationReload())
+            Dispatcher.Invoke(() =>
             {
-                Dispatcher.Invoke(() =>
-                {
-                    navigator.CloseMain();
+                if (!navigator.ConfirmConfigurationReload())
+                    return;
 
-                    configuration = CreateConfiguration();
-                    provider = snippetProviders.Create(configuration.Providers);
-                    navigator = CreateNavigator();
-                    hostServices.Target = navigator;
+                navigator.CloseMain();
 
-                    trayIcon.Dispose();
-                    trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
+                configuration = CreateConfiguration();
+                provider = snippetProviders.Create(configuration.Providers);
+                navigator = CreateNavigator();
+                hostServices.Target = navigator;
 
-                    hotkey.UnBind();
-                    hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
-                });
-            }
+                trayIcon.Dispose();
+                trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
+
+                hotkey.UnBind();
+                hotkey.Bind(navigator, Dispatcher, configuration.General?.HotKey);
+            });
         }
 
         protected override void OnExit(ExitEventArgs e)

@@ -59,26 +59,30 @@ public sealed class PluginHost : IDisposable
         if (composed)
             throw Ensure.Exception.InvalidOperation($"{nameof(Compose)} has already been called on this {nameof(PluginHost)}.");
 
-        composed = true;
-        container = new CompositionContainer(catalog);
-
-        foreach (var export in pendingExports)
-            export(container);
-
-        var importer = new Importer();
+        var localContainer = new CompositionContainer(catalog);
+        Importer importer;
         try
         {
-            container.ComposeParts(importer);
+            foreach (var export in pendingExports)
+                export(localContainer);
+
+            importer = new Importer();
+            localContainer.ComposeParts(importer);
         }
-        catch (CompositionException ex)
+        catch (Exception ex)
         {
-            Debug.WriteLine($"Plugin composition failed: {ex}");
+            if (ex is CompositionException)
+                Debug.WriteLine($"Plugin composition failed: {ex}");
+
+            localContainer.Dispose();
             throw;
         }
 
         foreach (var plugin in importer.Plugins.OrderBy(p => p.Metadata.Priority).ThenBy(p => p.Metadata.Name))
             plugin.Value.Register(registry);
 
+        container = localContainer;
+        composed = true;
         return container;
     }
 

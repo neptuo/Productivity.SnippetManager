@@ -2,7 +2,7 @@ using Neptuo.Productivity.SnippetManager.Plugins;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-[SnippetManagerPlugin("Snippets")]
+[SnippetManagerPlugin("Snippets", Priority = 50)]
 public sealed class InlinePlugin : ISnippetManagerPlugin
 {
     public const string Key = "Snippets";

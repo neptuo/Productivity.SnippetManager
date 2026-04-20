@@ -4,7 +4,7 @@ using Neptuo.Productivity.SnippetManager.Plugins;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-[SnippetManagerPlugin("Xml")]
+[SnippetManagerPlugin("Xml", Priority = 30)]
 [Export(typeof(ITrayMenuContributor))]
 public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
 {
@@ -29,9 +29,6 @@ public sealed class XmlPlugin : ISnippetManagerPlugin, ITrayMenuContributor
     public void Contribute(ITrayMenuBuilder menu)
     {
         var filePaths = GetResolvedFilePaths();
-        if (filePaths.Count == 0)
-            return;
-
         string primary = filePaths[0];
         Action openPrimary = () => OpenXmlFile(primary);
 

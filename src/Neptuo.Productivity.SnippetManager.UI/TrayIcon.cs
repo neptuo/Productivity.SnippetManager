@@ -44,7 +44,11 @@ public class TrayIcon : IDisposable
         void RebuildContributions()
         {
             for (int i = 0; i < contribCount; i++)
+            {
+                ToolStripItem item = contextMenu.Items[contribInsertIndex];
                 contextMenu.Items.RemoveAt(contribInsertIndex);
+                item.Dispose();
+            }
 
             var builder = new Builder(contextMenu.Items, contribInsertIndex);
             foreach (var contributor in contributorList)

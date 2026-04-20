@@ -2,7 +2,7 @@ using Neptuo.Productivity.SnippetManager.Plugins;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-[SnippetManagerPlugin("GitHub")]
+[SnippetManagerPlugin("GitHub", Priority = 40)]
 public sealed class GitHubPlugin : ISnippetManagerPlugin
 {
     public const string Key = "GitHub";

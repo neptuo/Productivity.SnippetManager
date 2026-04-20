@@ -7,7 +7,7 @@ namespace Neptuo.Productivity.SnippetManager;
 /// that reads the current clipboard via <c>System.Windows.Forms.Clipboard</c> and (when
 /// available) the WinRT clipboard history API.
 /// </summary>
-[SnippetManagerPlugin("Clipboard")]
+[SnippetManagerPlugin("Clipboard", Priority = 10)]
 public sealed class ClipboardPlugin : ISnippetManagerPlugin
 {
     public const string Key = "Clipboard";
