@@ -28,7 +28,7 @@ public class Hotkey
         {
             try
             {
-                hotkeys.Add(key, modifiers, (_, _) => navigator.Open());
+                hotkeys.Add(key, modifiers, (_, _) => navigator.OpenMain());
             }
             catch (Win32Exception)
             {

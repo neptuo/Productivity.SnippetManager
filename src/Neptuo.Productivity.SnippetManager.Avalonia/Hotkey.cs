@@ -28,7 +28,7 @@ public class Hotkey : IDisposable
         }
 
         hotkey = (key, modifiers);
-        openMainAction = () => navigator.Open();
+        openMainAction = () => navigator.OpenMain();
         DiagnosticsLog.Info($"Global hotkey parsed to key={key}, modifiers={modifiers}.");
 
         StartHook();

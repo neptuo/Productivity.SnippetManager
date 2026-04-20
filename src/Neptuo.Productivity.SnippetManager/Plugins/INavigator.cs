@@ -10,7 +10,7 @@ public interface INavigator
     /// <summary>
     /// Opens the snippet suggestion window.
     /// </summary>
-    void Open(bool stickToActiveCaret = true);
+    void OpenMain(bool stickToActiveCaret = true);
 
     /// <summary>
     /// Opens the configuration file.

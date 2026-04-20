@@ -23,13 +23,13 @@ public class TrayIcon : IDisposable
         icon.MouseClick += (sender, e) =>
         {
             if (e.Button != MouseButtons.Right)
-                navigator.Open(stickToActiveCaret: false);
+                navigator.OpenMain(stickToActiveCaret: false);
         };
 
         var contextMenu = new ContextMenuStrip();
         icon.ContextMenuStrip = contextMenu;
 
-        contextMenu.Items.Add("Open").Click += (sender, e) => navigator.Open(stickToActiveCaret: false);
+        contextMenu.Items.Add("Open").Click += (sender, e) => navigator.OpenMain(stickToActiveCaret: false);
         contextMenu.Items.Add("Configuration").Click += (sender, e) => navigator.OpenConfiguration();
         BindHotkey(contextMenu);
 
