@@ -26,7 +26,7 @@ public class TrayIcon : IDisposable
         var menu = new NativeMenu();
 
         var openItem = new NativeMenuItem("Open");
-        openItem.Click += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
+        openItem.Click += (_, _) => navigator.Open(stickToActiveCaret: false);
         menu.Items.Add(openItem);
 
         var configItem = new NativeMenuItem("Configuration");
@@ -91,7 +91,7 @@ public class TrayIcon : IDisposable
             // Icon not found, continue without it
         }
 
-        trayIcon.Clicked += (_, _) => navigator.OpenMain(stickToActiveCaret: false);
+        trayIcon.Clicked += (_, _) => navigator.Open(stickToActiveCaret: false);
     }
 
     private void RebuildContributions(NativeMenu menu)

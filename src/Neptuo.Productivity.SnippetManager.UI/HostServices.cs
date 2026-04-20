@@ -15,7 +15,7 @@ internal sealed class HostServices : INavigator
 {
     public INavigator? Target { get; set; }
 
-    public void Open() => Target?.Open();
+    public void Open(bool stickToActiveCaret = true) => Target?.Open(stickToActiveCaret);
     public void OpenConfiguration() => Target?.OpenConfiguration();
     public void OpenFile(string path) => Target?.OpenFile(path);
 }

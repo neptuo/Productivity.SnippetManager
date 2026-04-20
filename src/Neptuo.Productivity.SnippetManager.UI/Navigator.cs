@@ -53,7 +53,7 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
 
     private MainWindow? main;
 
-    public void OpenMain(bool stickToActiveCaret = true)
+    public void Open(bool stickToActiveCaret = true)
     {
         if (main == null)
         {
@@ -153,8 +153,6 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
         // Duplicated in App.xaml
         Process.Start("explorer", filePath);
     }
-
-    public void Open() => OpenMain();
 
     public void OpenFile(string filePath)
         => Process.Start("explorer", filePath);

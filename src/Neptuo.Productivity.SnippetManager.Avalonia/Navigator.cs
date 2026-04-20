@@ -55,11 +55,9 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
 
     private MainWindow? main;
 
-    public void Open() => OpenMain();
-
-    public void OpenMain(bool stickToActiveCaret = true)
+    public void Open(bool stickToActiveCaret = true)
     {
-        DiagnosticsLog.Info($"Navigator.OpenMain requested. Existing window: {main != null}. stickToActiveCaret={stickToActiveCaret}.");
+        DiagnosticsLog.Info($"Navigator.Open requested. Existing window: {main != null}. stickToActiveCaret={stickToActiveCaret}.");
         RememberLastExternalApplication();
         bool shouldRefreshSnippets = false;
 
