@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Neptuo.Productivity.SnippetManager.Plugins;
 using Neptuo.Productivity.SnippetManager.Variables;
 
 namespace Neptuo.Productivity.SnippetManager;
@@ -14,23 +15,30 @@ public partial class App : Application
 {
     private Configuration configuration = new();
     private ISnippetProvider provider = new CompositeSnippetProvider(Array.Empty<ISnippetProvider>());
-    private XmlSnippetProvider? xmlProvider;
     private Navigator navigator = null!;
     private TrayIcon? trayIcon;
     private ConfigurationWatcher? configurationWatcher;
     private Hotkey hotkey = null!;
     private readonly SnippetProviderCollection snippetProviders = new();
     private readonly ConfigurationRepository configurationRepository;
+    private readonly PluginHost pluginHost;
+    private readonly IReadOnlyList<ITrayMenuContributor> trayContributors;
+    private readonly HostServices hostServices = new();
     private bool isShuttingDown;
     private bool areResourcesDisposed;
 
     public App()
     {
-        snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Clipboard", c => new ClipboardSnippetProvider(), true);
-        snippetProviders.AddConfigChangeTracking<ProviderConfiguration>("Guid", c => new GuidSnippetProvider(), true);
-        snippetProviders.AddConfigChangeTracking<XmlConfiguration>("Xml", c => xmlProvider = new XmlSnippetProvider(c), true);
-        snippetProviders.AddConfigChangeTracking<GitHubConfiguration>("GitHub", c => new GitHubSnippetProvider(c));
-        snippetProviders.AddNotNullConfiguration<InlineSnippetConfiguration>("Snippets", c => new InlineSnippetProvider(c));
+        pluginHost = new PluginHost();
+        pluginHost.AddAssembly(typeof(ClipboardPlugin).Assembly);   // Avalonia host: ClipboardPlugin
+        pluginHost.AddAssembly(typeof(GuidPlugin).Assembly);        // core: Guid, Inline
+        pluginHost.AddAssembly(typeof(XmlPlugin).Assembly);         // Xml plugin
+        pluginHost.AddAssembly(typeof(GitHubPlugin).Assembly);      // GitHub plugin
+        pluginHost.AddExportedValue<INavigator>(hostServices);
+
+        var container = pluginHost.Compose(snippetProviders);
+        trayContributors = container.GetExportedValues<ITrayMenuContributor>().ToArray();
+
         configurationRepository = new ConfigurationRepository(snippetProviders);
         hotkey = new Hotkey();
     }
@@ -54,8 +62,9 @@ public partial class App : Application
             configuration = CreateConfiguration();
             provider = snippetProviders.Create(configuration.Providers);
             navigator = CreateNavigator(() => RequestShutdown(desktop));
+            hostServices.Target = navigator;
 
-            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
+            trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
             hotkey.Bind(navigator, configuration.General?.HotKey);
             configurationWatcher = new ConfigurationWatcher(GetConfigurationPath(), AskToReloadConfiguration);
         }
@@ -104,17 +113,7 @@ public partial class App : Application
         trayIcon = null;
 
         hotkey.Dispose();
-    }
-
-    private string GetXmlConfigurationPath()
-        => (configuration.Providers.GetValueOrDefault("Xml") as XmlConfiguration ?? XmlConfiguration.Example).GetFilePathOrDefault();
-
-    private IReadOnlyList<string> GetXmlSnippetFilePaths()
-    {
-        if (xmlProvider != null && xmlProvider.ResolvedFilePaths.Count > 0)
-            return xmlProvider.ResolvedFilePaths;
-
-        return new[] { GetXmlConfigurationPath() };
+        pluginHost.Dispose();
     }
 
     private Configuration GetExampleConfiguration()
@@ -169,8 +168,9 @@ public partial class App : Application
 
             var desktop = (IClassicDesktopStyleApplicationLifetime)ApplicationLifetime!;
             navigator = CreateNavigator(() => RequestShutdown(desktop));
+            hostServices.Target = navigator;
             trayIcon?.Dispose();
-            trayIcon = new TrayIcon(navigator, hotkey, GetXmlSnippetFilePaths);
+            trayIcon = new TrayIcon(navigator, hotkey, trayContributors);
             hotkey.UnBind();
             hotkey.Bind(navigator, configuration.General?.HotKey);
         });

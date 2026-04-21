@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Neptuo.Productivity.SnippetManager.Plugins;
 using Neptuo.Productivity.SnippetManager.Services;
 using Neptuo.Productivity.SnippetManager.Variables;
 using Neptuo.Productivity.SnippetManager.ViewModels;
@@ -16,7 +17,7 @@ using Clipboard = Windows.ApplicationModel.DataTransfer.Clipboard;
 
 namespace Neptuo.Productivity.SnippetManager;
 
-public class Navigator : IClipboardService, ISendTextService
+public class Navigator : IClipboardService, ISendTextService, INavigator
 {
     private readonly SnippetProviderContext snippetProviderContext;
     private readonly ISnippetProvider snippetProvider;
@@ -153,33 +154,8 @@ public class Navigator : IClipboardService, ISendTextService
         Process.Start("explorer", filePath);
     }
 
-    public void OpenXmlSnippets(string filePath)
-    {
-        if (!File.Exists(filePath))
-        {
-            var result = MessageBox.Show("XML snippets file doesn't exist yet. Do you want to create one?", "Snippet Manager", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
-                File.WriteAllText(filePath, """
-                    <?xml version="1.0" encoding="utf-8" ?>
-                    <Snippets xmlns="http://schemas.neptuo.com/xsd/productivity/SnippetManager.xsd">
-                      <Snippet Title="Greet" Text="Hello, World!" />
-                      <Snippet Title="Wheather Forecast" Priority="High">
-                    <![CDATA[Prague 22,
-                    London 18,
-                    New York 25]]></Snippet>
-                    </Snippets>
-                    """);
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        // Duplicated in App.xaml
-        Process.Start("explorer", filePath);
-    }
+    public void OpenFile(string filePath)
+        => Process.Start("explorer", filePath);
 
     public void OpenGitHub() => Process.Start(new ProcessStartInfo()
     {
