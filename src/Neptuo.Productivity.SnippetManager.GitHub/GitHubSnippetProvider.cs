@@ -198,5 +198,11 @@ public class GitHubSnippetProvider(GitHubConfiguration configuration) : SingleIn
             text: $"{htmlUrl}/activity?actor={configuration.UserName}",
             priority: SnippetPriority.Low
         ));
+
+        snippets.Add(new SnippetModel(
+            title: $"{repositoryTitle} - VS Code Online",
+            text: $"https://github.dev/{owner}/{repository}",
+            priority: SnippetPriority.Low
+        ));
     }
 }
