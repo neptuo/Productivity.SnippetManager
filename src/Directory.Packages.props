@@ -14,5 +14,7 @@
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.13" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.13" />
     <PackageVersion Include="SharpHook" Version="5.3.9" />
+    <!-- Pinned to address GHSA-xrw6-gwf8-vvr9 (transitive via Avalonia). -->
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.21.3" />
   </ItemGroup>
 </Project>
