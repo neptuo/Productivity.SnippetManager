@@ -27,7 +27,7 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
     private readonly Func<string> getCurrentHotkey;
     private readonly ConfigurationRepository configurationRepository;
     private readonly SnippetExpansionPipeline expansionPipeline;
-    private int? lastExternalProcessId;
+    private FrontmostApplication? lastExternalApplication;
 
     public Navigator(ISnippetProvider snippetProvider, ConfigurationRepository configurationRepository, Action<bool> setConfigChangeEnabled, Action shutdown, Func<Configuration> getExampleConfiguration, Func<string> getCurrentHotkey, VariablesConfiguration? variables)
     {
@@ -59,6 +59,7 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
     {
         DiagnosticsLog.Info($"Navigator.Open requested. Existing window: {main != null}. stickToActiveCaret={stickToActiveCaret}.");
         RememberLastExternalApplication();
+        string? frontmostLabel = DescribeLastExternalApplication();
         bool shouldRefreshSnippets = false;
 
         if (main == null)
@@ -66,12 +67,12 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
             main = new MainWindow();
             main.Closed += (sender, e) => { main = null; };
             main.ViewModel = new MainViewModel(snippetProviderContext, new ApplySnippetCommand(this, expansionPipeline), new CopySnippetCommand(this, expansionPipeline));
-            UpdateWindowPositionAnchor(main, stickToActiveCaret);
+            UpdateWindowPositionAnchor(main, stickToActiveCaret, frontmostLabel);
             shouldRefreshSnippets = true;
         }
         else
         {
-            UpdateWindowPositionAnchor(main, stickToActiveCaret);
+            UpdateWindowPositionAnchor(main, stickToActiveCaret, frontmostLabel);
             main.FocusSearchText();
             main.UpdatePosition();
         }
@@ -88,20 +89,22 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
         DiagnosticsLog.Info("Main window shown and focused.");
     }
 
-    private static void UpdateWindowPositionAnchor(MainWindow window, bool stickToActiveCaret)
+    private static void UpdateWindowPositionAnchor(MainWindow window, bool stickToActiveCaret, string? frontmostAppLabel = null)
     {
         WindowPositionAnchor? anchor = null;
 
         if (stickToActiveCaret)
         {
-            anchor = MacOSTextAnchor.TryGetForFocusedElement();
+            anchor = MacOSTextAnchor.TryGetForFocusedElement(frontmostAppLabel);
             if (anchor is { } resolvedAnchor)
             {
-                DiagnosticsLog.Info($"Main window positioning will use the {resolvedAnchor.Source} anchor at ({resolvedAnchor.Bounds.X}, {resolvedAnchor.Bounds.Y}, {resolvedAnchor.Bounds.Width}, {resolvedAnchor.Bounds.Height}).");
+                string suffix = string.IsNullOrEmpty(frontmostAppLabel) ? string.Empty : $" Frontmost app: {frontmostAppLabel}.";
+                DiagnosticsLog.Info($"Main window positioning will use the {resolvedAnchor.Source} anchor at ({resolvedAnchor.Bounds.X}, {resolvedAnchor.Bounds.Y}, {resolvedAnchor.Bounds.Width}, {resolvedAnchor.Bounds.Height}).{suffix}");
             }
             else
             {
-                DiagnosticsLog.Info("Unable to resolve a caret or focused-element anchor for the main window. Falling back to centered placement.");
+                string suffix = string.IsNullOrEmpty(frontmostAppLabel) ? string.Empty : $" Frontmost app: {frontmostAppLabel}.";
+                DiagnosticsLog.Info($"Unable to resolve a caret or focused-element anchor for the main window. Falling back to centered placement.{suffix}");
             }
         }
         else
@@ -373,17 +376,21 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
         if (!OperatingSystem.IsMacOS())
             return;
 
-        int? processId = MacOSApplication.GetFrontmostApplicationProcessId();
-        if (processId.HasValue && processId.Value != Environment.ProcessId)
+        FrontmostApplication? app = MacOSApplication.GetFrontmostApplication();
+        if (app is { } value && value.ProcessId != Environment.ProcessId)
         {
-            lastExternalProcessId = processId.Value;
-            DiagnosticsLog.Info($"Captured frontmost macOS application PID {processId.Value} before opening the UI.");
+            lastExternalApplication = value;
+            DiagnosticsLog.Info($"Captured frontmost macOS application before opening the UI: {value.DescribeForLog()}.");
         }
         else
         {
-            DiagnosticsLog.Info("No external macOS application PID was captured before opening the UI.");
+            lastExternalApplication = null;
+            DiagnosticsLog.Info("No external macOS application was captured before opening the UI.");
         }
     }
+
+    private string? DescribeLastExternalApplication()
+        => lastExternalApplication?.DescribeForLog();
 
     private static void ActivateCurrentApplication()
     {
@@ -393,13 +400,13 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
 
     private void RestoreLastExternalApplication()
     {
-        int? processId = lastExternalProcessId;
-        lastExternalProcessId = null;
+        FrontmostApplication? app = lastExternalApplication;
+        lastExternalApplication = null;
 
-        if (OperatingSystem.IsMacOS() && processId.HasValue && processId.Value != Environment.ProcessId)
+        if (OperatingSystem.IsMacOS() && app is { } value && value.ProcessId != Environment.ProcessId)
         {
-            DiagnosticsLog.Info($"Restoring focus to macOS process {processId.Value}.");
-            MacOSApplication.ActivateProcess(processId.Value);
+            DiagnosticsLog.Info($"Restoring focus to macOS application: {value.DescribeForLog()}.");
+            MacOSApplication.ActivateProcess(value.ProcessId, value.Name);
         }
     }
 

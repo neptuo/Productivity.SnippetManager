@@ -7,88 +7,90 @@ namespace Neptuo.Productivity.SnippetManager;
 
 internal static class MacOSTextAnchor
 {
-    public static WindowPositionAnchor? TryGetForFocusedElement()
+    public static WindowPositionAnchor? TryGetForFocusedElement(string? frontmostAppLabel = null)
     {
         if (!OperatingSystem.IsMacOS())
             return null;
 
-        DiagnosticsLog.Info("Attempting to resolve a macOS accessibility anchor for main window positioning.");
+        string context = string.IsNullOrEmpty(frontmostAppLabel) ? string.Empty : $" Frontmost app: {frontmostAppLabel}.";
+
+        DiagnosticsLog.Info($"Attempting to resolve a macOS accessibility anchor for main window positioning.{context}");
 
         try
         {
             if (!NativeMethods.AXIsProcessTrusted())
-                DiagnosticsLog.Info("macOS accessibility reports the current process is not trusted. Focused-element placement may be unavailable.");
+                DiagnosticsLog.Info($"macOS accessibility reports the current process is not trusted. Focused-element placement may be unavailable.{context}");
 
             using CFObjectHandle? systemWide = CFObjectHandle.Own(NativeMethods.AXUIElementCreateSystemWide());
             if (systemWide == null || systemWide.IsInvalid)
             {
-                DiagnosticsLog.Error("Unable to create the system-wide macOS accessibility element.");
+                DiagnosticsLog.Error($"Unable to create the system-wide macOS accessibility element.{context}");
                 return null;
             }
 
-            if (TryCopyAttributeValue(systemWide, "AXFocusedUIElement", out var focusedElement))
+            if (TryCopyAttributeValue(systemWide, "AXFocusedUIElement", out var focusedElement, context))
             {
                 using (focusedElement)
                 {
-                    if (TryGetSelectedTextRangeBounds(focusedElement, out var selectedTextBounds))
-                        return CreateAnchor(selectedTextBounds, "selected text range");
+                    if (TryGetSelectedTextRangeBounds(focusedElement, out var selectedTextBounds, context))
+                        return CreateAnchor(selectedTextBounds, "selected text range", context);
 
-                    if (TryGetElementBounds(focusedElement, out var focusedElementBounds))
-                        return CreateAnchor(focusedElementBounds, "focused element");
+                    if (TryGetElementBounds(focusedElement, out var focusedElementBounds, context))
+                        return CreateAnchor(focusedElementBounds, "focused element", context);
 
-                    if (TryCopyAttributeValue(focusedElement, "AXWindow", out var elementWindow))
+                    if (TryCopyAttributeValue(focusedElement, "AXWindow", out var elementWindow, context))
                     {
                         using (elementWindow)
                         {
-                            if (TryGetElementBounds(elementWindow, out var elementWindowBounds))
-                                return CreateAnchor(elementWindowBounds, "focused element window");
+                            if (TryGetElementBounds(elementWindow, out var elementWindowBounds, context))
+                                return CreateAnchor(elementWindowBounds, "focused element window", context);
                         }
                     }
                 }
             }
 
-            if (TryCopyAttributeValue(systemWide, "AXFocusedWindow", out var focusedWindow))
+            if (TryCopyAttributeValue(systemWide, "AXFocusedWindow", out var focusedWindow, context))
             {
                 using (focusedWindow)
                 {
-                    if (TryGetElementBounds(focusedWindow, out var focusedWindowBounds))
-                        return CreateAnchor(focusedWindowBounds, "focused window");
+                    if (TryGetElementBounds(focusedWindow, out var focusedWindowBounds, context))
+                        return CreateAnchor(focusedWindowBounds, "focused window", context);
                 }
             }
         }
         catch (Exception ex)
         {
-            DiagnosticsLog.Error("Unable to resolve a macOS accessibility anchor for main window positioning.", ex);
+            DiagnosticsLog.Error($"Unable to resolve a macOS accessibility anchor for main window positioning.{context}", ex);
         }
 
-        DiagnosticsLog.Info("Unable to resolve a macOS accessibility anchor. The main window will fall back to centered placement.");
+        DiagnosticsLog.Info($"Unable to resolve a macOS accessibility anchor. The main window will fall back to centered placement.{context}");
         return null;
     }
 
-    private static bool TryGetSelectedTextRangeBounds(CFObjectHandle element, out PixelRect bounds)
+    private static bool TryGetSelectedTextRangeBounds(CFObjectHandle element, out PixelRect bounds, string context = "")
     {
         bounds = default;
 
-        if (!TryCopyAttributeValue(element, "AXSelectedTextRange", out var selectedTextRange))
+        if (!TryCopyAttributeValue(element, "AXSelectedTextRange", out var selectedTextRange, context))
             return false;
 
         using (selectedTextRange)
         {
-            if (!TryCopyParameterizedAttributeValue(element, "AXBoundsForRange", selectedTextRange, out var selectedTextBounds))
+            if (!TryCopyParameterizedAttributeValue(element, "AXBoundsForRange", selectedTextRange, out var selectedTextBounds, context))
                 return false;
 
             using (selectedTextBounds)
             {
-                if (!TryGetRectValue(selectedTextBounds, out var selectedRangeRect))
+                if (!TryGetRectValue(selectedTextBounds, out var selectedRangeRect, context))
                     return false;
 
                 bounds = ToPixelRect(selectedRangeRect);
-                DiagnosticsLog.Info($"Resolved macOS selected text bounds to {FormatPixelRect(bounds)}.");
+                DiagnosticsLog.Info($"Resolved macOS selected text bounds to {FormatPixelRect(bounds)}.{context}");
 
                 PixelRect? screenBounds = TryGetDisplayBoundsForPoint(bounds);
                 if (!IsSelectedTextBoundsPlausible(bounds, screenBounds))
                 {
-                    DiagnosticsLog.Info($"Rejected macOS selected text bounds {FormatPixelRect(bounds)} as implausible (degenerate size at screen edge). Falling back to alternative anchoring.");
+                    DiagnosticsLog.Info($"Rejected macOS selected text bounds {FormatPixelRect(bounds)} as implausible (degenerate size at screen edge). Falling back to alternative anchoring.{context}");
                     bounds = default;
                     return false;
                 }
@@ -139,108 +141,108 @@ internal static class MacOSTextAnchor
         }
     }
 
-    private static bool TryGetElementBounds(CFObjectHandle element, out PixelRect bounds)
+    private static bool TryGetElementBounds(CFObjectHandle element, out PixelRect bounds, string context = "")
     {
         bounds = default;
 
-        if (!TryCopyAttributeValue(element, "AXPosition", out var positionValue))
+        if (!TryCopyAttributeValue(element, "AXPosition", out var positionValue, context))
             return false;
 
         using (positionValue)
         {
-            if (!TryGetPointValue(positionValue, out var position))
+            if (!TryGetPointValue(positionValue, out var position, context))
                 return false;
 
-            if (!TryCopyAttributeValue(element, "AXSize", out var sizeValue))
+            if (!TryCopyAttributeValue(element, "AXSize", out var sizeValue, context))
                 return false;
 
             using (sizeValue)
             {
-                if (!TryGetSizeValue(sizeValue, out var size))
+                if (!TryGetSizeValue(sizeValue, out var size, context))
                     return false;
 
                 bounds = ToPixelRect(position, size);
-                DiagnosticsLog.Info($"Resolved macOS accessibility element bounds to {FormatPixelRect(bounds)}.");
+                DiagnosticsLog.Info($"Resolved macOS accessibility element bounds to {FormatPixelRect(bounds)}.{context}");
                 return true;
             }
         }
     }
 
-    private static WindowPositionAnchor CreateAnchor(PixelRect bounds, string source)
+    private static WindowPositionAnchor CreateAnchor(PixelRect bounds, string source, string context = "")
     {
-        DiagnosticsLog.Info($"Resolved macOS accessibility anchor from {source}: {FormatPixelRect(bounds)}.");
+        DiagnosticsLog.Info($"Resolved macOS accessibility anchor from {source}: {FormatPixelRect(bounds)}.{context}");
         return new WindowPositionAnchor(bounds, source);
     }
 
-    private static bool TryGetPointValue(CFObjectHandle value, out CGPoint point)
+    private static bool TryGetPointValue(CFObjectHandle value, out CGPoint point, string context = "")
     {
         point = default;
         if (NativeMethods.AXValueGetType(value) != AXValueType.CGPoint)
         {
-            DiagnosticsLog.Info("The macOS accessibility value did not contain a CGPoint.");
+            DiagnosticsLog.Info($"The macOS accessibility value did not contain a CGPoint.{context}");
             return false;
         }
 
         if (!NativeMethods.AXValueGetCGPoint(value, AXValueType.CGPoint, out point))
         {
-            DiagnosticsLog.Info("Unable to read a CGPoint from the macOS accessibility value.");
+            DiagnosticsLog.Info($"Unable to read a CGPoint from the macOS accessibility value.{context}");
             return false;
         }
 
         return true;
     }
 
-    private static bool TryGetSizeValue(CFObjectHandle value, out CGSize size)
+    private static bool TryGetSizeValue(CFObjectHandle value, out CGSize size, string context = "")
     {
         size = default;
         if (NativeMethods.AXValueGetType(value) != AXValueType.CGSize)
         {
-            DiagnosticsLog.Info("The macOS accessibility value did not contain a CGSize.");
+            DiagnosticsLog.Info($"The macOS accessibility value did not contain a CGSize.{context}");
             return false;
         }
 
         if (!NativeMethods.AXValueGetCGSize(value, AXValueType.CGSize, out size))
         {
-            DiagnosticsLog.Info("Unable to read a CGSize from the macOS accessibility value.");
+            DiagnosticsLog.Info($"Unable to read a CGSize from the macOS accessibility value.{context}");
             return false;
         }
 
         return true;
     }
 
-    private static bool TryGetRectValue(CFObjectHandle value, out CGRect rect)
+    private static bool TryGetRectValue(CFObjectHandle value, out CGRect rect, string context = "")
     {
         rect = default;
         if (NativeMethods.AXValueGetType(value) != AXValueType.CGRect)
         {
-            DiagnosticsLog.Info("The macOS accessibility value did not contain a CGRect.");
+            DiagnosticsLog.Info($"The macOS accessibility value did not contain a CGRect.{context}");
             return false;
         }
 
         if (!NativeMethods.AXValueGetCGRect(value, AXValueType.CGRect, out rect))
         {
-            DiagnosticsLog.Info("Unable to read a CGRect from the macOS accessibility value.");
+            DiagnosticsLog.Info($"Unable to read a CGRect from the macOS accessibility value.{context}");
             return false;
         }
 
         return true;
     }
 
-    private static bool TryCopyAttributeValue(CFObjectHandle element, string attributeName, [NotNullWhen(true)] out CFObjectHandle? value)
+    private static bool TryCopyAttributeValue(CFObjectHandle element, string attributeName, [NotNullWhen(true)] out CFObjectHandle? value, string context = "")
     {
         value = null;
 
         using CFObjectHandle? attribute = CreateString(attributeName);
         if (attribute == null || attribute.IsInvalid)
         {
-            DiagnosticsLog.Error($"Unable to create the macOS accessibility attribute string '{attributeName}'.");
+            DiagnosticsLog.Error($"Unable to create the macOS accessibility attribute string '{attributeName}'.{context}");
             return false;
         }
 
         AXError error = NativeMethods.AXUIElementCopyAttributeValue(element, attribute, out IntPtr rawValue);
         if (error != AXError.Success || rawValue == IntPtr.Zero)
         {
-            DiagnosticsLog.Info($"macOS accessibility attribute '{attributeName}' is unavailable (error={error}).");
+            DiagnosticsLog.Info($"macOS accessibility attribute '{attributeName}' is unavailable (error={error}).{context}");
             return false;
         }
 
@@ -248,21 +250,21 @@ internal static class MacOSTextAnchor
         return value != null && !value.IsInvalid;
     }
 
-    private static bool TryCopyParameterizedAttributeValue(CFObjectHandle element, string attributeName, CFObjectHandle parameter, [NotNullWhen(true)] out CFObjectHandle? value)
+    private static bool TryCopyParameterizedAttributeValue(CFObjectHandle element, string attributeName, CFObjectHandle parameter, [NotNullWhen(true)] out CFObjectHandle? value, string context = "")
     {
         value = null;
 
         using CFObjectHandle? attribute = CreateString(attributeName);
         if (attribute == null || attribute.IsInvalid)
         {
-            DiagnosticsLog.Error($"Unable to create the macOS accessibility parameterized attribute string '{attributeName}'.");
+            DiagnosticsLog.Error($"Unable to create the macOS accessibility parameterized attribute string '{attributeName}'.{context}");
             return false;
         }
 
         AXError error = NativeMethods.AXUIElementCopyParameterizedAttributeValue(element, attribute, parameter, out IntPtr rawValue);
         if (error != AXError.Success || rawValue == IntPtr.Zero)
         {
-            DiagnosticsLog.Info($"macOS parameterized accessibility attribute '{attributeName}' is unavailable (error={error}).");
+            DiagnosticsLog.Info($"macOS parameterized accessibility attribute '{attributeName}' is unavailable (error={error}).{context}");
             return false;
         }
 
