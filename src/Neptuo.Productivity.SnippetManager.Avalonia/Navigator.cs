@@ -387,9 +387,9 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
         if (OperatingSystem.IsMacOS())
             return MacOSApplication.IsCommandKeyPressed();
 
-        if (OperatingSystem.IsWindows())
-            return WindowsApplication.IsCtrlKeyPressed();
-
+        // Other platforms don't yet have SimulatePaste/SimulateEnter implementations,
+        // so modifier detection stays disabled to avoid the wait-for-release stall
+        // with no keystroke follow-up.
         return false;
     }
 
@@ -475,7 +475,7 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
         {
             try
             {
-                Process.Start(new ProcessStartInfo
+                using var process = Process.Start(new ProcessStartInfo
                 {
                     FileName = "xdotool",
                     Arguments = "key ctrl+v",
@@ -500,7 +500,7 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
         {
             try
             {
-                Process.Start(new ProcessStartInfo
+                using var process = Process.Start(new ProcessStartInfo
                 {
                     FileName = "xdotool",
                     Arguments = "key Return",
