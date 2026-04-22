@@ -95,15 +95,14 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
 
         if (stickToActiveCaret)
         {
+            string suffix = string.IsNullOrEmpty(frontmostAppLabel) ? string.Empty : $" Frontmost app: {frontmostAppLabel}.";
             anchor = MacOSTextAnchor.TryGetForFocusedElement(frontmostAppLabel);
             if (anchor is { } resolvedAnchor)
             {
-                string suffix = string.IsNullOrEmpty(frontmostAppLabel) ? string.Empty : $" Frontmost app: {frontmostAppLabel}.";
                 DiagnosticsLog.Info($"Main window positioning will use the {resolvedAnchor.Source} anchor at ({resolvedAnchor.Bounds.X}, {resolvedAnchor.Bounds.Y}, {resolvedAnchor.Bounds.Width}, {resolvedAnchor.Bounds.Height}).{suffix}");
             }
             else
             {
-                string suffix = string.IsNullOrEmpty(frontmostAppLabel) ? string.Empty : $" Frontmost app: {frontmostAppLabel}.";
                 DiagnosticsLog.Info($"Unable to resolve a caret or focused-element anchor for the main window. Falling back to centered placement.{suffix}");
             }
         }
