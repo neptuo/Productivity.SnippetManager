@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Neptuo.Productivity.SnippetManager;
@@ -49,44 +50,48 @@ internal static class MacOSApplication
         if (!OperatingSystem.IsMacOS())
             return null;
 
-        string? output = RunAppleScript("""
-            tell application "System Events"
-                set p to first application process whose frontmost is true
-                set sep to (character id 31)
-                set n to ""
-                try
-                    set n to name of p
-                end try
-                set b to ""
-                try
-                    set b to bundle identifier of p
-                end try
-                return ((unix id of p) as string) & sep & n & sep & b
-            end tell
-            """);
-
-        if (string.IsNullOrEmpty(output))
+        try
         {
-            DiagnosticsLog.Error("Unable to resolve the frontmost macOS application (empty AppleScript output).");
+            IntPtr workspaceClass = ObjC.objc_getClass("NSWorkspace");
+            if (workspaceClass == IntPtr.Zero)
+            {
+                DiagnosticsLog.Error("Unable to resolve the NSWorkspace class via the Objective-C runtime.");
+                return null;
+            }
+
+            IntPtr sharedWorkspace = ObjC.IntPtr_objc_msgSend(workspaceClass, ObjC.Sel_sharedWorkspace);
+            if (sharedWorkspace == IntPtr.Zero)
+            {
+                DiagnosticsLog.Error("Unable to resolve [NSWorkspace sharedWorkspace].");
+                return null;
+            }
+
+            IntPtr frontApp = ObjC.IntPtr_objc_msgSend(sharedWorkspace, ObjC.Sel_frontmostApplication);
+            if (frontApp == IntPtr.Zero)
+            {
+                DiagnosticsLog.Error("Unable to resolve the frontmost macOS application (NSWorkspace returned nil).");
+                return null;
+            }
+
+            int processId = ObjC.Int_objc_msgSend(frontApp, ObjC.Sel_processIdentifier);
+            string? name = ObjC.ReadNSString(ObjC.IntPtr_objc_msgSend(frontApp, ObjC.Sel_localizedName));
+            string? bundle = ObjC.ReadNSString(ObjC.IntPtr_objc_msgSend(frontApp, ObjC.Sel_bundleIdentifier));
+
+            if (processId <= 0)
+            {
+                DiagnosticsLog.Error($"Frontmost macOS application returned a non-positive PID ({processId}).");
+                return null;
+            }
+
+            var app = new FrontmostApplication(processId, name, bundle);
+            DiagnosticsLog.Info($"Resolved the frontmost macOS application: {app.DescribeForLog()}.");
+            return app;
+        }
+        catch (Exception ex)
+        {
+            DiagnosticsLog.Error("Unable to resolve the frontmost macOS application via NSWorkspace.", ex);
             return null;
         }
-
-        string[] parts = output.Split(new[] { '\u001F' }, 3);
-        if (parts.Length == 0 || !int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int processId))
-        {
-            DiagnosticsLog.Error($"Unable to parse the frontmost macOS application info from '{output}'.");
-            return null;
-        }
-
-        if (parts.Length < 3)
-            DiagnosticsLog.Error($"Frontmost macOS application info is missing fields (got {parts.Length}): '{output}'.");
-
-        string? name = parts.Length > 1 && !string.IsNullOrEmpty(parts[1]) ? parts[1] : null;
-        string? bundle = parts.Length > 2 && !string.IsNullOrEmpty(parts[2]) ? parts[2] : null;
-
-        var app = new FrontmostApplication(processId, name, bundle);
-        DiagnosticsLog.Info($"Resolved the frontmost macOS application: {app.DescribeForLog()}.");
-        return app;
     }
 
     public static void ActivateCurrentProcess()
@@ -120,6 +125,51 @@ internal static class MacOSApplication
                 keystroke "v" using command down
             end tell
             """);
+    }
+
+    private static class ObjC
+    {
+        private const string LibObjC = "/usr/lib/libobjc.dylib";
+        private const string LibSystem = "/usr/lib/libSystem.dylib";
+        private const string AppKitPath = "/System/Library/Frameworks/AppKit.framework/AppKit";
+
+        // Ensure AppKit is loaded so NSWorkspace is available. Idempotent; a no-op when Avalonia has already linked it.
+        private static readonly IntPtr AppKitHandle = dlopen(AppKitPath, 2 /* RTLD_NOW */);
+
+        public static readonly IntPtr Sel_sharedWorkspace = sel_registerName("sharedWorkspace");
+        public static readonly IntPtr Sel_frontmostApplication = sel_registerName("frontmostApplication");
+        public static readonly IntPtr Sel_processIdentifier = sel_registerName("processIdentifier");
+        public static readonly IntPtr Sel_localizedName = sel_registerName("localizedName");
+        public static readonly IntPtr Sel_bundleIdentifier = sel_registerName("bundleIdentifier");
+        public static readonly IntPtr Sel_UTF8String = sel_registerName("UTF8String");
+
+        [DllImport(LibSystem, CharSet = CharSet.Ansi)]
+        private static extern IntPtr dlopen(string path, int mode);
+
+        [DllImport(LibObjC, CharSet = CharSet.Ansi)]
+        public static extern IntPtr objc_getClass(string name);
+
+        [DllImport(LibObjC, CharSet = CharSet.Ansi)]
+        public static extern IntPtr sel_registerName(string name);
+
+        [DllImport(LibObjC, EntryPoint = "objc_msgSend")]
+        public static extern IntPtr IntPtr_objc_msgSend(IntPtr receiver, IntPtr selector);
+
+        [DllImport(LibObjC, EntryPoint = "objc_msgSend")]
+        public static extern int Int_objc_msgSend(IntPtr receiver, IntPtr selector);
+
+        public static string? ReadNSString(IntPtr nsString)
+        {
+            if (nsString == IntPtr.Zero)
+                return null;
+
+            IntPtr utf8 = IntPtr_objc_msgSend(nsString, Sel_UTF8String);
+            if (utf8 == IntPtr.Zero)
+                return null;
+
+            string? value = Marshal.PtrToStringUTF8(utf8);
+            return string.IsNullOrEmpty(value) ? null : value;
+        }
     }
 
     private static string? RunAppleScript(string script)
