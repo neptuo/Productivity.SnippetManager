@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -107,11 +106,33 @@ internal static class MacOSApplication
 
         string suffix = string.IsNullOrEmpty(name) ? string.Empty : $" (name='{name}')";
         DiagnosticsLog.Info($"Requesting macOS activation for process {processId}{suffix}.");
-        RunAppleScript($"""
-            tell application "System Events"
-                set frontmost of first application process whose unix id is {processId} to true
-            end tell
-            """);
+
+        try
+        {
+            IntPtr runningAppClass = ObjC.objc_getClass("NSRunningApplication");
+            if (runningAppClass == IntPtr.Zero)
+            {
+                DiagnosticsLog.Error("Unable to resolve the NSRunningApplication class.");
+                return;
+            }
+
+            IntPtr app = ObjC.IntPtr_IntPtr_objc_msgSend(runningAppClass, ObjC.Sel_runningApplicationWithProcessIdentifier, new IntPtr(processId));
+            if (app == IntPtr.Zero)
+            {
+                DiagnosticsLog.Error($"No NSRunningApplication found for PID {processId}.");
+                return;
+            }
+
+            // NSApplicationActivateIgnoringOtherApps = 1 << 1
+            const ulong NSApplicationActivateIgnoringOtherApps = 1UL << 1;
+            bool ok = ObjC.Bool_ULong_objc_msgSend(app, ObjC.Sel_activateWithOptions, NSApplicationActivateIgnoringOtherApps);
+            if (!ok)
+                DiagnosticsLog.Error($"NSRunningApplication activateWithOptions: returned NO for PID {processId}.");
+        }
+        catch (Exception ex)
+        {
+            DiagnosticsLog.Error($"Unable to activate macOS process {processId} via NSRunningApplication.", ex);
+        }
     }
 
     public static void SendPasteShortcut()
@@ -119,12 +140,68 @@ internal static class MacOSApplication
         if (!OperatingSystem.IsMacOS())
             return;
 
-        DiagnosticsLog.Info("Sending macOS paste shortcut via AppleScript.");
-        RunAppleScript("""
-            tell application "System Events"
-                keystroke "v" using command down
-            end tell
-            """);
+        DiagnosticsLog.Info("Sending macOS paste shortcut via CGEvent.");
+
+        try
+        {
+            const ushort kVK_ANSI_V = 0x09;
+            const ulong kCGEventFlagMaskCommand = 0x00100000;
+            const uint kCGHIDEventTap = 0;
+
+            IntPtr source = CoreGraphics.CGEventSourceCreate(1 /* kCGEventSourceStateHIDSystemState */);
+            try
+            {
+                IntPtr keyDown = CoreGraphics.CGEventCreateKeyboardEvent(source, kVK_ANSI_V, true);
+                IntPtr keyUp = CoreGraphics.CGEventCreateKeyboardEvent(source, kVK_ANSI_V, false);
+                try
+                {
+                    if (keyDown == IntPtr.Zero || keyUp == IntPtr.Zero)
+                    {
+                        DiagnosticsLog.Error("CGEventCreateKeyboardEvent returned null; cannot send paste shortcut.");
+                        return;
+                    }
+
+                    CoreGraphics.CGEventSetFlags(keyDown, kCGEventFlagMaskCommand);
+                    CoreGraphics.CGEventSetFlags(keyUp, kCGEventFlagMaskCommand);
+                    CoreGraphics.CGEventPost(kCGHIDEventTap, keyDown);
+                    CoreGraphics.CGEventPost(kCGHIDEventTap, keyUp);
+                }
+                finally
+                {
+                    if (keyDown != IntPtr.Zero) CoreGraphics.CFRelease(keyDown);
+                    if (keyUp != IntPtr.Zero) CoreGraphics.CFRelease(keyUp);
+                }
+            }
+            finally
+            {
+                if (source != IntPtr.Zero) CoreGraphics.CFRelease(source);
+            }
+        }
+        catch (Exception ex)
+        {
+            DiagnosticsLog.Error("Unable to send the macOS paste shortcut via CGEvent.", ex);
+        }
+    }
+
+    private static class CoreGraphics
+    {
+        private const string Framework = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
+        private const string CoreFoundation = "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation";
+
+        [DllImport(Framework)]
+        public static extern IntPtr CGEventSourceCreate(int stateID);
+
+        [DllImport(Framework)]
+        public static extern IntPtr CGEventCreateKeyboardEvent(IntPtr source, ushort virtualKey, [MarshalAs(UnmanagedType.I1)] bool keyDown);
+
+        [DllImport(Framework)]
+        public static extern void CGEventSetFlags(IntPtr @event, ulong flags);
+
+        [DllImport(Framework)]
+        public static extern void CGEventPost(uint tap, IntPtr @event);
+
+        [DllImport(CoreFoundation)]
+        public static extern void CFRelease(IntPtr cf);
     }
 
     private static class ObjC
@@ -142,6 +219,8 @@ internal static class MacOSApplication
         public static readonly IntPtr Sel_localizedName = sel_registerName("localizedName");
         public static readonly IntPtr Sel_bundleIdentifier = sel_registerName("bundleIdentifier");
         public static readonly IntPtr Sel_UTF8String = sel_registerName("UTF8String");
+        public static readonly IntPtr Sel_runningApplicationWithProcessIdentifier = sel_registerName("runningApplicationWithProcessIdentifier:");
+        public static readonly IntPtr Sel_activateWithOptions = sel_registerName("activateWithOptions:");
 
         [DllImport(LibSystem, CharSet = CharSet.Ansi)]
         private static extern IntPtr dlopen(string path, int mode);
@@ -156,7 +235,14 @@ internal static class MacOSApplication
         public static extern IntPtr IntPtr_objc_msgSend(IntPtr receiver, IntPtr selector);
 
         [DllImport(LibObjC, EntryPoint = "objc_msgSend")]
+        public static extern IntPtr IntPtr_IntPtr_objc_msgSend(IntPtr receiver, IntPtr selector, IntPtr arg);
+
+        [DllImport(LibObjC, EntryPoint = "objc_msgSend")]
         public static extern int Int_objc_msgSend(IntPtr receiver, IntPtr selector);
+
+        [DllImport(LibObjC, EntryPoint = "objc_msgSend")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool Bool_ULong_objc_msgSend(IntPtr receiver, IntPtr selector, ulong arg);
 
         public static string? ReadNSString(IntPtr nsString)
         {
@@ -169,43 +255,6 @@ internal static class MacOSApplication
 
             string? value = Marshal.PtrToStringUTF8(utf8);
             return string.IsNullOrEmpty(value) ? null : value;
-        }
-    }
-
-    private static string? RunAppleScript(string script)
-    {
-        try
-        {
-            using var process = new Process();
-            process.StartInfo = new ProcessStartInfo
-            {
-                FileName = "osascript",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            process.StartInfo.ArgumentList.Add("-e");
-            process.StartInfo.ArgumentList.Add(script);
-
-            process.Start();
-
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-            process.WaitForExit();
-
-            if (process.ExitCode != 0)
-            {
-                DiagnosticsLog.Error($"AppleScript exited with code {process.ExitCode}: {error}");
-                return null;
-            }
-
-            return output.Trim();
-        }
-        catch (Exception ex)
-        {
-            DiagnosticsLog.Error("Unable to run AppleScript.", ex);
-            return null;
         }
     }
 }
