@@ -54,7 +54,10 @@ internal static class MacOSApplication
             IntPtr workspaceClass = ObjC.objc_getClass("NSWorkspace");
             if (workspaceClass == IntPtr.Zero)
             {
-                DiagnosticsLog.Error("Unable to resolve the NSWorkspace class via the Objective-C runtime.");
+                if (ObjC.AppKitHandle == IntPtr.Zero)
+                    DiagnosticsLog.Error("Unable to resolve the NSWorkspace class: AppKit failed to load.");
+                else
+                    DiagnosticsLog.Error("Unable to resolve the NSWorkspace class via the Objective-C runtime.");
                 return null;
             }
 
@@ -211,7 +214,7 @@ internal static class MacOSApplication
         private const string AppKitPath = "/System/Library/Frameworks/AppKit.framework/AppKit";
 
         // Ensure AppKit is loaded so NSWorkspace is available. Idempotent; a no-op when Avalonia has already linked it.
-        private static readonly IntPtr AppKitHandle = dlopen(AppKitPath, 2 /* RTLD_NOW */);
+        public static readonly IntPtr AppKitHandle = LoadAppKit();
 
         public static readonly IntPtr Sel_sharedWorkspace = sel_registerName("sharedWorkspace");
         public static readonly IntPtr Sel_frontmostApplication = sel_registerName("frontmostApplication");
@@ -255,6 +258,14 @@ internal static class MacOSApplication
 
             string? value = Marshal.PtrToStringUTF8(utf8);
             return string.IsNullOrEmpty(value) ? null : value;
+        }
+
+        private static IntPtr LoadAppKit()
+        {
+            IntPtr handle = dlopen(AppKitPath, 2 /* RTLD_NOW */);
+            if (handle == IntPtr.Zero)
+                DiagnosticsLog.Error($"dlopen failed to load AppKit from '{AppKitPath}'; NSWorkspace lookups will not work.");
+            return handle;
         }
     }
 }
