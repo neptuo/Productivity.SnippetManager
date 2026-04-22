@@ -333,6 +333,8 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
             return;
         }
 
+        bool isAutoSubmitModifierDown = IsAutoSubmitModifierPressed();
+
         string? previousText = null;
 #pragma warning disable CS0618 // GetTextAsync is deprecated in favor of TryGetTextAsync in Avalonia 11.3+
         try { previousText = await clipboard.GetTextAsync(); }
@@ -346,15 +348,49 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
 
         await Task.Delay(100);
 
+        if (isAutoSubmitModifierDown)
+            await WaitForAutoSubmitModifierReleaseAsync();
+
         SimulatePaste();
 
         await Task.Delay(200);
+
+        if (isAutoSubmitModifierDown)
+        {
+            SimulateEnter();
+            await Task.Delay(100);
+        }
 
         if (previousText != null)
         {
             try { await clipboard.SetTextAsync(previousText); }
             catch (Exception ex) { DiagnosticsLog.Error("Unable to restore the previous clipboard text.", ex); }
         }
+    }
+
+    private static async Task WaitForAutoSubmitModifierReleaseAsync()
+    {
+        // Wait for the auto-submit modifier key release with timeout
+        int timeout = 5000; // 5 seconds timeout
+        int stepDelay = 50;
+        int elapsed = 0;
+
+        while (IsAutoSubmitModifierPressed() && elapsed < timeout)
+        {
+            await Task.Delay(stepDelay);
+            elapsed += stepDelay;
+        }
+    }
+
+    private static bool IsAutoSubmitModifierPressed()
+    {
+        if (OperatingSystem.IsMacOS())
+            return MacOSApplication.IsCommandKeyPressed();
+
+        if (OperatingSystem.IsWindows())
+            return WindowsApplication.IsCtrlKeyPressed();
+
+        return false;
     }
 
     async void IClipboardService.SetText(string text)
@@ -443,6 +479,31 @@ public class Navigator : IClipboardService, ISendTextService, INavigator
                 {
                     FileName = "xdotool",
                     Arguments = "key ctrl+v",
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                });
+            }
+            catch
+            {
+                // xdotool not available
+            }
+        }
+    }
+
+    private static void SimulateEnter()
+    {
+        if (OperatingSystem.IsMacOS())
+        {
+            MacOSApplication.SendEnterShortcut();
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "xdotool",
+                    Arguments = "key Return",
                     UseShellExecute = false,
                     CreateNoWindow = true
                 });

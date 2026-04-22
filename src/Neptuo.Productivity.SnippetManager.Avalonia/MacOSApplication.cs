@@ -186,6 +186,71 @@ internal static class MacOSApplication
         }
     }
 
+    public static void SendEnterShortcut()
+    {
+        if (!OperatingSystem.IsMacOS())
+            return;
+
+        DiagnosticsLog.Info("Sending macOS return keystroke via CGEvent.");
+
+        try
+        {
+            const ushort kVK_Return = 0x24;
+            const uint kCGHIDEventTap = 0;
+
+            IntPtr source = CoreGraphics.CGEventSourceCreate(1 /* kCGEventSourceStateHIDSystemState */);
+            try
+            {
+                IntPtr keyDown = CoreGraphics.CGEventCreateKeyboardEvent(source, kVK_Return, true);
+                IntPtr keyUp = CoreGraphics.CGEventCreateKeyboardEvent(source, kVK_Return, false);
+                try
+                {
+                    if (keyDown == IntPtr.Zero || keyUp == IntPtr.Zero)
+                    {
+                        DiagnosticsLog.Error("CGEventCreateKeyboardEvent returned null; cannot send return keystroke.");
+                        return;
+                    }
+
+                    CoreGraphics.CGEventPost(kCGHIDEventTap, keyDown);
+                    CoreGraphics.CGEventPost(kCGHIDEventTap, keyUp);
+                }
+                finally
+                {
+                    if (keyDown != IntPtr.Zero) CoreGraphics.CFRelease(keyDown);
+                    if (keyUp != IntPtr.Zero) CoreGraphics.CFRelease(keyUp);
+                }
+            }
+            finally
+            {
+                if (source != IntPtr.Zero) CoreGraphics.CFRelease(source);
+            }
+        }
+        catch (Exception ex)
+        {
+            DiagnosticsLog.Error("Unable to send the macOS return keystroke via CGEvent.", ex);
+        }
+    }
+
+    public static bool IsCommandKeyPressed()
+    {
+        if (!OperatingSystem.IsMacOS())
+            return false;
+
+        try
+        {
+            const int kCGEventSourceStateCombinedSessionState = 0;
+            const ulong kCGEventFlagMaskCommand = 0x00100000;
+
+            ulong flags = CoreGraphics.CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
+            return (flags & kCGEventFlagMaskCommand) != 0;
+        }
+        catch (Exception ex)
+        {
+            DiagnosticsLog.Error("Unable to query macOS modifier key state.", ex);
+            return false;
+        }
+    }
+
     private static class CoreGraphics
     {
         private const string Framework = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
@@ -202,6 +267,9 @@ internal static class MacOSApplication
 
         [DllImport(Framework)]
         public static extern void CGEventPost(uint tap, IntPtr @event);
+
+        [DllImport(Framework)]
+        public static extern ulong CGEventSourceFlagsState(int stateID);
 
         [DllImport(CoreFoundation)]
         public static extern void CFRelease(IntPtr cf);
