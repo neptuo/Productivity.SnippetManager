@@ -12,7 +12,7 @@
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="SharpHook" />
-    <!-- Pinned to address GHSA-xrw6-gwf8-vvr9 (transitive via Avalonia on Linux). -->
+    <!-- Explicitly pinned to address GHSA-xrw6-gwf8-vvr9 for a dependency that was formerly transitive via Avalonia on Linux. -->
     <PackageReference Include="Tmds.DBus.Protocol" />
   </ItemGroup>
 
