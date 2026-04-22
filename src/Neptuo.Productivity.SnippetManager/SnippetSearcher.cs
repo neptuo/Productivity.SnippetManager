@@ -24,6 +24,7 @@ public class SnippetSearcher(ISnippetTree snippetTree, int pageSize)
 
         SearchTree(searchResult, currentRoot, normalizedSearchText, fromIndex, goInDepth);
 
+#pragma warning disable CS0162 // Unreachable code: gated by compile-time const for future use
         if (SupplyChildrenFromSelectedSnippets)
         {
             // TODO: If we don't have enough items, you should include some children from the first match
@@ -48,6 +49,7 @@ public class SnippetSearcher(ISnippetTree snippetTree, int pageSize)
 
             searchResult.AddRange(toAdd);
         }
+#pragma warning restore CS0162
 
         if (SupplyNonRootSnippets)
         {
