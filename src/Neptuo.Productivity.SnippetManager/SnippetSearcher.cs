@@ -5,7 +5,6 @@ namespace Neptuo.Productivity.SnippetManager;
 
 public class SnippetSearcher(ISnippetTree snippetTree, int pageSize)
 {
-    private const bool SupplyChildrenFromSelectedSnippets = false;
     private const bool SupplyNonRootSnippets = true;
 
     public IEnumerable<SnippetModel> Search(IReadOnlyList<string> normalizedSearchText, SnippetModel? currentRoot)
@@ -24,32 +23,30 @@ public class SnippetSearcher(ISnippetTree snippetTree, int pageSize)
 
         SearchTree(searchResult, currentRoot, normalizedSearchText, fromIndex, goInDepth);
 
-#pragma warning disable CS0162 // Unreachable code: gated by compile-time const for future use
-        if (SupplyChildrenFromSelectedSnippets)
-        {
-            // TODO: If we don't have enough items, you should include some children from the first match
-            // Not sure at the moment, user can always use TAB to pin
-            List<SnippetModel> toAdd = new();
-            if (searchResult.Count < pageSize)
-            {
-                foreach (var snippet in searchResult)
-                {
-                    foreach (var child in snippetTree.GetChildren(snippet))
-                    {
-                        toAdd.Add(child);
-
-                        if (searchResult.Count + toAdd.Count >= pageSize)
-                            break;
-                    }
-
-                    if (searchResult.Count + toAdd.Count >= pageSize)
-                        break;
-                }
-            }
-
-            searchResult.AddRange(toAdd);
-        }
-#pragma warning restore CS0162
+        // TODO: If we don't have enough items, you should include some children from the first match
+        // Not sure at the moment, user can always use TAB to pin
+        //if (SupplyChildrenFromSelectedSnippets)
+        //{
+        //    List<SnippetModel> toAdd = new();
+        //    if (searchResult.Count < pageSize)
+        //    {
+        //        foreach (var snippet in searchResult)
+        //        {
+        //            foreach (var child in snippetTree.GetChildren(snippet))
+        //            {
+        //                toAdd.Add(child);
+        //
+        //                if (searchResult.Count + toAdd.Count >= pageSize)
+        //                    break;
+        //            }
+        //
+        //            if (searchResult.Count + toAdd.Count >= pageSize)
+        //                break;
+        //        }
+        //    }
+        //
+        //    searchResult.AddRange(toAdd);
+        //}
 
         if (SupplyNonRootSnippets)
         {
