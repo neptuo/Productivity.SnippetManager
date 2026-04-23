@@ -211,6 +211,12 @@ internal static class MacOSApplication
                         return;
                     }
 
+                    // Explicitly clear modifier flags so the synthetic Return is not
+                    // interpreted as Cmd+Enter (e.g., Edge would otherwise open a new
+                    // tab because the preceding Cmd+V events left Cmd flagged, or the
+                    // HID system still sees Cmd physically held).
+                    CoreGraphics.CGEventSetFlags(keyDown, 0);
+                    CoreGraphics.CGEventSetFlags(keyUp, 0);
                     CoreGraphics.CGEventPost(kCGHIDEventTap, keyDown);
                     CoreGraphics.CGEventPost(kCGHIDEventTap, keyUp);
                 }
