@@ -111,7 +111,9 @@ namespace Neptuo.Productivity.SnippetManager
         public virtual bool Remove(SnippetModel snippet, bool throwIfNotFound = true)
         {
             var result = RemoveFromTree(snippet, throwIfNotFound);
-            Changed?.Invoke();
+            if (result)
+                Changed?.Invoke();
+
             return result;
         }
 
