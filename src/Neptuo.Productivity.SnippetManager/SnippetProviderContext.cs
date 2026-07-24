@@ -56,7 +56,7 @@ namespace Neptuo.Productivity.SnippetManager
             models.Add(snippet);
         }
 
-        private void RemoveFromTree(SnippetModel snippet)
+        private bool RemoveFromTree(SnippetModel snippet, bool throwIfNotFound = true)
         {
             if (byModel.TryGetValue(snippet, out var entry))
             {
@@ -85,8 +85,13 @@ namespace Neptuo.Productivity.SnippetManager
             }
             else
             {
-                throw Ensure.Exception.InvalidOperation($"Snippet '{snippet.Title}' was not found in the tree");
+                if (throwIfNotFound)
+                    throw Ensure.Exception.InvalidOperation($"Snippet '{snippet.Title}' was not found in the tree");
+
+                return false;
             }
+
+            return true;
         }
 
         public virtual void Add(SnippetModel snippet)
@@ -103,10 +108,11 @@ namespace Neptuo.Productivity.SnippetManager
             Changed?.Invoke();
         }
 
-        public virtual void Remove(SnippetModel snippet)
+        public virtual bool Remove(SnippetModel snippet, bool throwIfNotFound = true)
         {
-            RemoveFromTree(snippet);
+            var result = RemoveFromTree(snippet, throwIfNotFound);
             Changed?.Invoke();
+            return result;
         }
 
         public IEnumerable<SnippetModel> GetRoots()

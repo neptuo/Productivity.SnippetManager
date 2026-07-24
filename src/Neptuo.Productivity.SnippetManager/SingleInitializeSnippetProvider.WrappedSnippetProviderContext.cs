@@ -23,10 +23,11 @@ partial class SingleInitializeSnippetProvider
             Inner.AddRange(snippets);
         }
 
-        public override void Remove(SnippetModel snippet)
+        public override bool Remove(SnippetModel snippet, bool throwIfNotFound = true)
         {
-            base.Remove(snippet);
-            Inner.Remove(snippet);
+            bool baseResult = base.Remove(snippet, throwIfNotFound);
+            bool innerResult = Inner.Remove(snippet, throwIfNotFound);
+            return baseResult && innerResult;
         }
     }
 }
