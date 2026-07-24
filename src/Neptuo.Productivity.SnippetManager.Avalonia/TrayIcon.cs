@@ -1,6 +1,7 @@
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using Neptuo.Productivity.SnippetManager.Plugins;
 using NativeMenu = Avalonia.Controls.NativeMenu;
 using NativeMenuItem = Avalonia.Controls.NativeMenuItem;
@@ -193,9 +194,17 @@ public class TrayIcon : IDisposable
 
     private void OnHookFailed(string message)
     {
-        trayIcon.ToolTipText = $"Snippet Manager — {message}";
-        if (hotkeyMenuItem != null)
-            hotkeyMenuItem.Header = "Hotkey unavailable";
+        void UpdateUi()
+        {
+            trayIcon.ToolTipText = $"Snippet Manager — {message}";
+            if (hotkeyMenuItem != null)
+                hotkeyMenuItem.Header = "Hotkey unavailable";
+        }
+
+        if (Dispatcher.UIThread.CheckAccess())
+            UpdateUi();
+        else
+            Dispatcher.UIThread.Post(UpdateUi);
     }
 
     private void ToggleHotkey()
