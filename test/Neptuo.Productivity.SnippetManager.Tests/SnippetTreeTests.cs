@@ -507,4 +507,17 @@ public class SnippetTreeTests
 
         Assert.DoesNotContain(x, tree.GetRoots());
     }
+
+    [Fact]
+    public void RemoveMissingSnippetWithoutThrow_DoesNotRaiseChanged()
+    {
+        var tree = GetTree();
+        var changedCount = 0;
+        tree.Changed += () => changedCount++;
+
+        var result = tree.Remove(new("Missing", "Missing"), throwIfNotFound: false);
+
+        Assert.False(result);
+        Assert.Equal(0, changedCount);
+    }
 }

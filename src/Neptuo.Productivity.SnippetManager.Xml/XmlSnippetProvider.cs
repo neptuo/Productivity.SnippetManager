@@ -147,7 +147,7 @@ public class XmlSnippetProvider(XmlConfiguration configuration) : SingleInitiali
         if (loadSnippetsTask != null)
         {
             foreach (var snippet in lastSnippets)
-                context.Remove(snippet);
+                context.Remove(snippet, false);
 
             await loadSnippetsTask;
             loadSnippetsTask = null;
