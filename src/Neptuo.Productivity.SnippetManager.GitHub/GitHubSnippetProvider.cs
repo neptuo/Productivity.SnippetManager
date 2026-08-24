@@ -158,6 +158,12 @@ public class GitHubSnippetProvider(GitHubConfiguration configuration) : SingleIn
             priority: priority
         ));
 
+        snippets.Add(new SnippetModel(
+            title: $"{repositoryTitle} - Agents",
+            text: $"{htmlUrl}/agents",
+            priority: SnippetPriority.Low
+        ));
+
         if (hasIssues)
         {
             snippets.Add(new SnippetModel(
